@@ -1,11 +1,39 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
 ---
 
-<Layout>
-	<Welcome />
+<Layout title="Koby L. | Software & Hardware Builder">
+  <div class="flex flex-col items-center justify-center min-h-[70vh] text-center">
+    <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight text-white mb-6">
+      Hi, I'm <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">KobyL.</span>
+    </h1>
+    <p class="text-xl md:text-2xl text-zinc-400 max-w-2xl mb-10">
+      I build software, engineer hardware, and create experiences. Welcome to my digital workshop.
+    </p>
+    
+    <div class="flex space-x-4">
+      <a href="/projects" class="px-8 py-3 bg-white text-zinc-950 font-semibold rounded-lg hover:bg-zinc-200 transition-colors shadow-[0_0_15px_rgba(255,255,255,0.2)]">
+        View My Work
+      </a>
+      <a href="/about" class="px-8 py-3 bg-zinc-900 border border-zinc-700 text-white font-semibold rounded-lg hover:bg-zinc-800 transition-colors">
+        About Me
+      </a>
+    </div>
+  </div>
+
+  <div class="mt-20 border-t border-zinc-800/50 pt-16">
+    <h2 class="text-3xl font-bold text-center mb-12">Featured Systems</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+      <div class="bg-zinc-900/50 border border-zinc-800 p-6 rounded-xl hover:border-zinc-600 transition-colors">
+        <h3 class="text-xl font-bold text-white mb-2">Stock Analysis Dashboard</h3>
+        <p class="text-zinc-400 mb-4">A complete algorithmic trading UI and optimizer built in React.</p>
+        <a href="/projects" class="text-blue-400 hover:text-blue-300 text-sm font-medium">Explore Project &rarr;</a>
+      </div>
+      <div class="bg-zinc-900/50 border border-zinc-800 p-6 rounded-xl hover:border-zinc-600 transition-colors">
+        <h3 class="text-xl font-bold text-white mb-2">Cuttlefish Lights</h3>
+        <p class="text-zinc-400 mb-4">Live audio-reactive LED strip controller powered by MSGEQ7 and Arduino.</p>
+        <a href="/projects" class="text-emerald-400 hover:text-emerald-300 text-sm font-medium">Explore Project &rarr;</a>
+      </div>
+    </div>
+  </div>
 </Layout>
