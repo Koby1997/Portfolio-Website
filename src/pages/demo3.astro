@@ -1,0 +1,67 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+<Layout title="Demo 3: Sticky Vertical">
+  <div class="max-w-5xl mx-auto py-12 px-4">
+    <h1 class="text-3xl font-bold mb-4">Style 3: Parallax / Sticky Vertical</h1>
+    <p class="text-zinc-400 mb-20 max-w-2xl">Extremely common in premium design. As you scroll down organically, the "Year" stops and sticks to your screen while you scroll through the photo gallery/details for that year.</p>
+    
+    <div class="space-y-32">
+      
+      <!-- Section 2022 -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="col-span-1">
+          <!-- The magic sticky class -->
+          <div class="md:sticky md:top-32 mb-8 md:mb-0">
+            <h2 class="text-7xl font-black text-zinc-800">2022</h2>
+            <h3 class="text-2xl text-white mt-2 font-serif">The Blueprint</h3>
+          </div>
+        </div>
+        <div class="col-span-1 md:col-span-2 flex flex-col space-y-8 md:border-l border-zinc-800 md:pl-12">
+          
+          <div class="h-80 bg-zinc-900 rounded-xl flex flex-col items-center justify-center border border-zinc-800 text-zinc-600 shadow-inner">
+             <span class="text-3xl mb-2">✏️</span>
+             <span>(Sketches & Hand Mathematics)</span>
+          </div>
+          
+          <p class="text-zinc-400 text-lg leading-relaxed pt-4">The initial build was entirely an experiment in fluid dynamics. It tested basic physics but ultimately struggled to contain the desired output pressure.</p>
+          
+          <div class="h-64 bg-zinc-900 rounded-xl flex items-center justify-center border border-zinc-800 text-zinc-600 shadow-inner">
+             <span>(Testing Footage Video Loop)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 2023 -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="col-span-1">
+          <div class="md:sticky md:top-32 mb-8 md:mb-0">
+            <h2 class="text-7xl font-black text-emerald-900/50">2023</h2>
+            <h3 class="text-2xl text-emerald-500 mt-2 font-serif">Reinforcements</h3>
+          </div>
+        </div>
+        <div class="col-span-1 md:col-span-2 flex flex-col space-y-8 md:border-l border-emerald-900/30 md:pl-12">
+          
+          <p class="text-zinc-400 text-lg leading-relaxed">After analyzing the breakdown, the physical framework required high-density PVC housing and a massively upgraded actuator.</p>
+          
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div class="h-56 bg-zinc-900 rounded-xl flex flex-col items-center justify-center border border-zinc-800 text-zinc-600">
+                <span class="text-2xl mb-2">⚙️</span>
+                <span>(Internal Wiring)</span>
+            </div>
+            <div class="h-56 bg-zinc-900 rounded-xl flex flex-col items-center justify-center border border-zinc-800 text-zinc-600">
+                <span class="text-2xl mb-2">🔧</span>
+                <span>(Assembly Shop)</span>
+            </div>
+          </div>
+
+          <div class="h-96 bg-zinc-900 rounded-xl flex items-center justify-center border border-emerald-900 text-zinc-600 mt-8">
+             <span>(Success Launch Video)</span>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</Layout>

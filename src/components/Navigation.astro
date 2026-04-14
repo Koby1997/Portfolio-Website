@@ -1,11 +1,24 @@
 ---
 ---
+<!-- Temporary Mobile-Friendly Prototype Banner -->
+<div class="w-full bg-emerald-900/20 border-b border-emerald-900/50 py-2 relative z-[60]">
+  <div class="max-w-5xl mx-auto px-4 flex flex-wrap justify-center space-x-4 text-[11px] md:text-sm font-mono text-emerald-400">
+    <span class="text-zinc-500 font-bold">PROTOTYPES:</span>
+    <a href="/demo1" class="hover:text-white underline">1. ZigZag</a>
+    <a href="/demo2" class="hover:text-white underline">2. Seamless</a>
+    <a href="/demo3" class="hover:text-white underline">3. Sticky</a>
+    <a href="/demo4" class="hover:text-white underline">4. Snap</a>
+    <a href="/demo5" class="text-amber-500 hover:text-white underline ml-2 font-bold bg-amber-900/20 px-2 rounded">5. MASTER</a>
+  </div>
+</div>
+
 <nav class="w-full bg-zinc-950/80 backdrop-blur-md sticky top-0 z-50 border-b border-zinc-800">
   <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex items-center justify-between h-16">
       <div class="flex-shrink-0">
         <a href="/" class="text-xl font-bold text-white tracking-tighter">KobyL.</a>
       </div>
+      <!-- This main navigation hides on tiny mobile screens, but our prototype bar above stays! -->
       <div class="hidden md:block">
         <div class="ml-10 flex items-baseline space-x-8">
           <a href="/" class="text-zinc-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors">Home</a>
