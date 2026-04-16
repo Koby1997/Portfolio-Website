@@ -1,0 +1,343 @@
+---
+import '../styles/global.css';
+
+// User Data mapped into the Neural Canvas Mesh
+const hubs = [
+    { id: 'h1', name: 'KINETICS', color: '#ea580c', x: 400, y: 100, z: -300, children: ['Volleyball', 'Lacrosse', 'Rock Climbing', 'Paintball', 'Dodgeball'] },
+    { id: 'h2', name: 'TACTICS', color: '#a855f7', x: -500, y: -200, z: 100, children: ['Magic the Gathering', 'Poker', 'Board Games', 'Escape Rooms'] },
+    { id: 'h3', name: 'CINEMA', color: '#3b82f6', x: 200, y: -300, z: 400, children: ['Tenet', 'Inception', 'Interstellar', 'Star Wars'] },
+    { id: 'h4', name: 'DIGITAL', color: '#10b981', x: -300, y: 200, z: 200, children: ['Spider-Man', 'Ghost of Yōtei', 'God of War'] }
+];
+---
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>P.Canvas Neural Mesh</title>
+</head>
+<!-- Removed native body height because we are moving to a Wheel tracking system instead! -->
+<body class="bg-black text-white m-0 p-0 font-sans h-max w-screen h-screen overflow-hidden select-none">
+
+    <div class="fixed top-8 left-8 z-50 pointer-events-none">
+        <a href="/" class="text-white font-mono tracking-[0.2em] text-xs hover:text-white/50 transition-colors uppercase pb-2 border-b border-white/20 pointer-events-auto">
+            &larr; Exit Canvas
+        </a>
+    </div>
+
+    <div class="fixed bottom-12 w-full text-center z-50 pointer-events-none mix-blend-difference">
+        <p class="font-mono text-zinc-500 tracking-[0.4em] text-xs uppercase animate-pulse">Wheel/Pinch to Fly &bull; Drag to Rotate</p>
+    </div>
+
+    <!-- The 3D Rendering Canvas -->
+    <canvas id="neural-canvas" class="fixed inset-0 w-full h-full cursor-grab active:cursor-grabbing bg-[radial-gradient(ellipse_at_center,#050505_0%,#000_100%)] z-10"></canvas>
+
+    <!-- Transmit the server-side astro data to JS -->
+    <script define:vars={{ hubs }}>
+        window.USER_HUBS = hubs;
+    </script>
+
+    <script is:inline>
+        const canvas = document.getElementById('neural-canvas');
+        const ctx = canvas.getContext('2d', { alpha: false }); 
+
+        let width, height, cx, cy;
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            cx = width / 2;
+            cy = height / 2;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        // ----------------------------------------------------
+        // SYSTEM DATA GENERATION - BRAIN METAPHOR
+        // ----------------------------------------------------
+        const particles = [];
+        // Bumped threshold to massively double/triple line connections!
+        const THRESHOLD = 150; 
+        const FOV = 800;
+        
+        // Generation 1: The Main Cortical Hemispheres (Left & Right Brain)
+        for(let i=0; i<2500; i++) {
+            // Using standard spherical randoms explicitly to run topographical folding math via Theta/Phi
+            let theta = Math.random() * 2 * Math.PI;
+            let phi = Math.acos((Math.random() * 2) - 1);
+            let r = Math.cbrt(Math.random());
+
+            let x = r * Math.sin(phi) * Math.cos(theta);
+            let y = r * Math.sin(phi) * Math.sin(theta);
+            let z = r * Math.cos(phi);
+            
+            // Generate exact 3D brain folds (Sulci and Gyri) by mathematically rippling the radius!
+            let fold = Math.abs(r); // Only apply heavily to outer edges
+            let topoRipple = 1 + (0.15 * Math.sin(phi * 8) * Math.sin(theta * 10) * fold);
+            
+            // Map dimensions length
+            let bx = x * 800 * topoRipple;
+            let by = y * 600 * topoRipple;
+            let bz = z * 1000 * topoRipple;
+            
+            // The Fissure: Remove points exactly in the middle to create the two hemispheres
+            if (Math.abs(bx) < 30) { i--; continue; }
+            
+            particles.push({
+                x: bx, y: by, z: bz,
+                type: 'ambient',
+                color: Math.random() > 0.5 ? 'rgba(59,130,246,0.35)' : 'rgba(249,115,22,0.3)', 
+                size: Math.random() * 1.5 + 0.5
+            });
+        }
+
+        // Generation 2: The Cerebellum (Lower back portion of the brain)
+        // Increased density for the stem 
+        for(let i=0; i<400; i++) {
+            let x = (Math.random() - 0.5) * 2;
+            let y = (Math.random() - 0.5) * 2;
+            let z = (Math.random() - 0.5) * 2;
+            if(x*x + y*y + z*z > 1) { i--; continue; }
+            
+            // Scaled much smaller and offset
+            let cx_pos = x * 300;
+            let cy_pos = (y * 200) + 500; // Lower down natively
+            let cz_pos = (z * 300) + 700; // Farther back natively
+
+            // Slight fissure for cerebellum too
+            if (Math.abs(cx_pos) < 15) { i--; continue; }
+
+            particles.push({
+                x: cx_pos, y: cy_pos, z: cz_pos,
+                type: 'ambient',
+                color: 'rgba(59,130,246,0.5)', // Cerebellum is more dense
+                size: Math.random() * 1.5 + 0.5
+            });
+        }
+
+        // 3. Inject the User Data (Hubs and Children) directly into the mesh volume
+        window.USER_HUBS.forEach(hub => {
+            particles.push({
+                x: hub.x, y: hub.y, z: hub.z,
+                type: 'hub', label: hub.name,
+                color: hub.color, size: 8
+            });
+
+            hub.children.forEach(child => {
+                const offX = (Math.random() - 0.5) * 500;
+                const offY = (Math.random() - 0.5) * 500;
+                const offZ = (Math.random() - 0.5) * 500;
+                particles.push({
+                    x: hub.x + offX, y: hub.y + offY, z: hub.z + offZ,
+                    type: 'child', label: child,
+                    color: '#ffffff', size: 3
+                });
+            });
+        });
+
+        // 4. Pre-compute lines to save performance
+        const lines = [];
+        for(let i=0; i<particles.length; i++) {
+            for(let j=i+1; j<particles.length; j++) {
+                const p1 = particles[i];
+                const p2 = particles[j];
+                const dist = Math.sqrt((p2.x-p1.x)**2 + (p2.y-p1.y)**2 + (p2.z-p1.z)**2);
+                if(dist < THRESHOLD) {
+                    // Increased opacity baseline so structure is heavily pronounced
+                    const alpha = (1 - (dist / THRESHOLD)) * 0.8;
+                    const color = p1.type === 'hub' ? p1.color : (p2.type === 'hub' ? p2.color : `rgba(100, 150, 255, ${alpha})`);
+                    lines.push({ p1, p2, dist, color });
+                }
+            }
+        }
+
+
+        // ----------------------------------------------------
+        // THE 3D CAMERA ENGINE
+        // ----------------------------------------------------
+        let cameraZ = -3000; // Staring far out
+        let rotX = 0; // Straight on to align with SVG initially
+        let rotY = 0;
+        let isDragging = false;
+        let startX, startY;
+
+        // Custom ZOOM Logic via Wheel (Desktop)
+        canvas.addEventListener('wheel', (e) => {
+            e.preventDefault(); 
+            // Dampen acceleration logic:
+            // When far away (Math.abs(cameraZ) is large), speed is higher.
+            // When deep inside the brain (cameraZ ~ 0), speed is clamped very low (0.5 minimum)
+            // This prevents the "hyper jump" when perspective geometry breaks.
+            let speedMultiplier = Math.max(0.5, Math.abs(cameraZ) * 0.001 * 3);
+            cameraZ -= e.deltaY * speedMultiplier; 
+            
+            // Constrain camera so user doesn't fly out into empty space infinitely
+            if(cameraZ < -5000) cameraZ = -5000; 
+            if(cameraZ > 2000) cameraZ = 2000;
+
+        }, { passive: false });
+
+        // Custom PAN Logic via Dragging (Desktop)
+        canvas.addEventListener('pointerdown', e => {
+            isDragging = true;
+            startX = e.clientX;
+            startY = e.clientY;
+            canvas.setPointerCapture(e.pointerId);
+        });
+        window.addEventListener('pointermove', e => {
+            if(!isDragging) return;
+            const dx = e.clientX - startX;
+            const dy = e.clientY - startY;
+            rotY += dx * 0.005;
+            rotX -= dy * 0.005;
+            startX = e.clientX;
+            startY = e.clientY;
+        });
+        window.addEventListener('pointerup', () => isDragging = false);
+
+        // Mobile Zoom Logic via Pinch
+        let initialPinchDistance = null;
+        canvas.addEventListener('touchstart', e => {
+            if(e.touches.length === 2) {
+                initialPinchDistance = Math.hypot(
+                    e.touches[0].clientX - e.touches[1].clientX,
+                    e.touches[0].clientY - e.touches[1].clientY
+                );
+            } else if (e.touches.length === 1) {
+                isDragging = true;
+                startX = e.touches[0].clientX;
+                startY = e.touches[0].clientY;
+            }
+        });
+        canvas.addEventListener('touchmove', e => {
+            e.preventDefault(); // Stop native scrolling completely!
+            if(e.touches.length === 2 && initialPinchDistance) {
+                const dist = Math.hypot(
+                    e.touches[0].clientX - e.touches[1].clientX,
+                    e.touches[0].clientY - e.touches[1].clientY
+                );
+                const delta = dist - initialPinchDistance;
+                cameraZ += delta * 15; // Move closer!
+                if(cameraZ < -5000) cameraZ = -5000; 
+                if(cameraZ > 2000) cameraZ = 2000;
+                initialPinchDistance = dist;
+            } else if (e.touches.length === 1 && isDragging) {
+                const dx = e.touches[0].clientX - startX;
+                const dy = e.touches[0].clientY - startY;
+                rotY += dx * 0.005;
+                rotX -= dy * 0.005;
+                startX = e.touches[0].clientX;
+                startY = e.touches[0].clientY;
+            }
+        }, {passive: false});
+
+
+        // ----------------------------------------------------
+        // RENDER LOOP
+        // ----------------------------------------------------
+        function project(p, cx, cy) {
+            const cosX = Math.cos(rotX), sinX = Math.sin(rotX);
+            const cosY = Math.cos(rotY), sinY = Math.sin(rotY);
+
+            const y1 = p.y * cosX - p.z * sinX;
+            const z1 = p.y * sinX + p.z * cosX;
+
+            const x2 = p.x * cosY - z1 * sinY;
+            const z2 = p.x * sinY + z1 * cosY;
+
+            const finalZ = z2 - cameraZ;
+
+            if(finalZ < 1) return null;
+
+            const scale = FOV / finalZ;
+
+            return {
+                x: cx + (x2 * scale),
+                y: cy + (y1 * scale),
+                scale: scale,
+                depth: finalZ
+            };
+        }
+
+        function render() {
+            ctx.clearRect(0, 0, width, height);
+
+            const renderData = [];
+
+            for(let p of particles) {
+                const proj = project(p, cx, cy);
+                if(proj) {
+                    p._proj = proj; 
+                    renderData.push({ type: 'particle', source: p, depth: proj.depth });
+                } else {
+                    p._proj = null;
+                }
+            }
+
+            for(let l of lines) {
+                if(l.p1._proj && l.p2._proj) {
+                    const avgDepth = (l.p1._proj.depth + l.p2._proj.depth) / 2;
+                    renderData.push({ type: 'line', source: l, depth: avgDepth });
+                }
+            }
+
+            renderData.sort((a, b) => b.depth - a.depth);
+
+            for(let obj of renderData) {
+                if(obj.type === 'line') {
+                    const l = obj.source;
+                    ctx.beginPath();
+                    ctx.moveTo(l.p1._proj.x, l.p1._proj.y);
+                    ctx.lineTo(l.p2._proj.x, l.p2._proj.y);
+                    ctx.strokeStyle = l.color;
+                    // Thicker lines again! Bumped up slightly to push the structural density
+                    ctx.lineWidth = Math.max(0.6, 2.5 * ((l.p1._proj.scale + l.p2._proj.scale)/2) * 0.5 );
+                    ctx.stroke();
+                } 
+                else if (obj.type === 'particle') {
+                    const p = obj.source;
+                    const r = p.size * p._proj.scale;
+                    
+                    if(p.type === 'ambient') {
+                        ctx.fillStyle = p.color;
+                        ctx.beginPath();
+                        ctx.arc(p._proj.x, p._proj.y, r, 0, Math.PI*2);
+                        ctx.fill();
+                    } 
+                    else if (p.type === 'child') {
+                        ctx.fillStyle = '#ffffff';
+                        ctx.beginPath();
+                        ctx.arc(p._proj.x, p._proj.y, r, 0, Math.PI*2);
+                        ctx.fill();
+                        
+                        if(p._proj.depth < 1500) {
+                            ctx.fillStyle = `rgba(255,255,255,${1 - (p._proj.depth / 1500)})`;
+                            ctx.font = `${Math.min(20, 10 * p._proj.scale)}px monospace`;
+                            ctx.fillText(p.label, p._proj.x + (r*2), p._proj.y);
+                        }
+                    }
+                    else if (p.type === 'hub') {
+                        const grad = ctx.createRadialGradient(p._proj.x, p._proj.y, 0, p._proj.x, p._proj.y, r*5);
+                        grad.addColorStop(0, '#ffffff');
+                        grad.addColorStop(0.2, p.color);
+                        grad.addColorStop(1, 'rgba(0,0,0,0)');
+                        
+                        ctx.fillStyle = grad;
+                        ctx.beginPath();
+                        ctx.arc(p._proj.x, p._proj.y, r*5, 0, Math.PI*2);
+                        ctx.fill();
+
+                        ctx.fillStyle = '#ffffff';
+                        ctx.font = `bold ${Math.min(40, 30 * p._proj.scale)}px sans-serif`;
+                        ctx.textAlign = 'center';
+                        ctx.fillText(p.label, p._proj.x, p._proj.y - (r*6));
+                        ctx.textAlign = 'left';
+                    }
+                }
+            }
+
+            requestAnimationFrame(render);
+        }
+
+        requestAnimationFrame(render);
+    </script>
+</body>
+</html>
