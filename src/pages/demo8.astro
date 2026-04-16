@@ -1,0 +1,56 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+<Layout title="Layout 3: Immersive Bento">
+  <div class="w-screen relative left-[calc(-50vw+50%)] bg-zinc-950 text-white min-h-screen py-12 px-4 md:px-12 flex flex-col items-center">
+    
+    <div class="w-full max-w-screen-2xl mb-8 flex flex-col md:flex-row md:items-end justify-between">
+        <div>
+            <div class="flex gap-2 mb-4">
+                <span class="px-3 py-1 bg-purple-500/20 text-purple-400 text-[10px] font-bold tracking-widest uppercase rounded border border-purple-500/30">Milestone</span>
+            </div>
+            <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight">The Proposal Operation</h1>
+        </div>
+        <div class="text-zinc-500 font-mono mt-4 md:mt-0 bg-zinc-900 px-4 py-2 rounded-xl border border-zinc-800">
+            May 2022
+        </div>
+    </div>
+
+    <!-- The Bento Grid Core -->
+    <div class="w-full max-w-screen-2xl grid grid-cols-1 md:grid-cols-4 lg:grid-cols-12 auto-rows-[250px] gap-6">
+
+        <!-- Block 1: Main Video (Massive layout) -->
+        <div class="md:col-span-4 lg:col-span-8 row-span-2 bg-zinc-900 rounded-[2rem] border border-zinc-800 flex items-center justify-center text-zinc-600 shadow-2xl relative overflow-hidden group">
+            <video src="/proposal/IMG_1579.MP4" autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover z-0"></video>
+            <div class="absolute inset-0 bg-gradient-to-tr from-purple-900/40 to-transparent z-10 mix-blend-overlay"></div>
+        </div>
+
+        <!-- Block 2: Explanation Text -->
+        <div class="md:col-span-4 lg:col-span-4 row-span-1 bg-zinc-900 rounded-[2rem] border border-zinc-800 p-8 flex flex-col justify-center">
+            <p class="text-lg text-zinc-300 leading-relaxed font-serif italic">"I ended up making Giant 12ft tall letters out of wood and cardboard that can be assembled, disassembled, and taken up a mountain."</p>
+        </div>
+
+        <!-- Block 3: Secondary Photo -->
+        <div class="md:col-span-2 lg:col-span-4 row-span-2 bg-zinc-900 rounded-[2rem] border border-zinc-800 flex items-center justify-center text-zinc-600 overflow-hidden">
+            <img src="/proposal/335C4B18-9400-456A-ADC1-DE17AE1CCFB1.jpg" class="w-full h-full object-cover" />
+        </div>
+
+        <!-- Block 4: The Stats -->
+        <div class="md:col-span-2 lg:col-span-4 row-span-1 bg-zinc-900 rounded-[2rem] border border-zinc-800 p-8 flex flex-col justify-center">
+            <h4 class="text-purple-500 font-mono text-sm tracking-widest mb-4">FABRICATION_STATS</h4>
+            <ul class="text-zinc-400 space-y-2 text-sm font-mono leading-relaxed">
+                <li class="flex items-center"><span class="w-2 h-2 rounded-full bg-purple-500 mr-3"></span>Height: 12 Feet</li>
+                <li class="flex items-center"><span class="w-2 h-2 rounded-full bg-cyan-500 mr-3"></span>Materials: Wood & Cardboard</li>
+                <li class="flex items-center"><span class="w-2 h-2 rounded-full bg-orange-500 mr-3"></span>Hidden Illuminations</li>
+            </ul>
+        </div>
+
+        <!-- Block 5: Small Action Photo -->
+        <div class="md:col-span-4 lg:col-span-4 row-span-1 bg-zinc-900 rounded-[2rem] border border-zinc-800 flex items-center justify-center text-zinc-600 overflow-hidden">
+             <img src="/proposal/IMG_8779.JPG" class="w-full h-full object-cover" />
+        </div>
+        
+    </div>
+
+  </div>
+</Layout>

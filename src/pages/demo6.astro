@@ -1,0 +1,62 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+<Layout title="Layout 1: Full Magazine">
+  <div class="w-screen relative left-[calc(-50vw+50%)] bg-zinc-950 text-white min-h-screen pb-24">
+    
+    <!-- Hero Image Layer -->
+    <div class="w-full h-[60vh] md:h-[80vh] relative flex items-end">
+        <div class="absolute inset-0 z-10 bg-gradient-to-t from-zinc-950 via-zinc-950/60 to-transparent"></div>
+        <img src="/proposal/335C4B18-9400-456A-ADC1-DE17AE1CCFB1.jpg" alt="Proposal Hero" class="absolute inset-0 w-full h-full object-cover z-0 opacity-80" />
+
+        <div class="relative z-20 w-full max-w-screen-2xl mx-auto px-8 md:px-16 pb-16">
+            <div class="flex gap-4 mb-6">
+                <span class="px-4 py-1.5 bg-purple-500/20 text-purple-400 text-xs font-bold tracking-widest uppercase rounded border border-purple-500/30 backdrop-blur-sm">Milestone</span>
+            </div>
+            <h1 class="text-6xl md:text-9xl font-black tracking-tighter mb-4 text-purple-500 mix-blend-screen shadow-purple-500/20">The Proposal</h1>
+            <p class="text-2xl text-zinc-300 max-w-3xl drop-shadow-xl">Built giant 12ft tall illuminated letters and dragged them up a mountain.</p>
+        </div>
+    </div>
+
+    <!-- The Content Strip -->
+    <div class="max-w-screen-2xl mx-auto px-8 md:px-16 py-16 grid grid-cols-1 md:grid-cols-12 gap-16 border-b border-zinc-800">
+        <!-- Sticky left column context block -->
+        <div class="md:col-span-4">
+            <div class="sticky top-24">
+                <h3 class="text-zinc-500 font-mono text-sm uppercase tracking-widest mb-4">The Challenge</h3>
+                <p class="text-xl leading-relaxed text-zinc-300">This was much more than a ring. It was a massive logistics and fabrication operation requiring stealth, transport, and structural integrity under mountain wind conditions.</p>
+                
+                <div class="mt-12 space-y-4">
+                    <div class="flex justify-between border-b border-zinc-800 pb-2">
+                        <span class="text-zinc-500 font-mono">Date</span>
+                        <span class="text-white">May 2022</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main right column pictures -->
+        <div class="md:col-span-8 flex flex-col gap-12">
+            
+            <div class="w-full aspect-video bg-zinc-900 rounded-3xl border border-zinc-800 flex items-center justify-center text-zinc-600 shadow-2xl overflow-hidden">
+                <video src="/proposal/IMG_1579.MP4" autoplay loop muted playsinline class="w-full h-full object-cover"></video>
+            </div>
+            
+            <div class="grid grid-cols-2 gap-8">
+                <div class="w-full aspect-square bg-zinc-900 rounded-3xl border border-zinc-800 flex flex-col overflow-hidden">
+                   <img src="/proposal/IMG_8779.JPG" alt="Construction" class="w-full h-full object-cover" />
+                </div>
+                <div class="w-full aspect-square bg-zinc-900 rounded-3xl border border-zinc-800 flex flex-col overflow-hidden">
+                   <img src="/proposal/20220514_142201.jpg" alt="Final Setup" class="w-full h-full object-cover" />
+                </div>
+            </div>
+            
+            <div class="w-full aspect-video bg-zinc-900 rounded-3xl border border-zinc-800 flex items-center justify-center text-zinc-600 shadow-2xl overflow-hidden mt-8">
+                <video src="/proposal/IMG_7455.MP4" autoplay loop muted playsinline class="w-full h-full object-cover"></video>
+            </div>
+
+        </div>
+    </div>
+
+  </div>
+</Layout>

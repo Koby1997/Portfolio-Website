@@ -6,9 +6,9 @@ const projects = defineCollection({
   schema: z.object({
     title: z.string(),
     description: z.string(),
-    category: z.enum(['Software', 'Hardware', 'Events']),
+    categories: z.array(z.string()),
     pubDate: z.date(),
-    image: z.string().optional(),
+    coverImage: z.string().optional(),
   }),
 });
 
