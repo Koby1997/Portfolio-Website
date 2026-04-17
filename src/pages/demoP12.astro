@@ -1,0 +1,716 @@
+---
+import '../styles/global.css';
+
+// Complete logic separation achieved! All underlying Brain mapping logic runs directly 
+// from your private physical module pipeline, cleanly decoupled from the actual Graphics Render code here!
+import { hubs } from '../data/neuralNetwork.js';
+---
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>P.WebGL Brain Network</title>
+</head>
+<body class="bg-[#050505] text-white m-0 p-0 font-sans w-screen h-screen overflow-hidden select-none">
+
+    <!-- Interface -->
+    <div class="fixed top-8 left-8 z-50 pointer-events-auto">
+        <a href="/" class="text-white font-mono tracking-[0.2em] text-xs hover:text-white/50 transition-colors uppercase pb-2 border-b border-white/20 pointer-events-auto">
+            &larr; Exit WebGL
+        </a>
+    </div>
+
+    <!-- The 3D Render Target -->
+    <div id="webgl-container" class="fixed inset-0 w-full h-full z-0 pointer-events-auto outline-none cursor-grab active:cursor-grabbing bg-[radial-gradient(ellipse_at_center,#050505_0%,#000_100%)]"></div>
+    
+    <!-- Flat UI Canvas Overlay -->
+    <div id="labels-container" class="fixed inset-0 w-full h-full z-10 pointer-events-none overflow-hidden"></div>
+
+    <!-- Dev Overlay: Live Physics Tuner -->
+    <div class="fixed bottom-8 left-8 z-50 pointer-events-auto bg-black/80 backdrop-blur border border-white/20 p-4 rounded-lg font-mono text-xs w-64 text-white/80 select-none hidden md:block">
+        <div class="font-bold text-white mb-2 tracking-widest">DEV OVERLAY</div>
+        <div class="mb-4">
+            <div class="flex justify-between">
+                <span>Density</span>
+                <span id="label-density">300 Nodes</span>
+            </div>
+            <input type="range" id="slider-density" min="100" max="2500" value="300" class="w-full mt-1 cursor-pointer" />
+        </div>
+        <div>
+            <div class="flex justify-between">
+                <span>Synapse Webbing</span>
+                <span id="label-connections">Tolerance: 100</span>
+            </div>
+            <!-- Slider strictly defines O(N^2) connection threshold dynamically parsed by the physics engine -->
+            <input type="range" id="slider-connections" min="20" max="250" value="100" class="w-full mt-1 cursor-pointer" />
+        </div>
+    </div>
+
+    <script define:vars={{ hubs }}>
+        window.USER_HUBS = hubs;
+    </script>
+
+    <!-- Configure the exact Three.js libraries via CDN -->
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
+
+    <!-- Execute the WebGL Engine -->
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+        import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+
+        try {
+            // ----------------------------------------------------
+            // CORE ENGINE SETUP
+            // ----------------------------------------------------
+            const container = document.getElementById('webgl-container');
+            const labelsContainer = document.getElementById('labels-container');
+        
+        const scene = new THREE.Scene();
+        // Add very faint distance fog so back-half of brain vanishes naturally
+        scene.fog = new THREE.Fog(0x000000, 500, 2000); 
+
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 5000);
+        camera.position.set(0, 0, 1500); // Start way outside
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        // CRITICAL UPDATE: Enable Native GPU Clipping. This allows us to mathematically slice out precise halves of the meshes!
+        renderer.localClippingEnabled = true; 
+        container.appendChild(renderer.domElement);
+
+        // Map OrbitControls to the entire document body! This allows the user to click-and-drag right through the HTML label wrappers!
+        const controls = new OrbitControls(camera, document.body);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+        controls.enablePan = false; // Just zoom and rotate
+        controls.minDistance = 50; // Let them fly ultra deep inside to inspect the leaves
+        controls.maxDistance = 3000;
+        
+        // FOCUS MODE UX: If the user manually intervenes and violently drags the camera to explore, break the Focus Mode lock instantly!
+        let activeFocusTreeId = null;
+        controls.addEventListener('start', () => {
+            activeFocusTreeId = null;
+        });
+
+        // Cinematic Flight Engine State
+        let isFlying = false;
+        let flightAlpha = 0;
+        const targetCameraPos = new THREE.Vector3();
+        const startCameraPos = new THREE.Vector3();
+        const targetControlsPos = new THREE.Vector3();
+        const startControlsPos = new THREE.Vector3();
+        
+        // Depth-Slice Clipping Math state
+        const focusClipPlane = new THREE.Plane(new THREE.Vector3(0, 0, -1), 0);
+        const focusClipArray = [focusClipPlane];
+
+        // Execution function to propel the camera cleanly with linear mathematically tracked paths
+        // Takes the 3D position to focus on, and how far away the camera should hover relative to its size
+        function flyTo(hubCenterVec, zoomDistance = 450, treeId = null) {
+            startCameraPos.copy(camera.position);
+            startControlsPos.copy(controls.target);
+            targetControlsPos.copy(hubCenterVec);
+            
+            if (hubCenterVec.length() < 1 || zoomDistance === 1500) {
+                targetCameraPos.set(0, 0, 1500);
+            } else {
+                const dir = hubCenterVec.clone().normalize();
+                targetCameraPos.copy(hubCenterVec).add(dir.multiplyScalar(zoomDistance)); 
+            }
+            
+            flightAlpha = 0; 
+            isFlying = true;
+            activeFocusTreeId = treeId; // Lock the shader focus
+        }
+
+        // Raycasting for 3D Mesh Clicking
+        const raycaster = new THREE.Raycaster();
+        const mouse = new THREE.Vector2();
+        const clickableMeshes = [];
+        
+        let pointerDownTime = 0;
+        let pointerDownPos = new THREE.Vector2();
+
+        window.addEventListener('pointerdown', (event) => {
+            pointerDownTime = Date.now();
+            pointerDownPos.set(event.clientX, event.clientY);
+        });
+
+        window.addEventListener('pointerup', (event) => {
+            // Ignore if we explicitly dragged the mouse (OrbitControls navigation!) or held for a long time
+            const dist = pointerDownPos.distanceTo(new THREE.Vector2(event.clientX, event.clientY));
+            if (Date.now() - pointerDownTime > 300 || dist > 10) return;
+
+            // Ignore if we click a UI element explicitly so we don't double-fire
+            if(event.target.tagName === 'DIV' || event.target.tagName === 'A' || event.target.tagName === 'INPUT') return;
+            
+            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+            raycaster.setFromCamera(mouse, camera);
+            
+            const intersects = raycaster.intersectObjects(clickableMeshes);
+            if (intersects.length > 0) {
+                // Determine zoom depth based on geometry size!
+                const clickedObj = intersects[0].object;
+                const clickedRadius = clickedObj.geometry.parameters.radius;
+                
+                let zoomScalar = 150;
+                if (clickedRadius >= 25) zoomScalar = 1500;
+                else if (clickedRadius >= 20) zoomScalar = 350; 
+                else if (clickedRadius >= 8) zoomScalar = 250;
+
+                flyTo(clickedObj.position, zoomScalar, clickedObj.userData.treeId || null);
+            }
+        });
+
+        // ----------------------------------------------------
+        // UTILITY: Robust HTML Click Binder (Prevent drag zooming!)
+        // ----------------------------------------------------
+        function bindHTMLClick(htmlElement, targetVector3, zoomScalar = 450, treeId = null) {
+            let dTime = 0;
+            let dPos = {x:0, y:0};
+            htmlElement.addEventListener('pointerdown', (e) => {
+                // EXPLICITLY ALLOW PROPAGATION: OrbitControls bound to document.body will intercept this seamlessly so we CAN drag the scene directly through the HTML!
+                dTime = Date.now();
+                dPos = {x: e.clientX, y: e.clientY};
+            });
+            htmlElement.addEventListener('pointerup', (e) => {
+                const dist = Math.hypot(dPos.x - e.clientX, dPos.y - e.clientY);
+                // If it was a quick clean tap (not a long drag), fly!
+                if(Date.now() - dTime < 300 && dist < 10) {
+                    flyTo(targetVector3, zoomScalar, treeId);
+                }
+            });
+        }
+
+        // Core Lighting for the Faint Brain Shell
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+        scene.add(ambientLight);
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 2);
+        directionalLight.position.set(1, 1, 1);
+        scene.add(directionalLight);
+
+
+        // ----------------------------------------------------
+        // LAYER 1: THE EXPLICIT ASSET BRAIN BOUNDARY
+        // ----------------------------------------------------
+        const brainGroup = new THREE.Group();
+        scene.add(brainGroup);
+
+        // The "BrainFacts" style material - Translucent, glowing outline, wireframe accents
+        const shellMatBase = new THREE.MeshPhongMaterial({
+            color: 0x1e3a8a, 
+            transparent: true,
+            opacity: 0.05, // Extremely faint 
+            side: THREE.DoubleSide,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false
+        });
+        
+        // Add a secondary faint wireframe to explicitly highlight the bounds cleanly
+        const shellMatWire = new THREE.MeshBasicMaterial({
+            color: 0x3b82f6,
+            transparent: true,
+            opacity: 0.03, // Toned down severely to not interfere with inner nodes
+            wireframe: true,
+            blending: THREE.AdditiveBlending
+        });
+
+        // Use the Industry Standard GLTF Loader to load the actual artist-mapped medical brain
+        const loader = new GLTFLoader();
+        loader.load('/brain_low.glb', (gltf) => {
+            const loadedModel = gltf.scene;
+
+            // Array to collect wireframes (cannot modify children while traversing them directly)
+            const wireframes = [];
+
+            // Strip default downloaded materials and apply explicit Ghost Shell aesthetics
+            loadedModel.traverse((child) => {
+                if (child.isMesh) {
+                    child.material = shellMatBase;
+                    
+                    // To get the wireframe perfectly on top without Z-fighting, we use an identical second mesh
+                    const wireMesh = new THREE.Mesh(child.geometry, shellMatWire);
+                    wireframes.push(wireMesh);
+                }
+            });
+
+            // Append all wireframes to the model natively
+            wireframes.forEach(w => loadedModel.add(w));
+
+            // Auto-Center and Uniformly Scale the imported model (in case the downloaded model is massively huge or offset!)
+            const box = new THREE.Box3().setFromObject(loadedModel);
+            const size = box.getSize(new THREE.Vector3());
+            const center = box.getCenter(new THREE.Vector3());
+
+            // Snap the exact origin to 0,0,0
+            loadedModel.position.x += (loadedModel.position.x - center.x);
+            loadedModel.position.y += (loadedModel.position.y - center.y);
+            loadedModel.position.z += (loadedModel.position.z - center.z);
+            
+            // Re-scale the asset to physically map OVER our Neural Network system
+            // The interior system spans ~760 lengths on Z. We will map the max dimension of the downloaded model to 780 to wrap it perfectly.
+            const targetLength = 780;
+            const maxDimension = Math.max(size.x, size.y, size.z); 
+            const scaleFactor = targetLength / maxDimension;
+            loadedModel.scale.set(scaleFactor, scaleFactor, scaleFactor);
+            window.brainModelRef = loadedModel;
+
+            // The downloaded model might require default Y-rotation if it faces the wrong way, we will rotate it slightly for optimal starting angle
+            loadedModel.rotation.y = Math.PI / 2; // Spin it 90 degrees just to see the side profile better immediately
+
+            brainGroup.add(loadedModel);
+        });
+
+        // ----------------------------------------------------
+        // LAYER 2: THE DATA HUBS AND FLOATING LABELS
+        // ----------------------------------------------------
+        const HTML_LABELS = []; // We will map these coordinates every frame
+
+        // THE NEURAL CORE (Return to Center!)
+        const coreReturnGeo = new THREE.SphereGeometry(25, 32, 32);
+        // Explicitly colored dark gray to heavily contrast against the bright white text overlaid on top of it!
+        const coreReturnMat = new THREE.MeshBasicMaterial({ color: 0x222222, transparent: true });
+        const coreReturnMesh = new THREE.Mesh(coreReturnGeo, coreReturnMat);
+        coreReturnMesh.position.set(0, 0, 0);
+        coreReturnMesh.userData.treeId = 'CORE'; // Explicitly map it so it fades correctly
+        scene.add(coreReturnMesh);
+        clickableMeshes.push(coreReturnMesh); // Add to Raycaster
+
+        // Lighting for the mechanical core
+        const coreLight = new THREE.PointLight(0xffffff, 150, 900);
+        coreReturnMesh.add(coreLight);
+
+        // UI Label for the mechanical core
+        const coreLabelEl = document.createElement('div');
+        // Explicitly removed CSS translate logic entirely + explicitly forced Javascript Transform-Origin Center
+        coreLabelEl.className = 'absolute top-0 left-0 font-bold text-4xl sans-serif tracking-tight drop-shadow-lg mix-blend-screen select-none pointer-events-auto cursor-pointer z-50 text-white origin-center';
+        coreLabelEl.style.textShadow = `0px 0px 25px rgba(255,255,255,1)`;
+        coreLabelEl.innerText = "NEURAL CORE";
+        
+        bindHTMLClick(coreLabelEl, coreReturnMesh.position, 1500, 'CORE');
+        labelsContainer.appendChild(coreLabelEl);
+        HTML_LABELS.push({ element: coreLabelEl, position: new THREE.Vector3(0, 0, 0), type: 'hub', treeId: 'CORE' });
+
+
+        // Utility: Generate physical WebGL 3D cylinder pipes to bypass LineBasicMaterial maximum 1px width limits on Windows/Angle drivers!
+        function createThickLine(vStart, vEnd, colorObj, thickness, opacity, treeId) {
+            const distance = vStart.distanceTo(vEnd);
+            const cylinderGeo = new THREE.CylinderGeometry(thickness, thickness, distance, 6, 1, false);
+            // Translate the geometry pivot to the base so we can perfectly lookAt the target!
+            cylinderGeo.translate(0, distance / 2, 0); 
+            cylinderGeo.rotateX(Math.PI / 2); 
+            
+            const mat = new THREE.MeshBasicMaterial({ color: colorObj, transparent: true, opacity: opacity });
+            const mesh = new THREE.Mesh(cylinderGeo, mat);
+            mesh.position.copy(vStart);
+            mesh.lookAt(vEnd);
+            mesh.userData.treeId = treeId; // Bind it to the Ghost Opacity Engine!
+            
+            scene.add(mesh);
+            clickableMeshes.push(mesh); // Track it alongside everything else so the Opacity Engine loops over it automatically!
+        }
+
+        window.USER_HUBS.forEach(hub => {
+            // Massive Bright Glowing Core
+            const coreGeo = new THREE.SphereGeometry(20, 32, 32);
+            // Ensuring the mesh IS colored solidly and intrinsically handles transparency dynamically
+            const coreMat = new THREE.MeshBasicMaterial({ color: hub.color, transparent: true });
+            const coreMesh = new THREE.Mesh(coreGeo, coreMat);
+            coreMesh.position.set(hub.x, hub.y, hub.z);
+            coreMesh.userData.treeId = hub.id; // Map specifically to isolate Focus trees!
+            scene.add(coreMesh);
+            clickableMeshes.push(coreMesh); // Add to Raycaster
+
+            // Add literal Light Source so the brain shell glows around the Hub!
+            const light = new THREE.PointLight(hub.color, 100, 800);
+            coreMesh.add(light);
+            
+            // Create HTML Label Element (Tier 1)
+            const labelEl = document.createElement('div');
+            // Cleaned CSS translation bindings globally and explicitly mapped Origin-Center!
+            labelEl.className = 'absolute top-0 left-0 font-bold text-6xl sans-serif tracking-tight drop-shadow-lg mix-blend-screen select-none pointer-events-auto cursor-pointer z-50 origin-center';
+            labelEl.style.color = '#ffffff';
+            labelEl.style.textShadow = `0px 0px 20px ${hub.cssColor}`;
+            labelEl.innerText = hub.name;
+            
+            // Execute physical camera flight cleanly using our custom binder, propagating specific treeId!
+            bindHTMLClick(labelEl, coreMesh.position, 350, hub.id);
+
+            labelsContainer.appendChild(labelEl);
+            
+            HTML_LABELS.push({
+                element: labelEl,
+                position: new THREE.Vector3(hub.x, hub.y, hub.z),
+                type: 'hub',
+                treeId: hub.id
+            });
+        });
+
+        // ----------------------------------------------------
+        // LAYER 3: THE DENSER INTERNAL NETWORK MASS (Points + Lines))
+        // ----------------------------------------------------
+        const sliderDensity = document.getElementById('slider-density');
+        const labelDensity = document.getElementById('label-density');
+        const sliderConnections = document.getElementById('slider-connections');
+        const labelConnections = document.getElementById('label-connections');
+
+        // Establish memory state references to safely destroy objects when the user interacts dynamically!
+        let pointGeoRef = null;
+        let lineGeoRef = null;
+        let ambientPointMesh = null;
+        let ambientLineMesh = null;
+
+        function rebuildAmbientNetwork() {
+            // Live-read the exact mathematical slider values from the specific overlay
+            const nodeCount = parseInt(sliderDensity.value);
+            const THRESHOLD = parseInt(sliderConnections.value);
+
+            // Execute Garbage Collection safely to ensure WebGL buffer integrity isn't tanked by recreating N-arrays!
+            if (ambientPointMesh) {
+                scene.remove(ambientPointMesh);
+                scene.remove(ambientLineMesh);
+                pointGeoRef.dispose();
+                lineGeoRef.dispose();
+            }
+
+            const positions = new Float32Array(nodeCount * 3);
+            
+            let pIndex = 0;
+            // Density adjusted to standard value 300
+            const activeNodeCount = nodeCount;
+            sliderDensity.value = 300; 
+
+            for (let i = 0; i < activeNodeCount; i++) {
+                let bx, by, bz;
+                // Rejection loop: ensure points are securely tightly bound inside biological requirements
+                let validPoint = false;
+                while(!validPoint) {
+                    let x = (Math.random() - 0.5) * 2;
+                    let y = (Math.random() - 0.5) * 2;
+                    let z = (Math.random() - 0.5) * 2;
+                    
+                    if(x*x + y*y + z*z < 1) { // Standard spherical container
+                        bx = x * 320; 
+                        by = (y * 280) + 50; 
+                        bz = z * 370;
+                        
+                        // Strict Biological Space Check: Frontal/Temporal Overhang "Cinema Plane" cut!
+                        // Based definitively on the line drawn straight from Core (0,0,0) down to Cinema (0, -50, -200)
+                        // If z is in the Front (negative depths), and y is physically underneath that specific 25% mathematical slope, slice it!
+                        if (bz < 0 && by < (bz * 0.25)) {
+                            validPoint = false; 
+                        } else {
+                            validPoint = true;
+                        }
+                    } 
+                }
+
+                positions[pIndex++] = bx;
+                positions[pIndex++] = by;
+                positions[pIndex++] = bz;
+            }
+
+            pointGeoRef = new THREE.BufferGeometry();
+            pointGeoRef.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            const pointMat = new THREE.PointsMaterial({ color: 0xffffff, size: 5, transparent: true, opacity: 0.5, blending: THREE.AdditiveBlending });
+            ambientPointMesh = new THREE.Points(pointGeoRef, pointMat);
+            ambientPointMesh.userData.isAmbient = true; // Wire to the opacity ghost engine natively
+            scene.add(ambientPointMesh);
+            clickableMeshes.push(ambientPointMesh); // Push so the loop can hit it!
+
+            // Execute brute force O(N^2) line connection generation safely
+            const linePositions = [];
+            const lineColors = [];
+            const colorBlue = new THREE.Color(0x3b82f6);
+            const colorOrange = new THREE.Color(0xea580c);
+
+            for (let i = 0; i < nodeCount; i++) {
+                const v1 = new THREE.Vector3(positions[i*3], positions[i*3+1], positions[i*3+2]);
+                const nodeColor = Math.random() > 0.4 ? colorBlue : colorOrange;
+
+                for (let j = i + 1; j < nodeCount; j++) {
+                    const v2 = new THREE.Vector3(positions[j*3], positions[j*3+1], positions[j*3+2]);
+                    if (v1.distanceTo(v2) < THRESHOLD) {
+                        linePositions.push(v1.x, v1.y, v1.z);
+                        linePositions.push(v2.x, v2.y, v2.z);
+                        lineColors.push(nodeColor.r, nodeColor.g, nodeColor.b);
+                        lineColors.push(nodeColor.r, nodeColor.g, nodeColor.b);
+                    }
+                }
+            }
+
+            lineGeoRef = new THREE.BufferGeometry();
+            lineGeoRef.setAttribute('position', new THREE.Float32BufferAttribute(linePositions, 3));
+            lineGeoRef.setAttribute('color', new THREE.Float32BufferAttribute(lineColors, 3));
+            
+            const lineMat = new THREE.LineBasicMaterial({ vertexColors: true, transparent: true, opacity: 0.25, blending: THREE.AdditiveBlending });
+            ambientLineMesh = new THREE.LineSegments(lineGeoRef, lineMat);
+            ambientLineMesh.userData.isAmbient = true;
+            scene.add(ambientLineMesh);
+            clickableMeshes.push(ambientLineMesh);
+        }
+
+        // Initialize natively
+        rebuildAmbientNetwork();
+
+        // ----------------------------------------------------
+        // LISTENERS: Live Physics Engine WebGL Tuning Hooks
+        // ----------------------------------------------------
+        sliderDensity.addEventListener('input', () => {
+            labelDensity.innerText = `${sliderDensity.value} Nodes`;
+            rebuildAmbientNetwork(); 
+        });
+        
+        sliderConnections.addEventListener('input', () => {
+            labelConnections.innerText = `Tolerance: ${sliderConnections.value}`;
+            rebuildAmbientNetwork(); 
+        });
+
+        // Inject the precise Hobbies/Children tightly grouped into 3-Tier Networks
+        window.USER_HUBS.forEach(hub => {
+            const hubCenter = new THREE.Vector3(hub.x, hub.y, hub.z);
+            
+            // TIER 2: The Core Categories (e.g. Movies, Tabletop)
+            hub.categories.forEach(cat => {
+                // Determine physical local orbit specifically bound to the Hub
+                const catPos = new THREE.Vector3(
+                    hub.x + (Math.random() - 0.5) * 120,
+                    hub.y + (Math.random() - 0.5) * 120,
+                    hub.z + (Math.random() - 0.5) * 120
+                );
+
+                // Generation: Category Mesh (Medium Node)
+                const cG = new THREE.SphereGeometry(8, 16, 16);
+                const cM = new THREE.MeshBasicMaterial({ color: hub.color, transparent: true });
+                const catMeshRender = new THREE.Mesh(cG, cM);
+                catMeshRender.position.copy(catPos);
+                catMeshRender.userData.treeId = hub.id;
+                scene.add(catMeshRender);
+                clickableMeshes.push(catMeshRender);
+
+                // Generation: Thick Hierarchical Link directly to Parent Hub
+                // Uses explicit internal function to guarantee physically thick pipe meshes!
+                createThickLine(hubCenter, catPos, hub.color, 1.2, 0.6, hub.id);
+
+                // Bind HTML label for the CATEGORY node
+                const catEl = document.createElement('div');
+                catEl.className = 'absolute top-0 left-0 font-mono text-4xl font-bold tracking-widest text-[#fff] drop-shadow-md uppercase select-none pointer-events-auto cursor-pointer mix-blend-screen opacity-80 z-40 origin-center';
+                catEl.innerText = cat.name;
+                catEl.style.textShadow = `0px 0px 8px ${hub.cssColor}`;
+                
+                // Flight natively wired safely
+                bindHTMLClick(catEl, catPos, 250, hub.id);
+                labelsContainer.appendChild(catEl);
+                
+                HTML_LABELS.push({
+                    element: catEl,
+                    position: catPos,
+                    type: 'category',
+                    treeId: hub.id
+                });
+
+                // TIER 3: The Leaf Items (e.g. Tenet, Poker)
+                cat.items.forEach((item, index) => {
+                    // Spread children logically in an absolute orbit RING around the category to prevent ANY clumping!
+                    const angle = (index / cat.items.length) * Math.PI * 2;
+                    const ringRadius = 75; // Forces an exact physical wedge of space specifically for this item
+                    
+                    const itemPos = new THREE.Vector3(
+                        catPos.x + Math.cos(angle) * ringRadius,
+                        catPos.y + ((Math.random() - 0.5) * 20), // Slight organic vertical jitter
+                        catPos.z + Math.sin(angle) * ringRadius
+                    );
+
+                    // Generation: Leaf Mesh (Tiny Data Node) - Now inheriting true regional Color
+                    const iG = new THREE.SphereGeometry(3, 8, 8);
+                    const iM = new THREE.MeshBasicMaterial({ color: hub.color, transparent: true });
+                    const leafMeshRender = new THREE.Mesh(iG, iM);
+                    leafMeshRender.position.copy(itemPos);
+                    leafMeshRender.userData.treeId = hub.id;
+                    scene.add(leafMeshRender);
+                    clickableMeshes.push(leafMeshRender);
+
+                    // Generation: Thick Hierarchical Link directly to Parent Category
+                    createThickLine(catPos, itemPos, hub.color, 0.6, 0.4, hub.id);
+
+                    // Bind HTML label for the exact Data Item
+                    const itemEl = document.createElement('div');
+                    itemEl.className = 'absolute top-0 left-0 font-sans text-2xl font-medium tracking-wide text-[#ddd] drop-shadow select-none pointer-events-auto cursor-pointer opacity-70 z-30 origin-center';
+                    itemEl.innerText = item;
+                    
+                    bindHTMLClick(itemEl, itemPos, 150, hub.id);
+                    labelsContainer.appendChild(itemEl);
+                    
+                    HTML_LABELS.push({
+                        element: itemEl,
+                        position: itemPos,
+                        type: 'leaf',
+                        treeId: hub.id
+                    });
+                });
+            });
+        });
+
+        // ----------------------------------------------------
+        // RENDER LOOP & LOGICC
+        // ----------------------------------------------------
+        const vProj = new THREE.Vector3();
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            // Cinematic Click-to-Zoom Flight Integration mathematically synced
+            if (isFlying) {
+                // Increment animation frame strictly (ensures 100% completion predictably instead of jumpy interpolation)
+                flightAlpha += 0.015;
+                if (flightAlpha >= 1) {
+                    flightAlpha = 1;
+                    isFlying = false;
+                }
+                
+                // Native linear blend between vectors
+                camera.position.lerpVectors(startCameraPos, targetCameraPos, flightAlpha);
+                controls.target.lerpVectors(startControlsPos, targetControlsPos, flightAlpha);
+                
+                // OrbitControls math natively recalibrates based on the forcibly shifted camera/target!
+                // This permanently solves the weird "snap bounds" glitch natively since it's executing per frame cleanly.
+                controls.update(); 
+            } else {
+                controls.update();
+            }
+
+            // Auto-rotation disabled for now by request.
+
+            // Iterate through every active label to sync HTML coordinates with WebGL 3D projections!
+            HTML_LABELS.forEach(data => {
+                // FOCUS MODE ENGINE: Calculate absolute Opacity based on Tree Focus State
+                // If Core is explicitly focused (meaning we zoomed out cleanly), skip the ghost execution entirely!
+                const isGhosted = activeFocusTreeId !== null && activeFocusTreeId !== 'CORE' && data.treeId !== activeFocusTreeId;
+                const nativeOpacity = isGhosted ? 0.05 : 1.0; 
+
+                // Natively project the raw 3D Vector to the perspective camera
+                vProj.copy(data.position);
+                vProj.applyMatrix4(brainGroup.matrixWorld); // Account for the ambient rotation!
+                vProj.project(camera); 
+                
+                // Project handles hidden elements naturally via z bounds natively if we enforce it:
+                if (vProj.z > 1 || vProj.z < -1) {
+                    data.element.style.display = 'none'; // Behind camera lens
+                    return;
+                }
+
+                const distToCamera = camera.position.distanceTo(data.position);
+                const fadeBounds = data.type === 'hub' ? 1200 : 800; // Text vanishes cleanly if camera zooms away!
+
+                // Execute HTML overlay opacity math
+                if (distToCamera > fadeBounds) {
+                    data.element.style.transform = `translate(-50%, -50%) scale(0)`;
+                    data.element.style.opacity = "0";
+                } else {
+                    data.element.style.display = 'block';
+                    data.element.style.opacity = nativeOpacity.toString();
+                    
+                    // Native HTML canvas translation centering math
+                    const x = (vProj.x * 0.5 + 0.5) * window.innerWidth;
+                    const y = (vProj.y * -0.5 + 0.5) * window.innerHeight;
+                    
+                    // Scale effect (closer camera = bigger text)
+                    const scaleEffect = Math.max(0.2, (fadeBounds - distToCamera) / fadeBounds);
+
+                    // Strictly mapping translate(-50%, -50%) to inherently align the text origin-center across the Mesh
+                    data.element.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%) scale(${scaleEffect})`;
+                }
+            });
+            
+            // DEPTH-SLICE MATRIX: Calculates a perfect mathematical plane passing through the targeted Node!
+            let isClippingActive = false;
+            if (activeFocusTreeId !== null && activeFocusTreeId !== 'CORE') {
+                isClippingActive = true;
+                const camDir = new THREE.Vector3();
+                camera.getWorldDirection(camDir); // Ray points AWAY from camera deeper into the scene!
+                
+                // Shift the plane backwards physically towards the camera by 8 units so the sphere mesh itself isn't cut cleanly in half accidentally
+                const safePos = targetControlsPos.clone().add(camDir.clone().multiplyScalar(-8));
+                focusClipPlane.setFromNormalAndCoplanarPoint(camDir, safePos);
+            }
+
+            // Opacity Engine for literal 3D Meshes (Nodes, Biological Ambient Structures, and Thick Core Lines!)
+            clickableMeshes.forEach(mesh => {
+                // If the user zoomed out cleanly to the core (entire brain view), NOTHING should be ghosted!
+                let isGhostedMesh = activeFocusTreeId !== null && activeFocusTreeId !== 'CORE';
+                
+                // If something specific is focused, only ghost it if it explicitly does NOT belong to that family tree!
+                // For Ambient Biological layers (which have no treeId), they ghost inherently if *any* family tree is active!
+                if (isGhostedMesh && mesh.userData.treeId) {
+                    isGhostedMesh = mesh.userData.treeId !== activeFocusTreeId;
+                }
+                
+                // DEPTH-SLICE SHADER: Slice out ALL ambient artifacts that are sitting physically IN FRONT of the focused Node!
+                // This preserves the rich background mesh natively while wiping out all chaotic interference crossing over the lens!
+                mesh.material.clippingPlanes = isGhostedMesh && isClippingActive ? focusClipArray : null;
+                
+                // We map original ambient opacities manually since they were specifically faint
+                // Base opacity is 0.5 for ambient nodes/dots, 0.25 for webbing lines, 1.0 for solid models
+                let baseTargetOpacity = 1.0;
+                if (mesh.userData.isAmbient) {
+                    baseTargetOpacity = mesh instanceof THREE.Points ? 0.5 : 0.25;
+                }
+                
+                // For Ambient Biological structures, we NO LONGER ghost their Opacity down! 
+                // The Clipping Plane erased the foreground noise, allowing them to shine richly in the background perfectly uninterrupted!
+                const finalOpacity = isGhostedMesh && !mesh.userData.isAmbient ? 0.05 : baseTargetOpacity;
+                mesh.material.opacity = finalOpacity;
+            });
+            
+            // Faint down the Outer GLTF Biological Shell!
+            if (window.brainModelRef) {
+                const isGhostedShell = activeFocusTreeId !== null && activeFocusTreeId !== 'CORE';
+                window.brainModelRef.traverse(child => {
+                    if (child.isMesh) {
+                        // Original Base Opacity is 0.06. Wireframe Opacity is 0.03.
+                        const nativeTarget = child.material.wireframe ? 0.03 : 0.06;
+                        child.material.opacity = isGhostedShell ? 0.01 : nativeTarget; 
+                        
+                        // We do NOT explicitly slice the outer shell so you still "feel" inside a brain natively.
+                    }
+                });
+            }
+
+            renderer.render(scene, camera);
+        }
+
+        // Window resize binding
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+            // Start WebGL
+            animate();
+
+        } catch (error) {
+            // FATAL ERROR CATCHER FOR DEBUGGING
+            const errDiv = document.createElement('div');
+            errDiv.style.position = 'fixed';
+            errDiv.style.top = '100px';
+            errDiv.style.left = '50px';
+            errDiv.style.color = 'red';
+            errDiv.style.zIndex = '9999';
+            errDiv.style.fontFamily = 'monospace';
+            errDiv.innerText = "CRASH: " + error.toString() + "\n" + error.stack;
+            document.body.appendChild(errDiv);
+        }
+    </script>
+</body>
+</html>
