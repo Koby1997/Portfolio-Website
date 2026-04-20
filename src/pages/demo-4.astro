@@ -1,0 +1,34 @@
+---
+import '../styles/global.css';
+---
+<!doctype html>
+<html lang="en" class="dark scroll-smooth">
+<head><meta charset="UTF-8" /><title>Demo 4 - The Reticle</title></head>
+<body class="bg-zinc-950 text-zinc-50 flex items-center justify-center h-screen overflow-hidden m-0 p-0">
+  <div class="relative z-10 flex flex-col items-center">
+    <p class="text-zinc-500 uppercase tracking-[0.2em] mb-4 text-sm font-light">Welcome to my system</p>
+    <h1 class="text-6xl sm:text-8xl font-black text-white flex items-center">
+      Hi, I'm K
+      <span class="relative inline-block cursor-crosshair group mx-2 w-12 h-16 sm:w-16 sm:h-24">
+        <!-- The default 'o' -->
+        <span class="absolute inset-0 flex items-center justify-center transition-opacity group-hover:opacity-0">o</span>
+        
+        <!-- Hover Interactive Elements -->
+        <span class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 border border-blue-500 rounded-full group-hover:scale-[4] group-hover:border-blue-400 transition-all duration-500 opacity-0 group-hover:opacity-100"></span>
+        <span class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1.5 h-1.5 bg-blue-500 rounded-full group-hover:scale-[0.5] transition-all duration-300"></span>
+        <span class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 border border-blue-400/30 rounded-full group-hover:scale-150 animate-[spin_4s_linear_infinite] opacity-0 group-hover:opacity-100"></span>
+        
+        <!-- Dynamic Tooltip -->
+        <span class="absolute top-[150%] left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 group-hover:translate-y-2 transition-all duration-500 text-blue-400 text-xs tracking-[0.2em] uppercase whitespace-nowrap bg-blue-900/20 px-3 py-1 rounded-full border border-blue-500/30">
+          Click to Zoom into Brain
+        </span>
+      </span>
+      by.
+    </h1>
+  </div>
+  
+  <div class="absolute bottom-8 right-8">
+    <a href="/" class="text-zinc-500 hover:text-white px-4 py-2 border border-zinc-800 rounded-lg bg-zinc-900 hover:bg-zinc-800 transition">Return to Home</a>
+  </div>
+</body>
+</html>
