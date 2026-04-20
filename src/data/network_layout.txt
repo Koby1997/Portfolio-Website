@@ -1,8 +1,7 @@
 # Neural Network Builder Template
-# This file is for you to effortlessly type out your hierarchy!
-# When you update this, I will read it and inject it directly into the neuralNetwork.js structure for you.
+# The current live 3D brain map topology is restricted natively to the physical mappings defined here!
 
-KINETICS
+ATHLETICS
 	Sports
 		Lacrosse
 		Indoor Volleyball
@@ -19,8 +18,8 @@ KINETICS
 TACTICS
 	Games
 		Poker
-		Chess
-		Magic the Gathering
+		Chess - "Always up for a game!"
+		Magic the Gathering - "Pre-release is the best"
 		Board games in general
 	Puzzles
 		Escape Rooms
@@ -29,21 +28,40 @@ TACTICS
 
 CINEMA
 	Movies
-		Tenet
+		Tenet - "Easily my favorite movie"
 		Inception
 		Interstellar
-		Anything Christopher Nolan really
+		Christopher Nolan
 		Book of Eli
 		Gladiator
 		Shutter Island
 		Deja Vu
-		
 	Franchises
 		Star Wars
 		Marvel
 		Lord of the Rings
 
+INTERACTIVE
+	Story Driven
+		Spider-Man
+		Ghost of Yōtei
+		God of War
+		The Last of Us
+	Co-Op
+		Keep Talking and Nobody Explodes
+		It Takes Two
 
+ENGINEERING
+	Aerospace
+		Space Exploration
+		Rockets
+	Fabrication
+		3D Printing
 
-(Video games: Spider-Man, Ghost of Yōtei, God of War, Keep Talking and Nobody Explodes, It Takes Two, The Last of Us, )
-(Generic things I like I don't know where to put: Music, Space, 3D Printing, Rockets, Traveling, investing/stock market )
+LIFESTYLE
+	Finance
+		Investing
+		Stock Market
+	Culture
+		Traveling
+		Music - "If I Ain't Got You is a BANGER"

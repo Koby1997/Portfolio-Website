@@ -1,0 +1,31 @@
+Brain page:
+    Add all the Categories and layers to the brain
+        When finished make sure that Layer 1's are spaced out and stay in the brain
+    Make the Zoom/rotate transition from the home page
+    Reverse that transition on exit
+    Put instructions when zooming and before first click
+        click and drag to rotate
+        scroll to zoom
+        Click on nodes
+
+
+Timeline:
+    Gather all pictures
+    Write up notes for each page
+    Organize Each page.....
+    Add smaller images?
+    Add filters?
+
+
+Home page:
+    Come up with transitions
+    Come up with overall idea of the home page
+    No header or footer
+
+
+Resume page:
+    Github and Linkedin links
+    Toggle for Plain vs fun?
+    Download pdf button
+    
+
