@@ -395,7 +395,7 @@ const getColorConfig = (category) => {
                     
                     const startPhase2 = () => {
                         startTime = performance.now();
-                        const duration2 = 2800;
+                        const duration2 = 2800; // Reverted back to 2800
                         const startPos = scrollContainer.scrollLeft;
                         const endPos = realStart.offsetLeft;
                         const distance = endPos - startPos;
@@ -487,15 +487,15 @@ const getColorConfig = (category) => {
                     isRewindingHome = true;
 
                     const startScroll = scrollContainer.scrollLeft;
-                    const duration = 1200; 
+                    const duration = 2400; // Increased from 1200 to smoothen the rewind deceleration
                     const startTime = performance.now();
-                    const easeOutQuart = (t) => 1 - (--t) * t * t * t;
+                    const easeOutQuint = (t) => 1 - Math.pow(1 - t, 5);
 
                     const swipeBack = (time) => {
                         let t = (time - startTime) / duration;
                         if (t > 1) t = 1;
                         
-                        const easedS = startScroll * (1 - easeOutQuart(t));
+                        const easedS = startScroll * (1 - easeOutQuint(t));
                         scrollContainer.scrollLeft = easedS;
                         if(parallaxBg) parallaxBg.style.transform = `translateX(${-easedS * 0.08}px)`;
 
