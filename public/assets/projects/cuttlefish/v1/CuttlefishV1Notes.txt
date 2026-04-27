@@ -1,0 +1,25 @@
+PROJECT OVERVIEW (2-3 Sentences):
+This project uses an Arduino Uno and a Sparkfun Spectrum Shield to make programmable LED lights react to music in real-time. Created during the 36-hour UF SwampHack 2020, we utilized fast-fourier transform analysis to isolate bass, mids, and treble frequencies, ultimately winning 2nd Place overall.
+
+NARRATIVE BLOCKS:
+
+Block 1
+- Title: The Breakthrough
+- Layout: Text Left, Media Right
+- Media: FirstTimeWorking.mp4
+- Text: This is literally a video of me at 3 am the last day getting the lights to fully work and react to music. A hard weekend filled with bugs, but this moment is when all the hard work became worth it and that this project was possible.
+
+Block 2
+- Title: The Demo
+- Layout: Text Right, Media Left
+- Media: LiveDemo.jpg
+- Text: A picture of us demoing the lights to everyone after being told we won 2nd place. This project uses an Arduino Uno and a Sparkfun Spectrum Shield.
+
+ADDITIONAL MEDIA:
+Just put all other pictures and videos in this folder into the Masonry Grid at the bottom. Make sure to include the hero video (Cuttlefishv1hero.mp4) here as well!
+
+SNEAK PEEK CTA:
+- Link to: cuttlefish-v2
+- Title: Cuttlefish V2
+- Media: /assets/projects/cuttlefish/v2/TestDiffusion.mp4
+- Text: Moving beyond basic audio reactivity. See how the firmware evolved to utilize fluid diffusion algorithms and entirely new hardware.

@@ -18,9 +18,9 @@ Timeline:
 
 
 Home page:
-    Come up with transitions
-    Come up with overall idea of the home page
-    No header or footer
+    Transition to Brain
+    Transition to Resume
+    Final Final Final, get rid of header
 
 
 Resume page:
@@ -29,3 +29,6 @@ Resume page:
     Download pdf button
     
 
+
+Check everything on the phone.
+Right now the home page doesn't scroll. I set no scroll to fix another problem.

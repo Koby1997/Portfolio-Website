@@ -143,8 +143,8 @@ const getColorConfig = (category) => {
                                     
                                     <div class="w-full bg-zinc-900 border border-violet-800 rounded-2xl overflow-hidden shadow-2xl z-30 relative backdrop-blur-md pb-6 group-hover:scale-[1.02] transition-transform">
                                         <div class="aspect-video bg-zinc-800 flex flex-col items-center justify-center text-zinc-600 font-mono text-sm relative">
-                                            <span class="font-bold text-lg mb-2">1997</span>
-                                            <span>[ BABY PLACEHOLDER ]</span>
+                                            <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors z-10 pointer-events-none"></div>
+                                            <img src="/assets/projects/baby-picture/BabyKoby.jpg" alt="Baby Koby 1997" class="w-full h-full object-cover opacity-100" />
                                         </div>
                                         <div class="p-6 h-full">
                                             <h3 class="text-xl text-violet-400 font-bold mb-2">System Initialized</h3>
@@ -189,11 +189,19 @@ const getColorConfig = (category) => {
                                         <div class="aspect-video bg-zinc-800 flex items-center justify-center text-zinc-700 relative overflow-hidden font-mono text-xs origin-center">
                                             <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors z-10 pointer-events-none"></div>
                                             {project.data.coverImage ? (
-                                                <img 
-                                                    src={project.data.coverImage} 
-                                                    alt={project.data.title} 
-                                                    class="w-full h-full object-cover opacity-100" 
-                                                />
+                                                /\.(mp4|webm|mov)$/i.test(project.data.coverImage) ? (
+                                                    <video 
+                                                        src={project.data.coverImage} 
+                                                        autoplay loop muted playsinline 
+                                                        class="w-full h-full object-cover opacity-100" 
+                                                    ></video>
+                                                ) : (
+                                                    <img 
+                                                        src={project.data.coverImage} 
+                                                        alt={project.data.title} 
+                                                        class="w-full h-full object-cover opacity-100" 
+                                                    />
+                                                )
                                             ) : (
                                                 <span>[ {primaryCategory.toUpperCase()} VISUAL ]</span>
                                             )}
@@ -238,6 +246,17 @@ const getColorConfig = (category) => {
             }
         });
 
+        // Restore scroll BEFORE the view transition calculates element bounding boxes
+        document.addEventListener('astro:after-swap', () => {
+            const timeline = document.getElementById('timeline-container');
+            if (timeline) {
+                const savedScroll = sessionStorage.getItem('timeline_scroll');
+                if (savedScroll) {
+                    timeline.scrollLeft = parseFloat(savedScroll);
+                }
+            }
+        });
+
         document.addEventListener('astro:page-load', () => {
         const scrollContainer = document.querySelector('.CustomScrollContainer');
         const parallaxBg = document.getElementById('timeline-parallax-bg');
@@ -246,8 +265,8 @@ const getColorConfig = (category) => {
             let isAnimating = false;
             let isRewindingHome = false;
             let timelineActive = false;
-            let currentScroll = 0;
-            let targetScroll = 0;
+            let currentScroll = scrollContainer.scrollLeft;
+            let targetScroll = scrollContainer.scrollLeft;
             let scrollLimitMin = 0;
 
             const timelineTrigger = document.getElementById('unified-timeline-trigger');
@@ -260,10 +279,21 @@ const getColorConfig = (category) => {
             // Force session cache clear so the user can infinitely test
             sessionStorage.removeItem('timeline_locked');
 
-            // Explicitly start at 0 on the Home Screen every time
-            scrollContainer.scrollLeft = 0;
-            targetScroll = 0;
-            currentScroll = 0;
+            // If we restored scroll state and are already past the runway, activate timeline mode immediately
+            if (currentScroll > 0) {
+                if (realStart && currentScroll >= realStart.offsetLeft - 100) {
+                    scrollLimitMin = realStart.offsetLeft;
+                    timelineActive = true;
+                    if (floatingHeader) {
+                        floatingHeader.classList.remove('opacity-0');
+                        floatingHeader.classList.add('opacity-100');
+                    }
+                }
+                if (parallaxBg) parallaxBg.style.transform = `translateX(${-currentScroll * 0.08}px)`;
+                sessionStorage.removeItem('timeline_scroll'); // clear it so fresh loads start at 0
+            }
+
+            // Removed explicit scroll reset to 0 so restored scroll state is preserved.
 
             if (timelineTrigger) {
                 timelineTrigger.addEventListener('click', (e) => {

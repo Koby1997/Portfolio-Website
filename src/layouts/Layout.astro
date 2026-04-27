@@ -6,9 +6,10 @@ import { ClientRouter } from 'astro:transitions';
 
 interface Props {
 	title: string;
+	hideNavAndFooter?: boolean;
 }
 
-const { title } = Astro.props;
+const { title, hideNavAndFooter = false } = Astro.props;
 ---
 
 <!doctype html>
@@ -31,10 +32,10 @@ const { title } = Astro.props;
         </style>
 	</head>
 	<body class="bg-zinc-950 text-zinc-50 min-h-screen flex flex-col font-sans antialiased overflow-x-hidden">
-		<Navigation />
-		<main class="flex-grow w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+		{!hideNavAndFooter && <Navigation />}
+		<main class={hideNavAndFooter ? "flex-grow w-full" : "flex-grow w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10"}>
 			<slot />
 		</main>
-		<Footer />
+		{!hideNavAndFooter && <Footer />}
 	</body>
 </html>
