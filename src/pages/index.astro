@@ -1,6 +1,5 @@
 ---
 import '../styles/global.css';
-import Navigation from '../components/Navigation.astro';
 import { ClientRouter } from 'astro:transitions';
 import { getCollection } from 'astro:content';
 
@@ -58,7 +57,13 @@ const getColorConfig = (category) => {
     <!-- Black overlay for cinematic transitions -->
     <div id="blackout-overlay" class="fixed inset-0 bg-black opacity-0 pointer-events-none z-[100] transition-opacity duration-[1200ms] ease-in-out"></div>
     
-    <Navigation />
+    <!-- Timeline Exit Button -->
+    <div id="timeline-exit-container" class="fixed top-8 left-8 z-50 opacity-0 pointer-events-none transition-opacity duration-500 group">
+        <a href="/" class="flex items-center gap-3 px-6 py-2.5 bg-zinc-950/40 backdrop-blur-md border border-white/10 rounded-full text-white/70 hover:text-white hover:bg-zinc-900/60 hover:border-white/30 transition-all duration-300 shadow-xl shadow-black/20">
+            <svg class="w-4 h-4 transition-transform duration-300 group-hover:-translate-x-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+            <span class="font-sans text-sm font-medium tracking-widest uppercase">Home</span>
+        </a>
+    </div>
 
     <!-- Pure Timeline Container (No vertical scrolling allowed on page) -->
     <main class="flex-grow w-full relative flex items-center bg-gradient-to-br from-zinc-950 via-zinc-950 to-zinc-900 overflow-hidden">
@@ -83,9 +88,9 @@ const getColorConfig = (category) => {
         </div>
 
         <!-- Fixed Floating Header -->
-        <div id="timeline-floating-header" class="absolute top-8 left-4 md:left-12 z-40 pointer-events-none drop-shadow-[0_4px_20px_rgba(0,0,0,1)] mix-blend-screen hidden md:block opacity-0 transition-opacity duration-1000">
+        <div id="timeline-floating-header" class="absolute top-24 left-4 md:left-12 z-40 pointer-events-none drop-shadow-[0_4px_20px_rgba(0,0,0,1)] mix-blend-screen hidden md:block opacity-0 transition-opacity duration-1000">
             <h1 class="text-4xl md:text-5xl font-black mb-1 tracking-tighter text-white">The Timeline</h1>
-            <p class="text-zinc-300 max-w-sm text-sm leading-relaxed"><span class="text-emerald-400 font-bold block">(Click on an event to view the breakdown).</span></p>
+            <p class="text-zinc-300 max-w-sm text-sm leading-relaxed"><span class="text-violet-400 font-bold block">(Click on an event to view the breakdown).</span></p>
         </div>
         
         <!-- The Horizontal Scroll Canvas -->
@@ -286,6 +291,7 @@ const getColorConfig = (category) => {
             const realStart = document.getElementById('real-timeline-start');
             const cinematicStickyCounter = document.getElementById('cinematic-sticky-counter');
             const floatingHeader = document.getElementById('timeline-floating-header');
+            const exitContainer = document.getElementById('timeline-exit-container');
 
             // Force session cache clear so the user can infinitely test
             sessionStorage.removeItem('timeline_locked');
@@ -298,6 +304,10 @@ const getColorConfig = (category) => {
                     if (floatingHeader) {
                         floatingHeader.classList.remove('opacity-0');
                         floatingHeader.classList.add('opacity-100');
+                    }
+                    if (exitContainer) {
+                        exitContainer.classList.remove('opacity-0', 'pointer-events-none');
+                        exitContainer.classList.add('opacity-100', 'pointer-events-auto');
                     }
                 }
                 if (parallaxBg) parallaxBg.style.transform = `translateX(${-currentScroll * 0.08}px)`;
@@ -319,6 +329,10 @@ const getColorConfig = (category) => {
                     if (floatingHeader) {
                         floatingHeader.classList.remove('opacity-0');
                         floatingHeader.classList.add('opacity-100');
+                    }
+                    if (exitContainer) {
+                        exitContainer.classList.remove('opacity-0', 'pointer-events-none');
+                        exitContainer.classList.add('opacity-100', 'pointer-events-auto');
                     }
 
                     const babyMarker = document.getElementById('baby-1997-marker');
@@ -485,6 +499,15 @@ const getColorConfig = (category) => {
                     scrollContainer.style.pointerEvents = 'none';
                     isAnimating = true; // freeze normal wheel actions
                     isRewindingHome = true;
+                    
+                    if (floatingHeader) {
+                        floatingHeader.classList.add('opacity-0');
+                        floatingHeader.classList.remove('opacity-100');
+                    }
+                    if (exitContainer) {
+                        exitContainer.classList.add('opacity-0', 'pointer-events-none');
+                        exitContainer.classList.remove('opacity-100', 'pointer-events-auto');
+                    }
 
                     const startScroll = scrollContainer.scrollLeft;
                     const duration = 2400; // Increased from 1200 to smoothen the rewind deceleration
