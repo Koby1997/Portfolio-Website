@@ -4,14 +4,27 @@ import '../styles/global.css';
 // Complete logic separation achieved! All underlying Brain mapping logic runs directly 
 // from your private physical module pipeline, cleanly decoupled from the actual Graphics Render code here!
 import { hubs } from '../data/neuralNetwork.js';
+import { ClientRouter } from 'astro:transitions';
 ---
 <html lang="en" class="dark">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Neural Interface | Koby L.</title>
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
+    <ClientRouter fallback="swap" />
 </head>
 <body class="bg-[#050505] text-white m-0 p-0 font-sans w-screen h-screen overflow-hidden select-none">
+    
+    <!-- Cinematic Entrance Overlay -->
+    <div id="brain-entrance-overlay" class="fixed inset-0 bg-black z-[100] pointer-events-none transition-opacity duration-1000 opacity-100"></div>
 
     <!-- Navigation Interface -->
     <div class="fixed top-8 left-8 z-50 pointer-events-auto group">
@@ -60,18 +73,9 @@ import { hubs } from '../data/neuralNetwork.js';
         window.USER_HUBS = hubs;
     </script>
 
-    <!-- Configure the exact Three.js libraries via CDN -->
-    <script type="importmap">
-        {
-            "imports": {
-                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
-                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
-            }
-        }
-    </script>
 
     <!-- Execute the WebGL Engine -->
-    <script type="module">
+    <script type="module" data-astro-rerun>
         import * as THREE from 'three';
         import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
         import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
@@ -88,7 +92,7 @@ import { hubs } from '../data/neuralNetwork.js';
         scene.fog = new THREE.Fog(0x000000, 500, 2000); 
 
         const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 5000);
-        camera.position.set(0, 0, 1500); // Start way outside
+        camera.position.set(0, 0, 10000); // Start way out in the void for the entrance fly-in
 
         const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
         renderer.setPixelRatio(window.devicePixelRatio);
@@ -114,6 +118,8 @@ import { hubs } from '../data/neuralNetwork.js';
         // Cinematic Flight Engine State
         let isFlying = false;
         let flightAlpha = 0;
+        let flightDuration = 1000;
+        let flightStartTime = 0;
         const targetCameraPos = new THREE.Vector3();
         const startCameraPos = new THREE.Vector3();
         const targetControlsPos = new THREE.Vector3();
@@ -124,13 +130,15 @@ import { hubs } from '../data/neuralNetwork.js';
 
         // Execution function to propel the camera cleanly with linear mathematically tracked paths
         // Takes the 3D position to focus on, and how far away the camera should hover relative to its size
-        function flyTo(hubCenterVec, zoomDistance = 450, treeId = null) {
+        function flyTo(hubCenterVec, zoomDistance = 450, treeId = null, durationMs = 1500) {
+            flightDuration = durationMs;
+            flightStartTime = performance.now();
             startCameraPos.copy(camera.position);
             startControlsPos.copy(controls.target);
             targetControlsPos.copy(hubCenterVec);
             
-            if (hubCenterVec.length() < 1 || zoomDistance === 1500) {
-                targetCameraPos.set(0, 0, 1500);
+            if (hubCenterVec.length() < 1) {
+                targetCameraPos.set(0, 0, zoomDistance);
             } else {
                 const dir = hubCenterVec.clone().normalize();
                 targetCameraPos.copy(hubCenterVec).add(dir.multiplyScalar(zoomDistance)); 
@@ -510,6 +518,29 @@ import { hubs } from '../data/neuralNetwork.js';
         exitBtn.addEventListener('pointerdown', (e) => e.stopPropagation());
         exitBtn.addEventListener('pointerup', (e) => e.stopPropagation());
         exitBtn.addEventListener('pointermove', (e) => e.stopPropagation());
+        
+        // Custom exit logic to seamlessly reverse the cinematic transition
+        exitBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const overlay = document.getElementById('brain-entrance-overlay');
+            
+            // Fly out slowly into the deep void (20000) over 3.5s so it NEVER stops before navigation!
+            flyTo(new THREE.Vector3(0, 0, 0), 20000, 'CORE', 3500);
+            
+            // Wait slightly before starting the fade to black so the user sees the backward flight
+            setTimeout(() => {
+                if (overlay) overlay.style.opacity = '1';
+            }, 500);
+            
+            // Navigate strictly before the flight finishes (1.5s)
+            setTimeout(() => {
+                sessionStorage.setItem('from_brain', 'true'); // Required to trigger the reverse 'o' zoom on the home page!
+                const link = document.createElement('a');
+                link.href = '/';
+                document.body.appendChild(link);
+                link.click();
+            }, 1500);
+        });
 
         function updateDensityLabel(val) {
             if (val <= 200) return "Super realistic mode";
@@ -784,16 +815,25 @@ import { hubs } from '../data/neuralNetwork.js';
 
             // Cinematic Click-to-Zoom Flight Integration mathematically synced
             if (isFlying) {
-                // Increment animation frame strictly (ensures 100% completion predictably instead of jumpy interpolation)
-                flightAlpha += 0.015;
+                // Time-based calculation ensures animation perfectly syncs regardless of 60Hz or 240Hz monitors
+                const now = performance.now();
+                flightAlpha = Math.min((now - flightStartTime) / flightDuration, 1);
+                
+                // If flying OUT into the void, use Ease-In (accelerate so it keeps getting smaller).
+                // If flying IN to a node, use Ease-Out (slow down as it approaches).
+                const isFlyingOut = targetCameraPos.length() > startCameraPos.length();
+                const easeAlpha = isFlyingOut 
+                    ? Math.pow(flightAlpha, 2) 
+                    : 1 - Math.pow(1 - flightAlpha, 3);
+                
                 if (flightAlpha >= 1) {
                     flightAlpha = 1;
                     isFlying = false;
                 }
                 
                 // Native linear blend between vectors
-                camera.position.lerpVectors(startCameraPos, targetCameraPos, flightAlpha);
-                controls.target.lerpVectors(startControlsPos, targetControlsPos, flightAlpha);
+                camera.position.lerpVectors(startCameraPos, targetCameraPos, easeAlpha);
+                controls.target.lerpVectors(startControlsPos, targetControlsPos, easeAlpha);
                 
                 // OrbitControls math natively recalibrates based on the forcibly shifted camera/target!
                 // This permanently solves the weird "snap bounds" glitch natively since it's executing per frame cleanly.
@@ -801,6 +841,13 @@ import { hubs } from '../data/neuralNetwork.js';
             } else {
                 controls.update();
             }
+
+            // Dynamically scale fog based on camera distance!
+            // This ensures the brain is visible when starting far out (4000) 
+            // but still gives that deep "fade to black" depth effect when up close (1500)
+            const camDist = camera.position.length();
+            scene.fog.near = camDist * 0.4;
+            scene.fog.far = camDist * 1.5;
 
             // Auto-rotation disabled for now by request.
 
@@ -893,6 +940,16 @@ import { hubs } from '../data/neuralNetwork.js';
 
             // Start WebGL
             animate();
+
+            // Cinematic Entrance
+            setTimeout(() => {
+                const overlay = document.getElementById('brain-entrance-overlay');
+                if (overlay) overlay.style.opacity = '0';
+                
+                // Fly in slowly from the deep void (10000) to the standard resting distance (1500)
+                // Duration of 2700ms guarantees it outlasts the 1.0s overlay fade!
+                flyTo(new THREE.Vector3(0, 0, 0), 1500, 'CORE', 2700);
+            }, 100);
 
         } catch (error) {
             // FATAL ERROR CATCHER FOR DEBUGGING

@@ -15,6 +15,12 @@ Timeline:
     Organize Each page.....
     Add smaller images?
     Add filters?
+    V2 -> V3 then back button
+
+Specific Project pages:
+    Some hero photos cut too much vertically
+        Cuttlefish V1
+        
 
 
 Home page:

@@ -43,9 +43,20 @@ const getColorConfig = (category) => {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>Timeline | Koby L.</title>
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
     <ClientRouter fallback="swap" />
 </head>
-<body transition:animate="slide" class="bg-zinc-950 text-zinc-50 h-screen w-screen overflow-hidden flex flex-col font-sans antialiased">
+<body class="bg-zinc-950 text-zinc-50 h-screen w-screen overflow-hidden flex flex-col font-sans antialiased">
+    
+    <!-- Black overlay for cinematic transitions -->
+    <div id="blackout-overlay" class="fixed inset-0 bg-black opacity-0 pointer-events-none z-[100] transition-opacity duration-[1200ms] ease-in-out"></div>
     
     <Navigation />
 
@@ -88,8 +99,8 @@ const getColorConfig = (category) => {
                     <div class="w-full max-w-6xl mx-auto px-6 lg:px-8 flex flex-col justify-center h-full pt-12">
                         
                         <div class="max-w-4xl mb-16 text-center mx-auto">
-                        <h1 class="text-7xl md:text-[7rem] font-bold text-white mb-6 tracking-tighter">
-                            Hi, I'm Koby.
+                        <h1 id="cinematic-koby-text" class="text-7xl md:text-[7rem] font-bold text-white mb-6 tracking-tighter relative z-[60]">
+                            <span class="cinematic-extra-text transition-opacity duration-[800ms]">Hi, I'm&nbsp;</span><span id="cinematic-koby-only" class="inline-block transition-transform duration-[800ms] ease-in-out origin-center">K<span id="zoom-target-o" class="relative inline-block origin-center">o</span>by</span><span class="cinematic-extra-text transition-opacity duration-[800ms]">.</span>
                         </h1>
                         <p class="text-2xl text-zinc-400 font-light leading-relaxed">
                             I'm just a fun guy trying to make cool things.
@@ -104,7 +115,7 @@ const getColorConfig = (category) => {
                             <p class="text-zinc-500 font-light leading-relaxed group-hover:text-zinc-300 transition-colors">The professional breakdown. Stack, tech skills, past experience, and official resume downloads.</p>
                         </a>
 
-                        <a href="/brain" class="group relative rounded-2xl bg-zinc-900/20 border border-zinc-800/40 hover:bg-zinc-900/60 hover:border-blue-500/40 transition-all duration-500 p-8 pt-10 pb-10 flex flex-col justify-start backdrop-blur-2xl">
+                        <a href="/brain" id="brain-link-trigger" class="group relative rounded-2xl bg-zinc-900/20 border border-zinc-800/40 hover:bg-zinc-900/60 hover:border-blue-500/40 transition-all duration-500 p-8 pt-10 pb-10 flex flex-col justify-start backdrop-blur-2xl z-20">
                             <h3 class="text-2xl font-bold text-white mb-4 group-hover:text-blue-400 transition-colors">The Neural Core</h3>
                             <p class="text-zinc-500 font-light leading-relaxed group-hover:text-zinc-300 transition-colors">An interactive 3D map of my mindset. See exactly how my hobbies and engineering principles connect.</p>
                         </a>
@@ -508,6 +519,274 @@ const getColorConfig = (category) => {
                     };
                     requestAnimationFrame(swipeBack);
                 });
+            });
+        }
+
+        // Cinematic Brain Zoom Logic
+        const brainTrigger = document.getElementById('brain-link-trigger');
+        if (brainTrigger) {
+            brainTrigger.addEventListener('click', (e) => {
+                e.preventDefault();
+                
+                const targetO = document.getElementById('zoom-target-o');
+                const textContainer = document.getElementById('cinematic-koby-text');
+                const kobyOnly = document.getElementById('cinematic-koby-only');
+                const blackout = document.getElementById('blackout-overlay');
+                
+                if (targetO && textContainer && blackout && kobyOnly) {
+                    sessionStorage.setItem('from_brain', 'true');
+
+                    const oRect = targetO.getBoundingClientRect();
+                    const kobyRect = kobyOnly.getBoundingClientRect();
+                    // The bounding box of an inline-block includes font ascenders/descenders.
+                    const visualCenterY = oRect.height * 0.65; 
+                    const visualCenterX = (oRect.width / 2) + 4; // Shift 4px right
+
+                    const originX = oRect.left - kobyRect.left + visualCenterX;
+                    const originY = oRect.top - kobyRect.top + visualCenterY;
+                    
+                    const windowCenterX = window.innerWidth / 2;
+                    const windowCenterY = window.innerHeight / 2;
+                    const oScreenX = oRect.left + (oRect.width / 2);
+                    const oScreenY = oRect.top + visualCenterY;
+                    
+                    const moveX = windowCenterX - oScreenX;
+                    const moveY = windowCenterY - oScreenY;
+                    
+                    const heroSection = document.getElementById('unified-home-screen');
+                    if (heroSection) heroSection.style.zIndex = '10000';
+                    
+                    kobyOnly.style.transformOrigin = `${originX}px ${originY}px`;
+                    kobyOnly.style.willChange = 'transform';
+                    kobyOnly.style.backfaceVisibility = 'hidden';
+                    kobyOnly.style.position = 'relative';
+                    kobyOnly.style.zIndex = '9999';
+                    textContainer.style.zIndex = '9999';
+
+                    requestAnimationFrame(() => {
+                        // 1. Fade out everything except "Koby" first
+                        document.querySelectorAll('a, p, nav, .cinematic-extra-text').forEach(el => {
+                            if (el.style) {
+                                el.style.transition = 'opacity 0.8s ease';
+                                el.style.opacity = '0';
+                            }
+                        });
+                        
+                        // Fade blackout in immediately behind the text
+                        blackout.style.transition = 'opacity 0.8s ease';
+                        blackout.style.opacity = '1';
+                        
+                        // 1.5. Slide "Koby" to the center over 0.8s!
+                        kobyOnly.style.transition = 'transform 0.8s ease-in-out';
+                        kobyOnly.style.transform = `translate3d(${moveX}px, ${moveY}px, 0)`;
+                        
+                        // 2. Wait for fade & slide, PAUSE for 300ms, then start the zoom
+                        setTimeout(() => {
+                            // Extra slow start, ramp up heavily at the end
+                            kobyOnly.style.transition = 'transform 2.5s cubic-bezier(0.8, 0, 0.9, 0.2)';
+                            kobyOnly.style.transform = `translate3d(${moveX}px, ${moveY}px, 0) scale(100)`;
+
+                            setTimeout(() => {
+                                if (heroSection) heroSection.style.zIndex = '';
+                                const link = document.createElement('a');
+                                link.href = '/brain';
+                                document.body.appendChild(link);
+                                link.click();
+                            }, 2400);
+                        }, 1100);
+                    });
+                } else {
+                    const link = document.createElement('a');
+                    link.href = '/brain';
+                    document.body.appendChild(link);
+                    link.click();
+                }
+            });
+        }
+
+        // Reverse Animation logic when returning from /brain
+        const fromBrain = sessionStorage.getItem('from_brain');
+        const targetO = document.getElementById('zoom-target-o');
+        const textContainer = document.getElementById('cinematic-koby-text');
+        const kobyOnly = document.getElementById('cinematic-koby-only');
+        const blackout = document.getElementById('blackout-overlay');
+        const otherElements = document.querySelectorAll('a, p, nav, .cinematic-extra-text');
+        
+        if (fromBrain) {
+            sessionStorage.removeItem('from_brain');
+            
+            // AGGRESSIVE BLACKOUT OVERRIDE: Prevent Astro fade glitch!
+            if (blackout) {
+                blackout.style.transition = 'none';
+                blackout.style.opacity = '1';
+                void blackout.offsetHeight;
+            }
+            
+            if (targetO && textContainer && blackout && kobyOnly) {
+                // FORCIBLY CLEAR Astro's cached inline styles BEFORE measuring!
+                // If Astro restored the page from cache, textContainer might still be scaled from an old run!
+                textContainer.style.transform = 'none';
+                textContainer.style.transformOrigin = 'unset';
+                
+                kobyOnly.style.transition = 'none';
+                kobyOnly.style.transform = 'none';
+                kobyOnly.style.transformOrigin = 'unset';
+                
+                // Force synchronous layout recalculation
+                void textContainer.offsetHeight;
+                void kobyOnly.offsetHeight;
+                
+                const oRect = targetO.getBoundingClientRect();
+                const kobyRect = kobyOnly.getBoundingClientRect();
+                const heroSection = document.getElementById('unified-home-screen');
+                
+                if (heroSection) {
+                    heroSection.style.zIndex = '10000'; // Escape stacking context!
+                }
+                
+                const visualCenterY = oRect.height * 0.65;
+                const visualCenterX = (oRect.width / 2) + 4; // Shift 4px right
+                const originX = oRect.left - kobyRect.left + visualCenterX;
+                const originY = oRect.top - kobyRect.top + visualCenterY;
+                
+                const windowCenterX = window.innerWidth / 2;
+                const windowCenterY = window.innerHeight / 2;
+                const oScreenX = oRect.left + visualCenterX;
+                const oScreenY = oRect.top + visualCenterY;
+                const moveX = windowCenterX - oScreenX;
+                const moveY = windowCenterY - oScreenY;
+                
+                // --- ROBUST DEBUG LOGGING ---
+                console.log('--- REVERSE TRANSITION INITIATED ---');
+                let debugTick = 0;
+                const debugInterval = setInterval(() => {
+                    if (!kobyOnly) return;
+                    const rect = kobyOnly.getBoundingClientRect();
+                    const style = window.getComputedStyle(kobyOnly);
+                    const heroStyle = heroSection ? window.getComputedStyle(heroSection) : null;
+                    console.log(`[${debugTick}ms] kobyOnly | rect: ${rect.width.toFixed(1)}x${rect.height.toFixed(1)} at (${rect.x.toFixed(1)}, ${rect.y.toFixed(1)}) | op: ${style.opacity} | z: ${style.zIndex} | transform: ${style.transform !== 'none' ? 'active' : 'none'} | heroZ: ${heroStyle ? heroStyle.zIndex : 'N/A'}`);
+                    debugTick += 100;
+                }, 100);
+                setTimeout(() => clearInterval(debugInterval), 3000);
+                
+                // --- TRICK CHROME: THE INVISIBLE PRE-SCALE ---
+                kobyOnly.style.transformOrigin = `${originX}px ${originY}px`;
+                kobyOnly.style.position = 'relative'; 
+                kobyOnly.style.zIndex = '9999';
+                
+                // Start at 1x size, perfectly centered, virtually invisible
+                kobyOnly.style.transform = `translate3d(${moveX}px, ${moveY}px, 0) scale(1)`;
+                kobyOnly.style.opacity = '0.01';
+                
+                textContainer.style.zIndex = '9999';
+                blackout.style.zIndex = '9990'; 
+                blackout.style.opacity = '1';
+                
+                otherElements.forEach(el => {
+                    if (el.style) {
+                        el.style.opacity = '0';
+                        el.style.transition = 'none';
+                    }
+                });
+
+                void kobyOnly.offsetHeight; // Force layout
+
+                requestAnimationFrame(() => {
+                    // Rapidly stretch to 60x over 0.1s to force GPU texture caching
+                    kobyOnly.style.transition = 'transform 0.1s linear';
+                    kobyOnly.style.transform = `translate3d(${moveX}px, ${moveY}px, 0) scale(60)`;
+                    
+                    setTimeout(() => {
+                        // The massive texture is now safely in GPU memory! Make it visible and shrink it!
+                        kobyOnly.style.opacity = '1';
+                        kobyOnly.style.transition = 'transform 2.5s cubic-bezier(0.1, 0.7, 0.4, 0.95)';
+                        kobyOnly.style.transform = `translate3d(${moveX}px, ${moveY}px, 0) scale(1)`;
+                        
+                        // Wait for the 2.5s zoom to finish...
+                        setTimeout(() => {
+                            // Now slide it back to its original spot over 0.8s!
+                            kobyOnly.style.transition = 'transform 0.8s ease-in-out';
+                            kobyOnly.style.transform = 'translate3d(0px, 0px, 0) scale(1)';
+                            
+                            // DELAY the black overlay fade out and UI fade in until after the slide
+                            setTimeout(() => {
+                                if (blackout) {
+                                    blackout.style.transition = 'opacity 1s ease-in-out';
+                                    blackout.style.opacity = '0';
+                                }
+                                otherElements.forEach(el => {
+                                    if (el.style) {
+                                        el.style.transition = 'opacity 1s ease';
+                                        el.style.opacity = '1';
+                                    }
+                                });
+                            }, 800); // 800ms for slide to finish
+                        }, 2500); // 2.5s for zoom to finish
+                        
+                        // Cleanup all inline styles so Tailwind hover states work again!
+                        // Extended to 4500ms (2.5s zoom + 0.8s slide + 1.0s fade = 4.3s)
+                        setTimeout(() => {
+                            if (kobyOnly) {
+                                kobyOnly.style.transform = '';
+                                kobyOnly.style.transformOrigin = '';
+                                kobyOnly.style.transition = '';
+                                kobyOnly.style.position = '';
+                                kobyOnly.style.zIndex = '';
+                                kobyOnly.style.opacity = '';
+                            }
+                            if (textContainer) {
+                                textContainer.style.zIndex = '';
+                            }
+                            if (blackout) {
+                                blackout.style.transition = '';
+                                blackout.style.zIndex = '';
+                            }
+                            if (heroSection) {
+                                heroSection.style.zIndex = '';
+                            }
+                            otherElements.forEach(el => {
+                                if (el.style) {
+                                    el.style.transition = '';
+                                    el.style.opacity = '';
+                                }
+                            });
+                        }, 4500);
+                    }, 150); // Wait 150ms for invisible stretch to finish
+                });
+            }
+        } else {
+            // NORMAL PAGE LOAD / NAVIGATION (not from Brain)
+            // Wipe out any inline styles that Astro might have restored from the DOM cache!
+            if (textContainer) {
+                textContainer.style.transition = 'none';
+                textContainer.style.transform = 'none';
+                textContainer.style.transformOrigin = 'unset';
+                textContainer.style.zIndex = '';
+                
+                // ULTIMATE REPAINT HACK for cached DOM
+                textContainer.style.filter = 'blur(0.1px)';
+                textContainer.style.textShadow = '0 0 1px rgba(0,0,0,0.01)';
+                setTimeout(() => {
+                    if(textContainer) {
+                        textContainer.style.filter = '';
+                        textContainer.style.textShadow = '';
+                    }
+                }, 50);
+                
+                // Let browser tick once before fully clearing transition so the snap is silent
+                requestAnimationFrame(() => textContainer.style.transition = '');
+            }
+            if (blackout) {
+                blackout.style.transition = 'none';
+                blackout.style.opacity = '0';
+                requestAnimationFrame(() => blackout.style.transition = '');
+            }
+            otherElements.forEach(el => {
+                if (el.style) {
+                    el.style.transition = 'none';
+                    el.style.opacity = '';
+                    requestAnimationFrame(() => el.style.transition = '');
+                }
             });
         }
         });
