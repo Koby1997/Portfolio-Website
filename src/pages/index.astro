@@ -291,6 +291,22 @@ const getColorConfig = (category) => {
                     </div>
                 </div>
 
+                <!-- INSTANT NATIVE SCROLL SYNC (Prevents Blink on Fresh Load) -->
+                <script is:inline>
+                    (function() {
+                        var container = document.getElementById('timeline-container');
+                        if (container) {
+                            var savedScroll = sessionStorage.getItem('timeline_scroll');
+                            if (!savedScroll) {
+                                // 150vw is the exact width of the resume-runway before the home screen
+                                container.scrollLeft = window.innerWidth * 1.5;
+                            } else {
+                                container.scrollLeft = parseFloat(savedScroll);
+                            }
+                        }
+                    })();
+                </script>
+
                 <!-- 2. Cinematic Intro Runway (The Void 0-1997) -->
                 <div id="cinematic-runway" class="flex-row relative h-full items-center mr-0 md:mr-32 flex">
                     <!-- The Sticky Void Counter -->

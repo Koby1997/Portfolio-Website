@@ -75,7 +75,7 @@ Cuttlefish V2 <span class="inline-block transition-transform duration-300 group-
 </h3>
 </div>
 <div class="w-full md:w-48 h-32 md:h-28 rounded-xl overflow-hidden border border-zinc-800 shadow-lg relative">
-<video src="/assets/projects/cuttlefish/v2/TestDiffusion.mp4" autoplay loop muted playsinline class="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-all duration-500 scale-105 group-hover:scale-100"></video>
+<video src="/assets/projects/cuttlefish/v2/Testdiffusion.mp4" autoplay loop muted playsinline class="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-all duration-500 scale-105 group-hover:scale-100"></video>
 </div>
 </a>
 </div>

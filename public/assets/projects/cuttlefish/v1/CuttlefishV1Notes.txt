@@ -21,5 +21,5 @@ Just put all other pictures and videos in this folder into the Masonry Grid at t
 SNEAK PEEK CTA:
 - Link to: cuttlefish-v2
 - Title: Cuttlefish V2
-- Media: /assets/projects/cuttlefish/v2/TestDiffusion.mp4
+- Media: /assets/projects/cuttlefish/v2/Testdiffusion.mp4
 - Text: Moving beyond basic audio reactivity. See how the firmware evolved to utilize fluid diffusion algorithms and entirely new hardware.
