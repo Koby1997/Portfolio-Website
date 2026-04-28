@@ -1,0 +1,50 @@
+
+
+
+321-313-4355 | KobyLMiller@outlook.com | Viera, FL
+
+
+          
+University of Florida | B.S. of Computer Engineering Gainesville, FL | Graduated 12/2020 
+
+
+Dark Wolf | Senior Associate Software Engineer
+Colorado Springs, CO | 07/2023 – Present
+Manticore: Developed full-stack features for mission-critical tools within the Manticore system, including enhancements to Master Station Log and Cyber Mission Mapping.
+
+MSL SME: Acted as the primary technical representative for the team, interfacing directly with customers, end users, and cross-functional teams; led demos and communicated system capabilities to operators.
+
+Ownership & Delivery: Designed and delivered multiple large-scale features from concept through deployment, leading development efforts and coordinating a small team to implement operator-driven requirements. 
+
+L3Harris Technologies | Software Engineer I
+Colorado Springs, CO | 05/2021 – 07/2023
+ISW / ATSS: Diagnosed and resolved issues in a complex counter-communication system, working directly with hardware (spectrum analyzers, decoders, attenuators) and improving system reliability. Modified installation scripts, altered code to pass Coverity scans, and made general updates. 
+
+Training Records: Created an internal tool made from scratch by myself to aid the Technical Trainers in keeping track of all employees’ training process. Used this opportunity to learn software I had never touched before.
+
+
+GBOSS: Supported integration of Syntrack (JPL software) into deep space telescope systems, contributing to operational readiness and system functionality
+
+TRAX: Collaborated on a company-wide survey platform, contributing to both front-end and back-end functionality.
+
+	
+PEER Coordinator: Took a step out of the normal software role to lead our program that helps new hires. I was responsible for keeping track of incoming team members, assigning an employee on their team to help them, minimizing transition downtime to allow new employees to quickly get up to speed and start work.
+
+SS&C Advent | Product Development Intern
+Jacksonville, FL | 05/2019 - 08/2019
+Created internal tools to monitor client data ingestion processes, increasing visibility into system performance.
+Automated anomaly detection by connecting SQL queries to Slack notifications, enabling real-time issue awareness. 
+
+
+ Cuttlefish Lights: https://github.com/Koby1997/CuttlefishLights
+
+Engineered an Arduino-based system that synchronizes LED lighting effects with live audio input.
+Programmed dynamic visual effects using the FastLED library to respond to distinct musical cues.
+Built a desktop application to provide an intuitive interface for controlling lighting behaviors.
+Won 3rd place overall at SwampHacks 2020.
+
+ Stock Calculator: (GitHub Private Repo)
+
+Architected a full-stack algorithmic analysis platform to back a self-theorized trading strategy.
+Engineered a Python/FastAPI backend leveraging Pandas and custom knapsack optimization algorithms to generate efficient, non-overlapping trade schedules.
+Built an interactive React dashboard with dynamic visualizations for projected equity curves, portfolio distributions, and predictive confidence metrics.

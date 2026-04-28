@@ -5,9 +5,8 @@ This repository houses a highly-interactive, application-grade Personal Portfoli
 
 ### The Core Journey
 The user journey is architected to seamlessly bridge between deeply stylized modules rather than utilizing standard disjointed page loads. 
-- **The Home Page (`index.astro`)**: The navigational root. Still undergoing active UX design, but strictly mandated to be immersive and uncluttered with *no traditional static header or footer bounds*. It will ultimately handle complex, organic animated transitions pushing outward into the dedicated module pages.
-- **The Brain Module (`demoP12.astro` acting as primary prototype)**: An experiential 3D WebGL Neural Network visually mapping the user's hobbies, mindsets, and interests. The Home page will programmatically seamlessly "fly" and zoom dynamically into this neural interface.
-- **The Timeline Module**: A chronological presentation mechanism mapping specific chapters, events, and photo galleries of the user's history.
+- **The Unified Home/Timeline (`index.astro`)**: The navigational root. It functions as a single-page horizontally scrolling application that merges the initial "Home" gateway with the chronological "Timeline" layout. It explicitly features *no traditional static header or footer bounds*. It handles complex, organic animated transitions (like cinematic zoom-and-fly) pushing outward into the dedicated module pages.
+- **The Brain Module (`brain.astro`)**: An experiential 3D WebGL Neural Network visually mapping the user's hobbies, mindsets, and interests. Accessed via a cinematic zoom transition from the Home page.
 - **The Resume Module (`resume.astro`)**: A dedicated professional readout designed explicitly to showcase dual-states (Plain/Traditional vs Fun/Interactive).
 
 ---
@@ -15,7 +14,7 @@ The user journey is architected to seamlessly bridge between deeply stylized mod
 ## 2. Technology Stack & Design Baseline
 - **Framework:** Astro (`.astro` files acting organically as component wrappers and high-speed routing nodes).
 - **Styling Architecture:** Tailwind CSS. 
-  - *Mantra:* Aggressive usage of intense glassmorphism (`backdrop-blur`), translucent dark backgrounds (`bg-zinc-950/60`), neon gradient highlight overlays (`accent-blue-500`), and structurally rigorous flexbox padding to create premium, "Iron Man UI" style dashboards.
+  - *Mantra:* Aggressive usage of intense glassmorphism (`backdrop-blur`), translucent dark backgrounds (`bg-zinc-950/60`), vibrant thematic gradients (`violet-400`, `blue-500`), and structurally rigorous flexbox padding to create premium, "Iron Man UI" style dashboards.
 - **3D Graphics Engine:** Three.js. (Handled via pure vanilla Javascript executing natively alongside local Astro DOM trees).
 - **Interaction Physics:** `OrbitControls` (Specifically loaded via `three/examples/jsm/controls/OrbitControls.js`).
 
@@ -32,8 +31,8 @@ The user journey is architected to seamlessly bridge between deeply stylized mod
   1. The Dev Configurator Panel natively calls rigorous `.dispose()` mechanisms exclusively against old `BufferGeometry` and `Materials` arrays, dumping memory out of the heap prior to generating intensely vast web connections (thereby averting rapid WebGL Context loss).
   2. Features a continuous volumetric X-ray clipping system (`focusClipPlane`) natively bound to the camera target vector. It mathematically severs any dense particle-webbing structures hovering visually in front of the active node hierarchy, drastically clearing visual noise.
 
-### B. The Timeline Module (In-Design)
-This logic stack dictates capturing visual history sequentially. 
+### B. The Timeline Module (Unified inside `index.astro`)
+This logic stack dictates capturing visual history sequentially, triggered seamlessly via a massive horizontal auto-scroll from the Home gateway.
 - Structurally requires robust data-modeling parsing extensive picture banks and specialized written annotations mapped to specific nodes or "pages".
 - Anticipated logic centers heavily around organizing deep asset integration visually, generating precise image matrices, and deploying specialized visual filters dynamically based on context.
 
@@ -49,6 +48,5 @@ Ongoing development and conceptual ideation targets are tracked meticulously via
 
 **The primary operational directives remaining feature:**
 1. Populating the remaining raw array matrices (Hubs + Nested Nodes) holistically into the active Brain structural network.
-2. Prototyping and deploying the complex cinematic zoom/rotate transition threading seamlessly from Home `<->` Brain without losing visual state.
-3. Structuring clear UX instructions dynamically prompting the user upon first load (e.g. "Click & drag to rotate", "Scroll to zoom", "Click on nodes").
-4. Gathering and staging the raw asset bank natively required for initializing the Timeline views natively.
+2. Gathering and staging the raw asset bank natively required for initializing the Timeline views (e.g., project images, descriptions, historical data).
+3. Architecting the unified navigation pathways into the Resume module, building out its transitions and content mapping.

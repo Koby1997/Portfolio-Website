@@ -6,6 +6,8 @@ import { getCollection } from 'astro:content';
 const allProjects = await getCollection('projects');
 allProjects.sort((a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf());
 
+const skills = ['React', 'Node.js', 'TypeScript', 'JavaScript', 'HTML/CSS', 'Java', 'Python', 'C++', 'FastAPI', 'Pandas', 'MongoDB', 'SQL', 'Astro', 'Tailwind CSS', 'Three.js', 'Linux', 'Git', 'Atlassian'];
+
 const projectsByYear = {};
 allProjects.forEach(project => {
     const year = project.data.pubDate.getFullYear();
@@ -54,16 +56,23 @@ const getColorConfig = (category) => {
 </head>
 <body class="bg-zinc-950 text-zinc-50 h-screen w-screen overflow-hidden flex flex-col font-sans antialiased">
     
+
+
     <!-- Black overlay for cinematic transitions -->
     <div id="blackout-overlay" class="fixed inset-0 bg-black opacity-0 pointer-events-none z-[100] transition-opacity duration-[1200ms] ease-in-out"></div>
     
     <!-- Timeline Exit Button -->
     <div id="timeline-exit-container" class="fixed top-8 left-8 z-50 opacity-0 pointer-events-none transition-opacity duration-500 group">
-        <a href="/" class="flex items-center gap-3 px-6 py-2.5 bg-zinc-950/40 backdrop-blur-md border border-white/10 rounded-full text-white/70 hover:text-white hover:bg-zinc-900/60 hover:border-white/30 transition-all duration-300 shadow-xl shadow-black/20">
-            <svg class="w-4 h-4 transition-transform duration-300 group-hover:-translate-x-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+        <a href="/" class="flex items-center gap-3 px-6 py-2.5 bg-zinc-950/40 backdrop-blur-md border border-white/10 rounded-full text-white/70 hover:text-white hover:bg-zinc-900/60 hover:border-purple-500/50 transition-all duration-300 shadow-xl shadow-black/20 group-hover:shadow-[0_0_15px_rgba(168,85,247,0.2)]">
+            <svg class="w-4 h-4 transition-transform duration-300 group-hover:-translate-x-1.5 text-purple-400 group-hover:text-purple-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
             <span class="font-sans text-sm font-medium tracking-widest uppercase">Home</span>
         </a>
     </div>
+
+    <!-- Timeline Skip Button -->
+    <button id="timeline-skip-btn" class="fixed bottom-8 left-8 z-50 opacity-0 pointer-events-none transition-all duration-500 text-zinc-600 hover:text-zinc-400 font-mono text-xs tracking-[0.2em] flex items-center gap-2 group cursor-pointer">
+        SKIP <span class="group-hover:translate-x-1 transition-transform duration-300">&gt;&gt;&gt;</span>
+    </button>
 
     <!-- Pure Timeline Container (No vertical scrolling allowed on page) -->
     <main class="flex-grow w-full relative flex items-center bg-gradient-to-br from-zinc-950 via-zinc-950 to-zinc-900 overflow-hidden">
@@ -72,16 +81,16 @@ const getColorConfig = (category) => {
         <div id="timeline-parallax-bg" class="absolute top-0 left-0 h-full w-[4000vw] z-0 pointer-events-none overflow-hidden will-change-transform translate-x-0">
             <!-- Simulated Demo-3 Background Base (Overlapping Blue & Teal to brighten the Violet Origin Point) -->
             <!-- Central Aura (Home Screen) -->
-            <div class="absolute top-1/4 left-[50vw] -translate-x-1/2 bg-blue-500/10 rounded-full mix-blend-screen transition-opacity duration-1000" style="width: clamp(30rem, 35vw, 80rem); height: clamp(30rem, 35vw, 80rem); filter: blur(clamp(100px, 8vw, 300px));"></div>
+            <div class="absolute top-1/4 left-[50vw] -translate-x-1/2 bg-blue-500/20 rounded-full mix-blend-screen transition-opacity duration-1000" style="width: clamp(30rem, 35vw, 80rem); height: clamp(30rem, 35vw, 80rem); filter: blur(clamp(100px, 8vw, 300px));"></div>
             <!-- Timeline Aura (Home Screen) -->
-            <div class="absolute top-1/3 left-[115vw] bg-violet-500/20 rounded-full mix-blend-screen" style="width: clamp(30rem, 35vw, 80rem); height: clamp(30rem, 35vw, 80rem); filter: blur(clamp(100px, 8vw, 300px));"></div>
+            <div class="absolute top-1/3 left-[115vw] bg-purple-500/25 rounded-full mix-blend-screen" style="width: clamp(30rem, 35vw, 80rem); height: clamp(30rem, 35vw, 80rem); filter: blur(clamp(100px, 8vw, 300px));"></div>
             <!-- Resume Aura (Home Screen) -->
-            <div class="absolute bottom-[-15%] left-[10vw] bg-teal-500/10 rounded-full mix-blend-screen" style="width: clamp(30rem, 35vw, 80rem); height: clamp(30rem, 35vw, 80rem); filter: blur(clamp(100px, 8vw, 300px));"></div>
+            <div class="absolute bottom-[-15%] left-[-5vw] bg-rose-500/20 rounded-full mix-blend-screen" style="width: clamp(30rem, 35vw, 80rem); height: clamp(30rem, 35vw, 80rem); filter: blur(clamp(100px, 8vw, 300px));"></div>
 
             <!-- Extended scattered violet hues matching Home page Demo 3 transition -->
             {parallaxHues.map((hue, i) => (
                 <div 
-                    class="absolute bg-violet-500/10 rounded-full mix-blend-screen"
+                    class="absolute bg-purple-500/10 rounded-full mix-blend-screen"
                     style={`top: ${hue.top}%; left: ${hue.left}vw; width: clamp(20rem, ${hue.size}vw, 80rem); height: clamp(20rem, ${hue.size}vw, 80rem); filter: blur(clamp(100px, ${hue.blur}vw, 300px));`}
                 ></div>
             ))}
@@ -90,14 +99,162 @@ const getColorConfig = (category) => {
         <!-- Fixed Floating Header -->
         <div id="timeline-floating-header" class="absolute top-24 left-4 md:left-12 z-40 pointer-events-none drop-shadow-[0_4px_20px_rgba(0,0,0,1)] mix-blend-screen hidden md:block opacity-0 transition-opacity duration-1000">
             <h1 class="text-4xl md:text-5xl font-black mb-1 tracking-tighter text-white">The Timeline</h1>
-            <p class="text-zinc-300 max-w-sm text-sm leading-relaxed"><span class="text-violet-400 font-bold block">(Click on an event to view the breakdown).</span></p>
+            <p class="text-zinc-300 max-w-sm text-sm leading-relaxed"><span class="text-purple-400 font-bold block">(Click on an event to view the breakdown).</span></p>
         </div>
         
         <!-- The Horizontal Scroll Canvas -->
         <div id="timeline-container" class="w-full h-full overflow-x-hidden overflow-y-hidden flex items-center CustomScrollContainer relative">
             <div class="flex flex-row items-center h-full w-max mt-24 md:mt-0 relative">
                 <!-- The Master Horizontal Line -->
-                <div class="absolute top-1/2 left-[100vw] w-[calc(100%-100vw)] h-[2px] bg-zinc-800 -translate-y-1/2 z-0 hidden md:block"></div>
+                <div class="absolute top-1/2 left-[250vw] w-[calc(100%-250vw)] h-[2px] bg-zinc-800 -translate-y-1/2 z-0 hidden md:block"></div>
+
+                <!-- 0. Left Runway for Resume Transition -->
+                <div id="resume-runway" class="w-[150vw] h-full shrink-0 relative flex items-center justify-start">
+                    <!-- Thematic Red Auras to welcome the user into the Resume zone -->
+                    <div class="absolute left-[-5vw] bg-rose-600/20 rounded-full mix-blend-screen pointer-events-none" style="width: clamp(20rem, 30vw, 50rem); height: clamp(20rem, 30vw, 50rem); filter: blur(clamp(80px, 6vw, 200px)); z-index: 0;"></div>
+                    <div class="absolute right-[20vw] bg-rose-500/20 rounded-full mix-blend-screen pointer-events-none" style="width: clamp(30rem, 40vw, 80rem); height: clamp(30rem, 40vw, 80rem); filter: blur(clamp(100px, 8vw, 300px)); z-index: 0;"></div>
+                    <div class="absolute right-[70vw] bg-red-600/15 rounded-full mix-blend-screen pointer-events-none" style="width: clamp(20rem, 30vw, 60rem); height: clamp(20rem, 30vw, 60rem); filter: blur(clamp(100px, 6vw, 250px)); z-index: 0;"></div>
+
+                    <!-- RESUME PAGE CONTENT -->
+                    <div class="w-[100vw] h-full relative z-10 flex flex-col justify-center pointer-events-auto">
+                        <!-- Home Exit Button -->
+                        <div id="resume-home-exit" class="absolute top-8 right-8 md:right-16 z-50 transition-opacity duration-500 group cursor-pointer">
+                            <a href="#" class="flex items-center gap-3 px-6 py-2.5 bg-zinc-950/40 backdrop-blur-md border border-white/10 rounded-full text-white/70 hover:text-white hover:bg-zinc-900/60 hover:border-rose-500/50 transition-all duration-300 shadow-xl shadow-black/20 group-hover:shadow-[0_0_15px_rgba(244,63,94,0.2)]">
+                                <span class="font-sans text-sm font-medium tracking-widest uppercase">Home</span>
+                                <svg class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1.5 text-rose-400 group-hover:text-rose-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                            </a>
+                        </div>
+
+                        <main class="relative z-10 w-full max-w-6xl mx-auto px-6 pt-24 h-screen flex flex-col md:flex-row gap-12">
+                            <!-- Left Sidebar (Sticky) -->
+                            <aside id="resume-left-col" class="w-full md:w-1/3 flex flex-col gap-8 h-full pb-24 overflow-y-auto no-scrollbar" onwheel="event.stopPropagation()">
+                                <div class="bg-zinc-900/50 backdrop-blur-xl border border-zinc-800 rounded-3xl p-8 shadow-2xl">
+                                    <h1 class="text-4xl font-black tracking-tight text-white mb-2">Koby Miller</h1>
+                                    <p class="text-rose-400 font-medium mb-6 leading-tight">Senior Associate<br/>Software Engineer</p>
+                                    <div class="space-y-3 text-sm text-zinc-300">
+                                        <p class="flex items-center gap-3"><span class="text-rose-500">📍</span> Viera, FL</p>
+                                        <p class="flex items-center gap-3"><span class="text-rose-500">📧</span> KobyLMiller@outlook.com</p>
+                                        <p class="flex items-center gap-3"><span class="text-rose-500">📱</span> 321-313-4355</p>
+                                    </div>
+                                    <div class="mt-8 inline-flex items-center gap-2 px-5 py-2.5 bg-rose-500/10 border border-rose-500/30 rounded-xl shadow-[0_0_20px_rgba(244,63,94,0.15)] text-rose-300 font-bold tracking-widest text-sm uppercase">
+                                        <span class="text-rose-500 text-lg">🛡️</span> TS/SCI Cleared
+                                    </div>
+                                </div>
+
+                                <div class="bg-zinc-900/50 backdrop-blur-xl border border-zinc-800 rounded-3xl p-8 shadow-2xl">
+                                    <h2 class="text-xs font-bold text-zinc-500 uppercase tracking-widest mb-4">Skills</h2>
+                                    <div class="flex flex-wrap gap-2">
+                                        {skills.map(skill => (
+                                            <span class="px-3 py-1 bg-zinc-800/80 border border-zinc-700/50 rounded-lg text-xs text-zinc-300 hover:text-white hover:border-rose-500/50 transition-colors">
+                                                {skill}
+                                            </span>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                <div class="bg-zinc-900/50 backdrop-blur-xl border border-zinc-800 rounded-3xl p-8 shadow-2xl">
+                                    <h2 class="text-xs font-bold text-zinc-500 uppercase tracking-widest mb-4 border-b border-zinc-800 pb-2">Education</h2>
+                                    <p class="text-white font-bold mb-1">University of Florida</p>
+                                    <p class="text-zinc-400 text-sm mb-1">B.S. Computer Engineering</p>
+                                    <p class="text-zinc-500 text-xs">Graduated 12/2020</p>
+                                    
+                                    <h2 class="text-xs font-bold text-zinc-400 uppercase tracking-widest mt-10 mb-4 border-b border-zinc-800 pb-2">Certifications</h2>
+                                    <div class="mb-4">
+                                        <p class="text-white font-bold mb-1">CompTIA Security+</p>
+                                        <p class="text-zinc-500 text-xs">Exp. 05/2026</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-white font-bold mb-1">SAFe Practitioner</p>
+                                        <p class="text-zinc-500 text-xs">Active Certification</p>
+                                    </div>
+                                </div>
+
+                                <a href="/assets/KobyMillerResume.pdf" download="KobyMillerResume.pdf" class="w-full py-4 bg-rose-600/10 border border-rose-500/50 hover:bg-rose-600 text-rose-100 hover:text-white hover:shadow-[0_0_25px_rgba(225,29,72,0.4)] text-center rounded-2xl transition-all duration-300 font-bold tracking-wide shadow-xl flex items-center justify-center gap-3 group">
+                                    <svg class="w-5 h-5 transition-transform duration-300 group-hover:-translate-y-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                                    Download PDF
+                                </a>
+                            </aside>
+
+                            <!-- Right Content Area -->
+                            <div id="resume-right-col" class="w-full md:w-2/3 flex flex-col gap-8 h-full pb-24 overflow-y-auto no-scrollbar" onwheel="event.stopPropagation()">
+                                <div class="bg-zinc-900/30 backdrop-blur-sm border border-zinc-800/50 rounded-3xl p-8 shadow-xl">
+                                    <h2 class="text-sm font-bold text-rose-400 uppercase tracking-widest mb-8">Professional Experience</h2>
+                                    
+                                    <div class="mb-10 relative">
+                                        <div class="flex flex-col md:flex-row justify-between md:items-center mb-2">
+                                            <h3 class="text-2xl font-bold text-white">Dark Wolf</h3>
+                                            <span class="text-rose-400/80 text-sm font-mono tracking-widest uppercase">07/2023 — Present</span>
+                                        </div>
+                                        <h4 class="text-blue-400 font-medium text-base mb-4">Senior Associate Software Engineer</h4>
+                                        <ul class="space-y-3 text-zinc-300 text-sm list-disc list-inside marker:text-zinc-600 leading-relaxed">
+                                            <li><strong class="text-zinc-200 font-medium">Manticore:</strong> Developed full-stack features for mission-critical tools within the Manticore system, including enhancements to Master Station Log and Cyber Mission Mapping.</li>
+                                            <li><strong class="text-zinc-200 font-medium">MSL SME:</strong> Acted as the primary technical representative for the team, interfacing directly with customers, end users, and cross-functional teams; led demos and communicated system capabilities to operators.</li>
+                                            <li><strong class="text-zinc-200 font-medium">Ownership & Delivery:</strong> Designed and delivered multiple large-scale features from concept through deployment, leading development efforts and coordinating a small team to implement operator-driven requirements.</li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="mb-10 relative">
+                                        <div class="flex flex-col md:flex-row justify-between md:items-center mb-2">
+                                            <h3 class="text-2xl font-bold text-white">L3Harris Technologies</h3>
+                                            <span class="text-rose-400/80 text-sm font-mono tracking-widest uppercase">05/2021 — 07/2023</span>
+                                        </div>
+                                        <h4 class="text-blue-400 font-medium text-base mb-4">Software Engineer I</h4>
+                                        <ul class="space-y-3 text-zinc-300 text-sm list-disc list-inside marker:text-zinc-600 leading-relaxed">
+                                            <li><strong class="text-zinc-200 font-medium">ISW / ATSS:</strong> Diagnosed and resolved issues in a complex counter-communication system, working directly with hardware (spectrum analyzers, decoders, attenuators) and improving system reliability. Modified installation scripts and altered code to pass Coverity scans.</li>
+                                            <li><strong class="text-zinc-200 font-medium">Training Records:</strong> Created an internal tool made from scratch to aid Technical Trainers in keeping track of all employees' training process.</li>
+                                            <li><strong class="text-zinc-200 font-medium">GBOSS & TRAX:</strong> Supported integration of Syntrack (JPL software) into deep space telescope systems, and collaborated on a company-wide survey platform.</li>
+                                            <li><strong class="text-zinc-200 font-medium">PEER Coordinator:</strong> Led program that helps new hires, minimizing transition downtime.</li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="relative">
+                                        <div class="flex flex-col md:flex-row justify-between md:items-center mb-2">
+                                            <h3 class="text-2xl font-bold text-white">SS&C Advent</h3>
+                                            <span class="text-rose-400/80 text-sm font-mono tracking-widest uppercase">05/2019 — 08/2019</span>
+                                        </div>
+                                        <h4 class="text-blue-400 font-medium text-base mb-4">Product Development Intern</h4>
+                                        <ul class="space-y-3 text-zinc-300 text-sm list-disc list-inside marker:text-zinc-600 leading-relaxed">
+                                            <li>Created internal tools to monitor client data ingestion processes, increasing visibility into system performance.</li>
+                                            <li>Automated anomaly detection by connecting SQL queries to Slack notifications, enabling real-time issue awareness.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="bg-zinc-900/30 backdrop-blur-sm border border-zinc-800/50 rounded-3xl p-8 shadow-xl">
+                                    <h2 class="text-sm font-bold text-rose-400 uppercase tracking-widest mb-8">Projects</h2>
+                                    <div class="mb-10">
+                                        <div class="flex flex-col md:flex-row justify-between md:items-center mb-4">
+                                            <h3 class="text-2xl font-bold text-white">Stock Calculator</h3>
+                                            <div class="flex items-center gap-4 mt-2 md:mt-0">
+                                                <a href="/projects/stock-project-v2" class="text-cyan-400 hover:text-cyan-300 text-sm font-bold flex items-center gap-1.5"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg> View Timeline</a>
+                                            </div>
+                                        </div>
+                                        <ul class="space-y-3 text-zinc-300 text-sm list-disc list-inside marker:text-zinc-600 leading-relaxed">
+                                            <li>Architected a full-stack algorithmic analysis platform to back a self-theorized trading strategy.</li>
+                                            <li>Engineered a Python/FastAPI backend leveraging Pandas and custom knapsack optimization algorithms to generate efficient, non-overlapping trade schedules.</li>
+                                            <li>Built an interactive React dashboard with dynamic visualizations for projected equity curves, portfolio distributions, and predictive confidence metrics.</li>
+                                        </ul>
+                                    </div>
+
+                                    <div>
+                                        <div class="flex flex-col md:flex-row justify-between md:items-center mb-4">
+                                            <h3 class="text-2xl font-bold text-white">Cuttlefish Lights</h3>
+                                            <div class="flex items-center gap-4 mt-2 md:mt-0">
+                                                <a href="/projects/cuttlefish-v3" class="text-cyan-400 hover:text-cyan-300 text-sm font-bold flex items-center gap-1.5"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg> View Timeline</a>
+                                                <a href="https://github.com/Koby1997/CuttlefishLights" target="_blank" class="text-zinc-400 hover:text-white text-sm font-bold flex items-center gap-1.5"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg> GitHub</a>
+                                            </div>
+                                        </div>
+                                        <ul class="space-y-3 text-zinc-300 text-sm list-disc list-inside marker:text-zinc-600 leading-relaxed">
+                                            <li>Engineered an Arduino-based system that synchronizes LED lighting effects with live audio input.</li>
+                                            <li>Programmed dynamic visual effects using the FastLED library to respond to distinct musical cues.</li>
+                                            <li>Built a desktop application to provide an intuitive interface for controlling lighting behaviors.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </main>
+                    </div>
+                </div>
 
                 <!-- 1. The Unified Home Screen (Demo 3) -->
                 <div id="unified-home-screen" class="w-[100vw] h-full shrink-0 flex flex-col justify-center relative z-20 px-4 md:px-0">
@@ -115,8 +272,8 @@ const getColorConfig = (category) => {
                         <!-- The 3 Evenly Spaced Gateways -->
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                         
-                        <a href="/resume" class="group relative rounded-2xl bg-zinc-900/20 border border-zinc-800/40 hover:bg-zinc-900/60 hover:border-teal-500/40 transition-all duration-500 p-8 pt-10 pb-10 flex flex-col justify-start backdrop-blur-2xl">
-                            <h3 class="text-2xl font-bold text-white mb-4 group-hover:text-teal-400 transition-colors">The Credentials</h3>
+                        <a href="/resume" id="unified-resume-trigger" class="group relative rounded-2xl bg-zinc-900/20 border border-zinc-800/40 hover:bg-zinc-900/60 hover:border-rose-500/40 transition-all duration-500 p-8 pt-10 pb-10 flex flex-col justify-start backdrop-blur-2xl">
+                            <h3 class="text-2xl font-bold text-white mb-4 group-hover:text-rose-400 transition-colors">The Credentials</h3>
                             <p class="text-zinc-500 font-light leading-relaxed group-hover:text-zinc-300 transition-colors">The professional breakdown. Stack, tech skills, past experience, and official resume downloads.</p>
                         </a>
 
@@ -125,8 +282,8 @@ const getColorConfig = (category) => {
                             <p class="text-zinc-500 font-light leading-relaxed group-hover:text-zinc-300 transition-colors">An interactive 3D map of my mindset. See exactly how my hobbies and engineering principles connect.</p>
                         </a>
 
-                        <a href="#" id="unified-timeline-trigger" class="group relative rounded-2xl bg-zinc-900/20 border border-zinc-800/40 hover:bg-zinc-900/60 hover:border-violet-500/40 transition-all duration-500 p-8 pt-10 pb-10 flex flex-col justify-start backdrop-blur-2xl">
-                            <h3 class="text-2xl font-bold text-white mb-4 group-hover:text-violet-400 transition-colors">The Timeline</h3>
+                        <a href="#" id="unified-timeline-trigger" class="group relative rounded-2xl bg-zinc-900/20 border border-zinc-800/40 hover:bg-zinc-900/60 hover:border-purple-500/40 transition-all duration-500 p-8 pt-10 pb-10 flex flex-col justify-start backdrop-blur-2xl">
+                            <h3 class="text-2xl font-bold text-white mb-4 group-hover:text-purple-400 transition-colors">The Timeline</h3>
                             <p class="text-zinc-500 font-light leading-relaxed group-hover:text-zinc-300 transition-colors">A chronological journey logging my past projects, milestones, logic builds, and personal history.</p>
                         </a>
 
@@ -154,16 +311,16 @@ const getColorConfig = (category) => {
                             
                             {year === 1997 && (
                                 <div id="baby-1997-marker" class="relative w-[85vw] md:w-80 shrink-0 flex flex-col items-center group mx-4 md:mx-8 cursor-pointer transition-transform md:-translate-y-[20vh] z-30">
-                                    <div class="hidden md:block w-5 h-5 rounded-full bg-violet-600 absolute shadow-[0_0_15px_rgba(139,92,246,0.5)] z-20 bottom-[-4.5rem]"></div>
+                                    <div class="hidden md:block w-5 h-5 rounded-full bg-purple-600 absolute shadow-[0_0_15px_rgba(168,85,247,0.5)] z-20 bottom-[-4.5rem]"></div>
                                     <div class="hidden md:block absolute left-1/2 w-[2px] h-16 bg-zinc-800 z-10 bottom-[-4rem]"></div>
                                     
-                                    <div class="w-full bg-zinc-900 border border-violet-800 rounded-2xl overflow-hidden shadow-2xl z-30 relative backdrop-blur-md pb-6 group-hover:scale-[1.02] transition-transform">
+                                    <div class="w-full bg-zinc-900 border border-purple-800 rounded-2xl overflow-hidden shadow-2xl z-30 relative backdrop-blur-md pb-6 group-hover:scale-[1.02] transition-transform">
                                         <div class="aspect-video bg-zinc-800 flex flex-col items-center justify-center text-zinc-600 font-mono text-sm relative">
                                             <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors z-10 pointer-events-none"></div>
                                             <img src="/assets/projects/baby-picture/BabyKoby.jpg" alt="Baby Koby 1997" class="w-full h-full object-cover opacity-100" />
                                         </div>
                                         <div class="p-6 h-full">
-                                            <h3 class="text-xl text-violet-400 font-bold mb-2">System Initialized</h3>
+                                            <h3 class="text-xl text-purple-400 font-bold mb-2">System Initialized</h3>
                                             <p class="text-zinc-400 text-sm">Hardcoded into physical reality. A fresh node on the network.</p>
                                         </div>
                                     </div>
@@ -276,14 +433,16 @@ const getColorConfig = (category) => {
         document.addEventListener('astro:page-load', () => {
         const scrollContainer = document.querySelector('.CustomScrollContainer');
         const parallaxBg = document.getElementById('timeline-parallax-bg');
+        
+        let isAnimating = false;
+        let isRewindingHome = false;
+        let timelineActive = false;
+        let timelineSkipRequested = false;
+        let currentScroll = scrollContainer ? scrollContainer.scrollLeft : 0;
+        let targetScroll = scrollContainer ? scrollContainer.scrollLeft : 0;
+        let scrollLimitMin = 0;
+
         if (scrollContainer) {
-            
-            let isAnimating = false;
-            let isRewindingHome = false;
-            let timelineActive = false;
-            let currentScroll = scrollContainer.scrollLeft;
-            let targetScroll = scrollContainer.scrollLeft;
-            let scrollLimitMin = 0;
 
             const timelineTrigger = document.getElementById('unified-timeline-trigger');
             const homeScreen = document.getElementById('unified-home-screen');
@@ -296,9 +455,22 @@ const getColorConfig = (category) => {
             // Force session cache clear so the user can infinitely test
             sessionStorage.removeItem('timeline_locked');
 
-            // If we restored scroll state and are already past the runway, activate timeline mode immediately
-            if (currentScroll > 0) {
-                if (realStart && currentScroll >= realStart.offsetLeft - 100) {
+            // Clean up old session flags that might be stuck
+            sessionStorage.removeItem('return_from_resume_swipe');
+            sessionStorage.removeItem('from_resume_swipe');
+
+            const savedScroll = sessionStorage.getItem('timeline_scroll');
+
+            if (!savedScroll && homeScreen) {
+                // Instantly snap to the home screen (bypassing the left runway)
+                scrollContainer.scrollLeft = homeScreen.offsetLeft;
+                currentScroll = homeScreen.offsetLeft;
+                targetScroll = homeScreen.offsetLeft;
+                scrollLimitMin = homeScreen.offsetLeft;
+                if (parallaxBg) parallaxBg.style.transform = `translateX(${-currentScroll * 0.08}px)`;
+            } else if (savedScroll) {
+                // If we restored scroll state and are already past the home screen, activate timeline mode immediately
+                if (currentScroll > homeScreen.offsetLeft && realStart && currentScroll >= realStart.offsetLeft - 100) {
                     scrollLimitMin = realStart.offsetLeft;
                     timelineActive = true;
                     if (floatingHeader) {
@@ -311,10 +483,8 @@ const getColorConfig = (category) => {
                     }
                 }
                 if (parallaxBg) parallaxBg.style.transform = `translateX(${-currentScroll * 0.08}px)`;
-                sessionStorage.removeItem('timeline_scroll'); // clear it so fresh loads start at 0
+                sessionStorage.removeItem('timeline_scroll'); // clear it so fresh loads start at home
             }
-
-            // Removed explicit scroll reset to 0 so restored scroll state is preserved.
 
             if (timelineTrigger) {
                 timelineTrigger.addEventListener('click', (e) => {
@@ -325,16 +495,6 @@ const getColorConfig = (category) => {
                         document.getElementById('cinematic-sticky-counter-container').style.display = 'flex';
                         document.getElementById('cinematic-sticky-counter-container').style.opacity = '1';
                     }
-                    
-                    if (floatingHeader) {
-                        floatingHeader.classList.remove('opacity-0');
-                        floatingHeader.classList.add('opacity-100');
-                    }
-                    if (exitContainer) {
-                        exitContainer.classList.remove('opacity-0', 'pointer-events-none');
-                        exitContainer.classList.add('opacity-100', 'pointer-events-auto');
-                    }
-
                     const babyMarker = document.getElementById('baby-1997-marker');
                     const getOffsetLeft = (el) => {
                         let offset = 0;
@@ -347,16 +507,65 @@ const getColorConfig = (category) => {
                     const pos1997 = getOffsetLeft(babyMarker) - (window.innerWidth / 2) + (babyMarker.offsetWidth / 2); 
                     const easeInOutCubic = (t) => t < .5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
 
+                    timelineSkipRequested = false;
+                    const skipBtn = document.getElementById('timeline-skip-btn');
+                    
+                    const skipToTimeline = () => {
+                        const targetPos = realStart.offsetLeft;
+                        scrollLimitMin = targetPos;
+                        scrollContainer.scrollLeft = targetPos; 
+                        currentScroll = targetPos;
+                        targetScroll = targetPos;
+                        timelineActive = true;
+                        scrollContainer.style.pointerEvents = 'auto'; 
+                        if(parallaxBg) parallaxBg.style.transform = `translateX(${-targetPos * 0.08}px)`;
+                        
+                        if (floatingHeader) {
+                            floatingHeader.classList.remove('opacity-0');
+                            floatingHeader.classList.add('opacity-100');
+                        }
+                        if (exitContainer) {
+                            exitContainer.classList.remove('opacity-0', 'pointer-events-none');
+                            exitContainer.classList.add('opacity-100', 'pointer-events-auto');
+                        }
+                    };
+
+                    if (skipBtn) {
+                        skipBtn.classList.remove('opacity-0', 'pointer-events-none');
+                        skipBtn.classList.add('opacity-100', 'pointer-events-auto');
+                        
+                        skipBtn.onclick = (e) => {
+                            e.preventDefault();
+                            timelineSkipRequested = true;
+                            skipBtn.classList.add('opacity-0', 'pointer-events-none');
+                            skipBtn.classList.remove('opacity-100', 'pointer-events-auto');
+                            
+                            if(cinematicStickyCounter) {
+                                document.getElementById('cinematic-sticky-counter-container').style.opacity = '0';
+                                setTimeout(() => document.getElementById('cinematic-sticky-counter-container').style.display = 'none', 300);
+                            }
+                            const msg = document.getElementById('baby-hidden-message');
+                            if (msg) msg.style.opacity = '0';
+                        };
+                    }
+
                     const duration1 = 3000; 
                     let startTime = performance.now();
+                    const startScroll = scrollContainer.scrollLeft;
+                    const scrollDistance = pos1997 - startScroll;
                     
                     const animatePhase1 = (time) => {
+                        if (timelineSkipRequested) {
+                            skipToTimeline();
+                            return;
+                        }
+
                         let t = (time - startTime) / duration1;
                         if (t > 1) t = 1;
                         
                         const flatT = t * 0.95;
                         const easedT = easeInOutCubic(flatT) / easeInOutCubic(0.95);
-                        scrollContainer.scrollLeft = easedT * pos1997;
+                        scrollContainer.scrollLeft = startScroll + (easedT * scrollDistance);
                         
                         if(cinematicStickyCounter) {
                             const runwayWidth = window.innerWidth * 8;
@@ -391,6 +600,11 @@ const getColorConfig = (category) => {
                         }
                         
                         const animatePhase1_5 = (time) => {
+                            if (timelineSkipRequested) {
+                                skipToTimeline();
+                                return;
+                            }
+
                             let t = (time - startTime) / duration1_5;
                             if (t > 1) t = 1;
                             
@@ -417,6 +631,11 @@ const getColorConfig = (category) => {
                         const easeInOutQuint = (t) => t < .5 ? 16 * t * t * t * t * t : 1 - Math.pow(-2 * t + 2, 5) / 2;
                         
                         const animatePhase2 = (time) => {
+                            if (timelineSkipRequested) {
+                                skipToTimeline();
+                                return;
+                            }
+
                             let t = (time - startTime) / duration2;
                             if (t > 1) t = 1;
                             
@@ -438,6 +657,21 @@ const getColorConfig = (category) => {
                                 targetScroll = currentS;
                                 timelineActive = true;
                                 scrollContainer.style.pointerEvents = 'auto'; 
+                                
+                                if (skipBtn) {
+                                    skipBtn.classList.add('opacity-0', 'pointer-events-none');
+                                    skipBtn.classList.remove('opacity-100', 'pointer-events-auto');
+                                }
+
+                                // Fade in the UI now that we've arrived
+                                if (floatingHeader) {
+                                    floatingHeader.classList.remove('opacity-0');
+                                    floatingHeader.classList.add('opacity-100');
+                                }
+                                if (exitContainer) {
+                                    exitContainer.classList.remove('opacity-0', 'pointer-events-none');
+                                    exitContainer.classList.add('opacity-100', 'pointer-events-auto');
+                                }
                             }
                         };
                         requestAnimationFrame(animatePhase2);
@@ -510,6 +744,7 @@ const getColorConfig = (category) => {
                     }
 
                     const startScroll = scrollContainer.scrollLeft;
+                    const endScroll = homeScreen ? homeScreen.offsetLeft : 0;
                     const duration = 2400; // Increased from 1200 to smoothen the rewind deceleration
                     const startTime = performance.now();
                     const easeOutQuint = (t) => 1 - Math.pow(1 - t, 5);
@@ -518,16 +753,16 @@ const getColorConfig = (category) => {
                         let t = (time - startTime) / duration;
                         if (t > 1) t = 1;
                         
-                        const easedS = startScroll * (1 - easeOutQuint(t));
+                        const easedS = startScroll - ((startScroll - endScroll) * easeOutQuint(t));
                         scrollContainer.scrollLeft = easedS;
                         if(parallaxBg) parallaxBg.style.transform = `translateX(${-easedS * 0.08}px)`;
 
                         if (t < 1) {
                             requestAnimationFrame(swipeBack);
                         } else {
-                            targetScroll = 0;
-                            currentScroll = 0;
-                            scrollLimitMin = 0;
+                            targetScroll = endScroll;
+                            currentScroll = endScroll;
+                            scrollLimitMin = endScroll;
                             timelineActive = false;
                             scrollContainer.style.pointerEvents = 'auto';
                             isAnimating = false;
@@ -812,8 +1047,171 @@ const getColorConfig = (category) => {
                 }
             });
         }
+
+        // Cinematic Resume Swipe Logic (Forward)
+        const resumeTrigger = document.getElementById('unified-resume-trigger');
+        if (resumeTrigger) {
+            resumeTrigger.addEventListener('click', (e) => {
+                e.preventDefault();
+                
+                const scrollContainer = document.querySelector('.CustomScrollContainer');
+                const parallaxBg = document.getElementById('timeline-parallax-bg');
+                
+                if (scrollContainer) {
+                    scrollContainer.style.pointerEvents = 'none';
+                    isAnimating = true;
+                    scrollLimitMin = 0; // Unlock scrolling to the left
+                    
+                    if (parallaxBg) {
+                        parallaxBg.style.transition = 'opacity 2.4s ease-in-out';
+                        parallaxBg.style.opacity = '0'; // Hide the blue hues
+                    }
+                    
+                    const startScroll = scrollContainer.scrollLeft;
+                    const endScroll = 0; // Pan to the far left edge (the runway)
+                    const duration = 2400; 
+                    const startTime = performance.now();
+                    
+                    const easeInOutQuint = (t) => t < .5 ? 16 * t * t * t * t * t : 1 - Math.pow(-2 * t + 2, 5) / 2;
+
+                    const swipeForward = (time) => {
+                        let t = (time - startTime) / duration;
+                        if (t > 1) t = 1;
+                        
+                        const easedS = startScroll - ((startScroll - endScroll) * easeInOutQuint(t));
+                        scrollContainer.scrollLeft = easedS;
+                        if(parallaxBg) parallaxBg.style.transform = `translateX(${-easedS * 0.08}px)`;
+
+                        if (t < 1) {
+                            requestAnimationFrame(swipeForward);
+                        } else {
+                            scrollContainer.style.pointerEvents = 'auto';
+                            isAnimating = false;
+                            if (parallaxBg) parallaxBg.style.transition = '';
+                        }
+                    };
+                    requestAnimationFrame(swipeForward);
+                }
+            });
+        }
+
+        // Cinematic Resume Swipe Logic (Reverse / Home Exit)
+        const homeExit = document.getElementById('resume-home-exit');
+        if (homeExit) {
+            homeExit.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation(); // prevent global link hijacker from interfering
+                
+                const scrollContainer = document.querySelector('.CustomScrollContainer');
+                const parallaxBg = document.getElementById('timeline-parallax-bg');
+                const homeScreen = document.getElementById('unified-home-screen');
+                
+                if (scrollContainer && homeScreen) {
+                    scrollContainer.style.pointerEvents = 'none';
+                    isAnimating = true;
+                    
+                    if (parallaxBg) {
+                        parallaxBg.style.transition = 'opacity 2.4s ease-in-out';
+                        parallaxBg.style.opacity = '1'; // Bring back timeline background
+                    }
+                    
+                    const startScroll = scrollContainer.scrollLeft;
+                    const endScroll = homeScreen.offsetLeft;
+                    const duration = 2400; 
+                    const startTime = performance.now();
+                    const easeOutQuint = (t) => 1 - Math.pow(1 - t, 5);
+
+                    const swipeBackHome = (time) => {
+                        let t = (time - startTime) / duration;
+                        if (t > 1) t = 1;
+                        
+                        const easedS = startScroll + ((endScroll - startScroll) * easeOutQuint(t));
+                        scrollContainer.scrollLeft = easedS;
+                        if(parallaxBg) parallaxBg.style.transform = `translateX(${-easedS * 0.08}px)`;
+
+                        if (t < 1) {
+                            requestAnimationFrame(swipeBackHome);
+                        } else {
+                            scrollLimitMin = endScroll; // re-lock scrolling
+                            currentScroll = endScroll;
+                            targetScroll = endScroll;
+                            scrollContainer.style.pointerEvents = 'auto';
+                            isAnimating = false;
+                        }
+                    };
+                    requestAnimationFrame(swipeBackHome);
+                }
+            });
+        }
+
+        // Resume Smooth Column Scrolling Logic
+        const leftCol = document.getElementById('resume-left-col');
+        const rightCol = document.getElementById('resume-right-col');
+        
+        if (leftCol && rightCol) {
+            const states = {
+                'resume-left-col': { target: 0, current: 0, active: false },
+                'resume-right-col': { target: 0, current: 0, active: false }
+            };
+
+            const doSmoothScroll = (el, delta) => {
+                const state = states[el.id];
+                if (!state.active) {
+                    state.current = el.scrollTop;
+                    state.target = el.scrollTop;
+                }
+                
+                state.target += delta;
+                state.target = Math.max(0, Math.min(state.target, el.scrollHeight - el.clientHeight));
+                
+                if (!state.active) {
+                    state.active = true;
+                    const animate = () => {
+                        if (Math.abs(state.target - state.current) < 0.5) {
+                            state.current = state.target;
+                            el.scrollTop = state.current;
+                            state.active = false;
+                            return;
+                        }
+                        state.current += (state.target - state.current) * 0.12;
+                        el.scrollTop = state.current;
+                        requestAnimationFrame(animate);
+                    };
+                    requestAnimationFrame(animate);
+                }
+            };
+
+            const handleWheel = (e, current, other) => {
+                const atTop = current.scrollTop <= 5;
+                const atBottom = Math.ceil(current.scrollTop + current.clientHeight) >= (current.scrollHeight - 5);
+                const isMouseWheelTick = Math.abs(e.deltaY) >= 40 || e.deltaMode !== 0;
+
+                e.stopPropagation();
+                e.preventDefault();
+
+                if ((e.deltaY < 0 && atTop) || (e.deltaY > 0 && atBottom)) {
+                    if (isMouseWheelTick) doSmoothScroll(other, e.deltaY);
+                    else other.scrollTop += e.deltaY;
+                } else {
+                    if (isMouseWheelTick) doSmoothScroll(current, e.deltaY);
+                    else current.scrollTop += e.deltaY;
+                }
+            };
+
+            leftCol.addEventListener('wheel', (e) => handleWheel(e, leftCol, rightCol), { passive: false });
+            rightCol.addEventListener('wheel', (e) => handleWheel(e, rightCol, leftCol), { passive: false });
+        }
         });
     </script>
+    <style>
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
 </body>
 </html>
 

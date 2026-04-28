@@ -1,0 +1,53 @@
+
+
+
+321-313-4355 | KobyLMiller@outlook.com | Colorado Springs, CO
+
+
+       
+L3Harris Technologies | Software Engineer I
+Colorado Springs Colorado | 05/2021 - Present
+ISW / ATSS: Worked on fixes for a complex counter communication system. Hands on with hardware such as Spectrum Analyzers, Decoders, and Attenuators. Touched installation scripts, altered code to pass Coverity scans, and made general updates. 
+
+Training Records: Created an internal tool made from scratch by myself to aid the Technical Trainers in keeping track of all employee's training process. Used this opportunity to learn software I had never touched before.
+
+
+GBOSS: Integrated Syntrack (software written by JPL) to our deep space telescope software. This was more of an operating position. 
+
+TRAX: Worked with a small team for a company-wide application used to easily create surveys. 
+
+	
+PEER Coordinator: Took a step out of the normal software role to lead our program that helps new hires. I was responsible for keeping track of incoming team members, assigning them an employee on their team to help them, minimizing transition downtime to allow new employees to quickly get up to speed and start work.
+
+SS&C Advent | Product Development Intern
+Jacksonville, FL | 05/2019 - 08/2019
+Rotated teams bi-weekly to focus on building software skills that touch different parts of the platform.
+Designed back-end and front-end of an internal tool to help monitor the process of data imported by clients.
+Connected different processes to routinely run a SQL query and output any anomalies to a specific Slack channel.
+
+
+Two Broke College Guys | Co-Creator
+Rockledge, FL | 05/2017 - 08/2019
+Created a small summer business with a friend where we would do anything the customer wanted and they could pay us however much they felt like our work was worth.
+Acquired experience in customer service and strengthened communication skills by serving over 20 clients. Drastically improved planning, organization, and teamwork skills.
+
+
+
+       
+University of Florida | B.S. of Computer Engineering Gainesville, FL | Graduated 12/2020 
+
+
+
+
+       
+ Cuttlefish Lights: https://github.com/Koby1997/CuttlefishLights
+
+Programmed LED lights to read an aux input and react to music in a variety of ways using an Arduino and Spectrum shield.
+Integrated FastLED library to create complex visual effects that are triggered by different musical queues.
+Currently working on a desktop application for an easy-to-use UI.
+Won 3rd place overall at SwampHacks 2020.
+
+ Stock Calculator: https://github.com/Koby1997/StockCalculator
+
+Multiple Python scripts used to implement a specific trading strategy on historical data to grade whether or not it is a viable strategy to use in the present/future.
+Utilizes the yfinance library to pull data then implements an algorithm that calculates specific trading environments. Outputs organized data into an Excel sheet to easily view.
