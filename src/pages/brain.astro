@@ -35,14 +35,13 @@ import { ClientRouter } from "astro:transitions";
         <!-- Onboarding Controls Overlay -->
         <div
             id="onboarding-controls"
-            class="fixed bottom-[320px] left-10 pointer-events-none z-[60] transition-opacity duration-1000 opacity-0 hidden md:block"
+            class="fixed top-12 left-1/2 -translate-x-1/2 pointer-events-none z-[60] transition-opacity duration-1000 opacity-0 hidden md:flex flex-col items-center"
         >
-            <div
-                class="flex flex-col gap-6 translate-y-8 transition-transform duration-1000 ease-out"
-                id="onboarding-panel"
-            >
+            <div class="relative w-[300px] h-[60px] flex justify-center items-center">
+                <!-- Step 1: Rotate -->
                 <div
-                    class="flex items-center gap-5 text-white/80 drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]"
+                    id="tutorial-step-1"
+                    class="absolute flex items-center gap-4 text-white/80 drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)] transition-all duration-700 ease-in-out transform translate-y-4 opacity-100"
                 >
                     <svg
                         class="w-6 h-6 text-white"
@@ -56,13 +55,15 @@ import { ClientRouter } from "astro:transitions";
                             d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"
                         ></path></svg
                     >
-                    <span class="text-xl font-light tracking-wide"
+                    <span class="text-xl font-light tracking-wide whitespace-nowrap"
                         >Click and Drag to rotate</span
                     >
                 </div>
 
+                <!-- Step 2: Zoom -->
                 <div
-                    class="flex items-center gap-5 text-white/80 drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]"
+                    id="tutorial-step-2"
+                    class="absolute flex items-center gap-4 text-white/80 drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)] transition-all duration-700 ease-in-out transform translate-y-4 opacity-0 pointer-events-none"
                 >
                     <svg
                         class="w-6 h-6 text-white"
@@ -75,13 +76,15 @@ import { ClientRouter } from "astro:transitions";
                             stroke-width="1.5"
                             d="M8 9l4-4 4 4m0 6l-4 4-4-4"></path></svg
                     >
-                    <span class="text-xl font-light tracking-wide"
+                    <span class="text-xl font-light tracking-wide whitespace-nowrap"
                         >Scroll to zoom</span
                     >
                 </div>
 
+                <!-- Step 3: Click -->
                 <div
-                    class="flex items-center gap-5 text-white/80 drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]"
+                    id="tutorial-step-3"
+                    class="absolute flex items-center gap-4 text-white/80 drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)] transition-all duration-700 ease-in-out transform translate-y-4 opacity-0 pointer-events-none"
                 >
                     <svg
                         class="w-6 h-6 text-white"
@@ -89,19 +92,27 @@ import { ClientRouter } from "astro:transitions";
                         viewBox="0 0 24 24"
                         ><circle cx="12" cy="12" r="6"></circle></svg
                     >
-                    <span class="text-xl font-light tracking-wide"
+                    <span class="text-xl font-light tracking-wide whitespace-nowrap"
                         >Click on nodes to focus</span
                     >
                 </div>
             </div>
+
+            <!-- Skip Button -->
+            <button
+                id="skip-tutorial-btn"
+                class="mt-4 text-zinc-500 hover:text-white text-sm font-medium tracking-widest uppercase transition-colors duration-300 pointer-events-auto"
+            >
+                Skip
+            </button>
         </div>
 
         <!-- Navigation Interface -->
-        <div class="fixed top-8 left-8 z-50 pointer-events-auto group">
+        <div class="fixed top-8 left-8 z-50 pointer-events-auto flex gap-4">
             <a
                 id="exit-btn"
                 href="/"
-                class="flex items-center gap-3 px-6 py-2.5 bg-zinc-950/40 backdrop-blur-md border border-white/10 rounded-full text-white/70 hover:text-white hover:bg-zinc-900/60 hover:border-white/30 transition-all duration-300 shadow-xl shadow-black/20"
+                class="flex items-center gap-3 px-6 py-2.5 bg-zinc-950/40 backdrop-blur-md border border-white/10 rounded-full text-white/70 hover:text-white hover:bg-zinc-900/60 hover:border-white/30 transition-all duration-300 shadow-xl shadow-black/20 group"
             >
                 <svg
                     class="w-4 h-4 transition-transform duration-300 group-hover:-translate-x-1.5"
@@ -119,6 +130,17 @@ import { ClientRouter } from "astro:transitions";
                     >Exit</span
                 >
             </a>
+
+            <!-- Start Tutorial Button -->
+            <button
+                id="restart-tutorial-btn"
+                style="display: none;"
+                class="flex items-center gap-2 px-4 py-2.5 bg-zinc-950/40 backdrop-blur-md border border-white/10 rounded-full text-zinc-500 hover:text-white hover:bg-zinc-900/60 hover:border-white/30 transition-all duration-300 shadow-xl shadow-black/20"
+                title="Restart Tutorial"
+            >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <span class="font-sans text-xs font-medium tracking-widest uppercase">Help</span>
+            </button>
         </div>
 
         <!-- The 3D Render Target -->
@@ -206,6 +228,105 @@ import { ClientRouter } from "astro:transitions";
 
             try {
                 // ----------------------------------------------------
+                // INTERACTIVE TUTORIAL STATE MACHINE
+                // ----------------------------------------------------
+                let tutorialState = parseInt(sessionStorage.getItem('brain_tutorial_completed') || '0');
+                let cumulativeRotation = 0;
+                let lastCameraPos = new THREE.Vector3();
+                let initCameraDist = null;
+                let tutorialActive = false;
+
+                const onboardingControls = document.getElementById('onboarding-controls');
+                const restartTutorialBtn = document.getElementById('restart-tutorial-btn');
+                const skipTutorialBtn = document.getElementById('skip-tutorial-btn');
+                const tSteps = [
+                    document.getElementById('tutorial-step-1'),
+                    document.getElementById('tutorial-step-2'),
+                    document.getElementById('tutorial-step-3')
+                ];
+
+                function updateTutorialUI() {
+                    if (tutorialState >= 3) {
+                        if (onboardingControls) {
+                            onboardingControls.style.opacity = '0';
+                            onboardingControls.style.pointerEvents = 'none';
+                        }
+                        if (restartTutorialBtn) restartTutorialBtn.style.display = 'flex';
+                        return;
+                    }
+                    
+                    if (!tutorialActive) return;
+                    
+                    if (restartTutorialBtn) restartTutorialBtn.style.display = 'none';
+                    if (onboardingControls) {
+                        onboardingControls.classList.remove('hidden');
+                        setTimeout(() => {
+                            if (onboardingControls.style.opacity === '0' || onboardingControls.style.opacity === '') {
+                                onboardingControls.style.opacity = '1';
+                            }
+                        }, 50);
+                    }
+
+                    tSteps.forEach((step, index) => {
+                        if (!step) return;
+                        if (index === tutorialState) {
+                            step.style.opacity = '1';
+                            step.style.pointerEvents = 'auto';
+                            step.style.transform = 'translateY(0)';
+                        } else {
+                            step.style.opacity = '0';
+                            step.style.pointerEvents = 'none';
+                            step.style.transform = 'translateY(4px)';
+                        }
+                    });
+                }
+
+                function advanceTutorial(targetState) {
+                    if (tutorialState >= targetState || tutorialState >= 3) return;
+                    tutorialState = targetState;
+                    if (tutorialState >= 3) {
+                        sessionStorage.setItem('brain_tutorial_completed', '3');
+                    }
+                    if (tutorialState === 1) {
+                        initCameraDist = camera.position.distanceTo(controls.target);
+                    }
+                    updateTutorialUI();
+                }
+
+                if (skipTutorialBtn) {
+                    skipTutorialBtn.addEventListener('pointerdown', (e) => e.stopPropagation());
+                    skipTutorialBtn.addEventListener('pointerup', (e) => e.stopPropagation());
+                    skipTutorialBtn.addEventListener('pointermove', (e) => e.stopPropagation());
+                    skipTutorialBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        advanceTutorial(3);
+                    });
+                }
+
+                if (restartTutorialBtn) {
+                    restartTutorialBtn.addEventListener('pointerdown', (e) => e.stopPropagation());
+                    restartTutorialBtn.addEventListener('pointerup', (e) => e.stopPropagation());
+                    restartTutorialBtn.addEventListener('pointermove', (e) => e.stopPropagation());
+                    restartTutorialBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        sessionStorage.removeItem('brain_tutorial_completed');
+                        tutorialState = 0;
+                        cumulativeRotation = 0;
+                        initCameraDist = null;
+                        updateTutorialUI();
+                    });
+                }
+                
+                // Initialize instantly for states >= 3 (Help Button)
+                updateTutorialUI();
+
+                // Wait for the cinematic entrance to finish before we display the UI
+                setTimeout(() => {
+                    tutorialActive = true;
+                    updateTutorialUI();
+                }, 3000);
+
+                // ----------------------------------------------------
                 // CORE ENGINE SETUP
                 // ----------------------------------------------------
                 const container = document.getElementById("webgl-container");
@@ -240,6 +361,32 @@ import { ClientRouter } from "astro:transitions";
                 controls.enablePan = false; // Just zoom and rotate
                 controls.minDistance = 50; // Let them fly ultra deep inside to inspect the leaves
                 controls.maxDistance = 3000;
+
+                // Tutorial Interaction Tracking
+                controls.addEventListener('change', () => {
+                    if (!tutorialActive || tutorialState >= 3) return;
+                    
+                    if (tutorialState === 0) {
+                        if (!initCameraDist) {
+                            initCameraDist = camera.position.distanceTo(controls.target);
+                            lastCameraPos.copy(camera.position);
+                        }
+                        const distMoved = lastCameraPos.distanceTo(camera.position);
+                        cumulativeRotation += distMoved;
+                        lastCameraPos.copy(camera.position);
+                        
+                        if (cumulativeRotation > 500) {
+                            advanceTutorial(1);
+                        }
+                    } else if (tutorialState === 1) {
+                        if (!initCameraDist) initCameraDist = camera.position.distanceTo(controls.target);
+                        const currentDist = camera.position.distanceTo(controls.target);
+                        
+                        if (Math.abs(initCameraDist - currentDist) > 150) {
+                            advanceTutorial(2);
+                        }
+                    }
+                });
 
                 // FOCUS MODE UX: If the user manually intervenes and violently drags the camera to explore, break the Focus Mode lock instantly!
                 let activeFocusTreeId = null;
@@ -327,6 +474,7 @@ import { ClientRouter } from "astro:transitions";
                             state.dPos.y - event.clientY,
                         );
                         if (distHTML < 30) {
+                            advanceTutorial(3);
                             flyTo(
                                 state.targetVector3,
                                 state.zoomScalar,
@@ -357,6 +505,7 @@ import { ClientRouter } from "astro:transitions";
                     const intersects =
                         raycaster.intersectObjects(clickableMeshes);
                     if (intersects.length > 0) {
+                        advanceTutorial(3);
                         // Determine zoom depth based on geometry size!
                         const clickedObj = intersects[0].object;
                         const clickedRadius =
@@ -1408,36 +1557,7 @@ import { ClientRouter } from "astro:transitions";
                     // Fly in slowly from the deep void (10000) to the standard resting distance (1500)
                     // Duration of 2700ms guarantees it outlasts the 1.0s overlay fade!
                     flyTo(new THREE.Vector3(0, 0, 0), 1500, "CORE", 2700);
-
-                    // Fade in onboarding controls
-                    setTimeout(() => {
-                        const onboarding = document.getElementById(
-                            "onboarding-controls",
-                        );
-                        const onboardingPanel =
-                            document.getElementById("onboarding-panel");
-                        if (onboarding) onboarding.style.opacity = "1";
-                        if (onboardingPanel)
-                            onboardingPanel.style.transform = "translateY(0)";
-                    }, 1500);
                 }, 100);
-
-                // Dismiss Onboarding on Interaction
-                const dismissOnboarding = () => {
-                    const onboarding = document.getElementById(
-                        "onboarding-controls",
-                    );
-                    if (onboarding && onboarding.style.opacity !== "0") {
-                        onboarding.style.opacity = "0";
-                        window.removeEventListener(
-                            "pointerdown",
-                            dismissOnboarding,
-                        );
-                        window.removeEventListener("wheel", dismissOnboarding);
-                    }
-                };
-                window.addEventListener("pointerdown", dismissOnboarding);
-                window.addEventListener("wheel", dismissOnboarding);
             } catch (error) {
                 // FATAL ERROR CATCHER FOR DEBUGGING
                 const errDiv = document.createElement("div");

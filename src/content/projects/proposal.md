@@ -1,5 +1,5 @@
 ---title: "The Proposal"
-description: "Built giant 12ft tall illuminated letters taken up a mountain."
+description: "Built giant 8ft tall illuminated letters and hiked them up a mountain."
 categories: ["Milestone"]
 pubDate: 2022-05-01
 coverImage: "/assets/projects/proposal/HeroPic.JPG"

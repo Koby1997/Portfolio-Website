@@ -74,6 +74,15 @@ const getColorConfig = (category) => {
         SKIP <span class="group-hover:translate-x-1 transition-transform duration-300">&gt;&gt;&gt;</span>
     </button>
 
+    <!-- Timeline Instructions -->
+    <div
+        id="timeline-instructions"
+        class="fixed bottom-12 left-1/2 -translate-x-1/2 z-50 transition-all duration-1000 opacity-0 pointer-events-none flex items-center gap-4 text-white/80 drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)] transform translate-y-4"
+    >
+        <span class="font-mono text-sm tracking-widest uppercase font-semibold">Scroll to navigate</span>
+        <svg class="w-6 h-6 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+    </div>
+
     <!-- Pure Timeline Container (No vertical scrolling allowed on page) -->
     <main class="flex-grow w-full relative flex items-center bg-gradient-to-br from-zinc-950 via-zinc-950 to-zinc-900 overflow-hidden">
         
@@ -258,35 +267,50 @@ const getColorConfig = (category) => {
 
                 <!-- 1. The Unified Home Screen (Demo 3) -->
                 <div id="unified-home-screen" class="w-[100vw] h-full shrink-0 flex flex-col justify-center relative z-20 px-4 md:px-0">
-                    <div class="w-full max-w-6xl mx-auto px-6 lg:px-8 flex flex-col justify-center h-full pt-12">
+                    <div class="w-full max-w-6xl mx-auto px-6 lg:px-8 flex flex-col justify-center h-full pt-20 md:pt-32 relative">
                         
-                        <div class="max-w-4xl mb-16 text-center mx-auto">
-                        <h1 id="cinematic-koby-text" class="text-7xl md:text-[7rem] font-bold text-white mb-6 tracking-tighter relative z-[60]">
-                            <span class="cinematic-extra-text transition-opacity duration-[800ms]">Hi, I'm&nbsp;</span><span id="cinematic-koby-only" class="inline-block transition-transform duration-[800ms] ease-in-out origin-center">K<span id="zoom-target-o" class="relative inline-block origin-center">o</span>by</span><span class="cinematic-extra-text transition-opacity duration-[800ms]">.</span>
-                        </h1>
-                        <p class="text-2xl text-zinc-400 font-light leading-relaxed">
-                            I'm just a fun guy trying to make cool things.
-                        </p>
+                        <div class="max-w-4xl mb-16 text-center mx-auto relative z-[60]">
+                            
+                            <!-- Absolute Positioning Anchor Point (Center of Text Block) -->
+                            <!-- This perfectly locks the components to the exact pixel offsets of a 1920x1080 monitor relative to the 'Koby' text -->
+                            <div id="home-media-elements" class="absolute left-1/2 top-0 w-0 h-0 hidden md:block">
+                                <!-- Floating Image Cycler -->
+                                <div class="absolute top-[-250px] left-[450px] w-80 h-[28rem] rounded-[2rem] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10 z-[70] bg-zinc-900/50 backdrop-blur-sm transition-transform duration-500">
+                                    <img id="home-cycler-img-1" src="/assets/projects/home-page/1.jpg" alt="Koby" class="absolute inset-0 w-full h-full object-cover transition-opacity duration-[1500ms] opacity-100 z-10" style="image-rendering: high-quality; transform: translateZ(0);" />
+                                    <img id="home-cycler-img-2" src="" alt="Koby Next" class="absolute inset-0 w-full h-full object-cover transition-opacity duration-[1500ms] opacity-0 z-0" style="image-rendering: high-quality; transform: translateZ(0);" />
+                                </div>
+
+                            <!-- Solid White Curved Arrow -->
+                            <svg class="absolute top-[-190px] left-[15px] w-[560px] h-[220px] z-[70] text-white pointer-events-none" viewBox="0 0 200 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M0,90 C 25,20 80,10 156,22" stroke="white" stroke-width="6" stroke-linecap="round" fill="none" vector-effect="non-scaling-stroke" />
+                                <path d="M152,11 L165,23 L148,32 Z" fill="white" stroke="white" stroke-width="3" stroke-linejoin="round" vector-effect="non-scaling-stroke" />
+                            </svg>
+                            </div>
+
+                            <h1 id="cinematic-koby-text" class="text-7xl md:text-[7rem] font-bold text-white mb-6 tracking-tighter relative z-[60]">
+                                <span class="cinematic-extra-text transition-opacity duration-[800ms]">Hi, I'm&nbsp;</span><span id="cinematic-koby-only" class="inline-block transition-transform duration-[800ms] ease-in-out origin-center">K<span id="zoom-target-o" class="relative inline-block origin-center">o</span>by</span><span class="cinematic-extra-text transition-opacity duration-[800ms]"></span>
+                            </h1>
+                            <p class="text-2xl text-zinc-400 font-light leading-relaxed">
+                                I'm just a fun guy trying to make cool things
+                            </p>
                         </div>
 
-                        <!-- The 3 Evenly Spaced Gateways -->
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        
-                        <a href="/resume" id="unified-resume-trigger" class="group relative rounded-2xl bg-zinc-900/20 border border-zinc-800/40 hover:bg-zinc-900/60 hover:border-rose-500/40 transition-all duration-500 p-8 pt-10 pb-10 flex flex-col justify-start backdrop-blur-2xl">
-                            <h3 class="text-2xl font-bold text-white mb-4 group-hover:text-rose-400 transition-colors">The Credentials</h3>
-                            <p class="text-zinc-500 font-light leading-relaxed group-hover:text-zinc-300 transition-colors">The professional breakdown. Stack, tech skills, past experience, and official resume downloads.</p>
-                        </a>
+                        <!-- The 3 Evenly Spaced Gateways (Sleek Outline Pills) -->
+                        <div class="flex flex-col md:flex-row justify-center items-center gap-6 mt-4">
+                            <a href="/resume" id="unified-resume-trigger" class="group relative px-8 py-4 border border-zinc-700/50 hover:border-rose-500/50 bg-zinc-900/20 hover:bg-zinc-900/80 backdrop-blur-md rounded-xl transition-all duration-300 shadow-xl overflow-hidden text-center z-20">
+                                <div class="absolute inset-0 bg-gradient-to-br from-rose-500/0 via-rose-500/0 to-rose-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                                <h3 class="relative z-10 text-sm md:text-base font-bold text-zinc-300 group-hover:text-white uppercase tracking-[0.2em] transition-colors">My Career</h3>
+                            </a>
 
-                        <a href="/brain" id="brain-link-trigger" class="group relative rounded-2xl bg-zinc-900/20 border border-zinc-800/40 hover:bg-zinc-900/60 hover:border-blue-500/40 transition-all duration-500 p-8 pt-10 pb-10 flex flex-col justify-start backdrop-blur-2xl z-20">
-                            <h3 class="text-2xl font-bold text-white mb-4 group-hover:text-blue-400 transition-colors">The Neural Core</h3>
-                            <p class="text-zinc-500 font-light leading-relaxed group-hover:text-zinc-300 transition-colors">An interactive 3D map of my mindset. See exactly how my hobbies and engineering principles connect.</p>
-                        </a>
+                            <a href="/brain" id="brain-link-trigger" class="group relative px-8 py-4 border border-zinc-700/50 hover:border-blue-500/50 bg-zinc-900/20 hover:bg-zinc-900/80 backdrop-blur-md rounded-xl transition-all duration-300 shadow-xl overflow-hidden text-center z-20">
+                                <div class="absolute inset-0 bg-gradient-to-br from-blue-500/0 via-blue-500/0 to-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                                <h3 class="relative z-10 text-sm md:text-base font-bold text-zinc-300 group-hover:text-white uppercase tracking-[0.2em] transition-colors">My Interests</h3>
+                            </a>
 
-                        <a href="#" id="unified-timeline-trigger" class="group relative rounded-2xl bg-zinc-900/20 border border-zinc-800/40 hover:bg-zinc-900/60 hover:border-purple-500/40 transition-all duration-500 p-8 pt-10 pb-10 flex flex-col justify-start backdrop-blur-2xl">
-                            <h3 class="text-2xl font-bold text-white mb-4 group-hover:text-purple-400 transition-colors">The Timeline</h3>
-                            <p class="text-zinc-500 font-light leading-relaxed group-hover:text-zinc-300 transition-colors">A chronological journey logging my past projects, milestones, logic builds, and personal history.</p>
-                        </a>
-
+                            <a href="#" id="unified-timeline-trigger" class="group relative px-8 py-4 border border-zinc-700/50 hover:border-purple-500/50 bg-zinc-900/20 hover:bg-zinc-900/80 backdrop-blur-md rounded-xl transition-all duration-300 shadow-xl overflow-hidden text-center z-20">
+                                <div class="absolute inset-0 bg-gradient-to-br from-purple-500/0 via-purple-500/0 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                                <h3 class="relative z-10 text-sm md:text-base font-bold text-zinc-300 group-hover:text-white uppercase tracking-[0.2em] transition-colors">My Journey</h3>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -336,8 +360,8 @@ const getColorConfig = (category) => {
                                             <img src="/assets/projects/baby-picture/BabyKoby.jpg" alt="Baby Koby 1997" class="w-full h-full object-cover opacity-100" />
                                         </div>
                                         <div class="p-6 h-full">
-                                            <h3 class="text-xl text-purple-400 font-bold mb-2">System Initialized</h3>
-                                            <p class="text-zinc-400 text-sm">Hardcoded into physical reality. A fresh node on the network.</p>
+                                            <h3 class="text-xl text-purple-400 font-bold mb-2">Baby Koby!</h3>
+                                            <p class="text-zinc-400 text-sm">My eating habits have not changed one bit.</p>
                                         </div>
                                     </div>
                                     
@@ -468,8 +492,71 @@ const getColorConfig = (category) => {
             const floatingHeader = document.getElementById('timeline-floating-header');
             const exitContainer = document.getElementById('timeline-exit-container');
 
+            // --- Home Screen Image Cycler Logic ---
+            let currentImg = document.getElementById('home-cycler-img-1');
+            let nextImg = document.getElementById('home-cycler-img-2');
+            
+            if (currentImg && nextImg) {
+                const homeImages = ['1.jpg', '2.jpg', '3.jpg', '4.jpg', '5.jpg', '6.jpg', '7.jpg', '8.jpg', '9.jpg', '10.jpg', '11.jpg', '12.jpg', '13.jpg', '14.jpg'];
+                // Fisher-Yates Shuffle
+                for (let i = homeImages.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [homeImages[i], homeImages[j]] = [homeImages[j], homeImages[i]];
+                }
+                let currentCyclerIndex = 0;
+                currentImg.src = '/assets/projects/home-page/' + homeImages[currentCyclerIndex];
+                
+                setInterval(() => {
+                    const nextIndex = (currentCyclerIndex + 1) % homeImages.length;
+                    
+                    nextImg.onload = () => {
+                        nextImg.style.zIndex = '10';
+                        currentImg.style.zIndex = '0';
+                        
+                        nextImg.style.opacity = '1';
+                        currentImg.style.opacity = '0';
+                        
+                        setTimeout(() => {
+                            currentCyclerIndex = nextIndex;
+                            let temp = currentImg;
+                            currentImg = nextImg;
+                            nextImg = temp;
+                        }, 1500); // Wait for CSS transition
+                    };
+                    
+                    nextImg.src = '/assets/projects/home-page/' + homeImages[nextIndex];
+                    
+                    // Fallback execution if the browser loaded it instantly from cache without firing onload
+                    if (nextImg.complete) {
+                        nextImg.onload();
+                    }
+                    
+                }, 8000); // 8 seconds per image (5s display + 3s crossfade cycle)
+            }
+            // --------------------------------------
+
             // Force session cache clear so the user can infinitely test
             sessionStorage.removeItem('timeline_locked');
+            const timelineInstructions = document.getElementById('timeline-instructions');
+            let timelineScrollStarted = false;
+            
+            const checkTimelineInstructions = () => {
+                timelineScrollStarted = false;
+                if (timelineInstructions) {
+                    timelineInstructions.style.opacity = '1';
+                    timelineInstructions.style.transform = 'translateY(0)';
+                }
+            };
+
+            const dismissTimelineInstructions = () => {
+                if (!timelineScrollStarted) {
+                    timelineScrollStarted = true;
+                    if (timelineInstructions) {
+                        timelineInstructions.style.opacity = '0';
+                        timelineInstructions.style.transform = 'translateY(4px)';
+                    }
+                }
+            };
 
             // Clean up old session flags that might be stuck
             sessionStorage.removeItem('return_from_resume_swipe');
@@ -497,6 +584,7 @@ const getColorConfig = (category) => {
                         exitContainer.classList.remove('opacity-0', 'pointer-events-none');
                         exitContainer.classList.add('opacity-100', 'pointer-events-auto');
                     }
+                    checkTimelineInstructions();
                 }
                 if (parallaxBg) parallaxBg.style.transform = `translateX(${-currentScroll * 0.08}px)`;
                 sessionStorage.removeItem('timeline_scroll'); // clear it so fresh loads start at home
@@ -544,6 +632,8 @@ const getColorConfig = (category) => {
                             exitContainer.classList.remove('opacity-0', 'pointer-events-none');
                             exitContainer.classList.add('opacity-100', 'pointer-events-auto');
                         }
+                        
+                        checkTimelineInstructions();
                     };
 
                     if (skipBtn) {
@@ -688,6 +778,7 @@ const getColorConfig = (category) => {
                                     exitContainer.classList.remove('opacity-0', 'pointer-events-none');
                                     exitContainer.classList.add('opacity-100', 'pointer-events-auto');
                                 }
+                                checkTimelineInstructions();
                             }
                         };
                         requestAnimationFrame(animatePhase2);
@@ -714,6 +805,8 @@ const getColorConfig = (category) => {
 
             scrollContainer.addEventListener('wheel', (evt) => {
                 if (!timelineActive) return;
+                dismissTimelineInstructions();
+                
                 if (window.innerWidth >= 768 && !evt.shiftKey) {
                     evt.preventDefault();
                     const maxScroll = scrollContainer.scrollWidth - scrollContainer.clientWidth;
@@ -727,6 +820,10 @@ const getColorConfig = (category) => {
                 }
             }, { passive: false });
 
+            scrollContainer.addEventListener('touchmove', () => {
+                if (timelineActive) dismissTimelineInstructions();
+            }, { passive: true });
+
             // Ensure parallax updates seamlessly on native scroll as well
             scrollContainer.addEventListener('scroll', () => {
                 if (!isRewindingHome && scrollContainer.scrollLeft < scrollLimitMin) {
@@ -738,6 +835,9 @@ const getColorConfig = (category) => {
                 }
                 if (parallaxBg) {
                      parallaxBg.style.transform = `translateX(${-scrollContainer.scrollLeft * 0.08}px)`;
+                }
+                if (timelineActive) {
+                     dismissTimelineInstructions();
                 }
             }, { passive: true });
 
@@ -757,6 +857,10 @@ const getColorConfig = (category) => {
                     if (exitContainer) {
                         exitContainer.classList.add('opacity-0', 'pointer-events-none');
                         exitContainer.classList.remove('opacity-100', 'pointer-events-auto');
+                    }
+                    if (timelineInstructions) {
+                        timelineInstructions.style.opacity = '0';
+                        timelineInstructions.style.transform = 'translateY(4px)';
                     }
 
                     const startScroll = scrollContainer.scrollLeft;
@@ -839,7 +943,7 @@ const getColorConfig = (category) => {
 
                     requestAnimationFrame(() => {
                         // 1. Fade out everything except "Koby" first
-                        document.querySelectorAll('a, p, nav, .cinematic-extra-text').forEach(el => {
+                        document.querySelectorAll('a, p, nav, .cinematic-extra-text, #home-media-elements').forEach(el => {
                             if (el.style) {
                                 el.style.transition = 'opacity 0.8s ease';
                                 el.style.opacity = '0';
@@ -856,8 +960,8 @@ const getColorConfig = (category) => {
                         
                         // 2. Wait for fade & slide, PAUSE for 300ms, then start the zoom
                         setTimeout(() => {
-                            // Extra slow start, ramp up heavily at the end
-                            kobyOnly.style.transition = 'transform 2.5s cubic-bezier(0.8, 0, 0.9, 0.2)';
+                            // Extra slow start, aggressive acceleration at the end
+                            kobyOnly.style.transition = 'transform 2.0s cubic-bezier(0.8, 0, 1, 1)';
                             kobyOnly.style.transform = `translate3d(${moveX}px, ${moveY}px, 0) scale(100)`;
 
                             setTimeout(() => {
@@ -866,7 +970,7 @@ const getColorConfig = (category) => {
                                 link.href = '/brain';
                                 document.body.appendChild(link);
                                 link.click();
-                            }, 2400);
+                            }, 1900);
                         }, 1100);
                     });
                 } else {
@@ -884,7 +988,7 @@ const getColorConfig = (category) => {
         const textContainer = document.getElementById('cinematic-koby-text');
         const kobyOnly = document.getElementById('cinematic-koby-only');
         const blackout = document.getElementById('blackout-overlay');
-        const otherElements = document.querySelectorAll('a, p, nav, .cinematic-extra-text');
+        const otherElements = document.querySelectorAll('a, p, nav, .cinematic-extra-text, #home-media-elements');
         
         if (fromBrain) {
             sessionStorage.removeItem('from_brain');
