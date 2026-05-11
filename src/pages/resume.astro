@@ -1,0 +1,607 @@
+---
+import '../styles/global.css';
+import { ClientRouter } from 'astro:transitions';
+import { getCollection } from 'astro:content';
+
+
+
+const parallaxHues = Array.from({ length: 100 }, (_, i) => ({
+    top: i % 2 === 0 ? Math.floor(Math.random() * 20) + 10 : Math.floor(Math.random() * 20) + 60,
+    left: i * 15 + 30, // Spaced every 15vw covering 1500vw
+    size: Math.floor(Math.random() * 15) + 20,
+    blur: Math.floor(Math.random() * 4) + 6
+}));
+
+const getColorConfig = (category) => {
+   switch(category.toLowerCase()) {
+       case 'software': return { text: 'text-emerald-500', bg: 'bg-emerald-500', borderHover: 'hover:border-emerald-500', shadow: 'shadow-[0_0_15px_rgba(16,185,129,0.5)]' };
+       case 'hardware': return { text: 'text-blue-500', bg: 'bg-blue-500', borderHover: 'hover:border-blue-500', shadow: 'shadow-[0_0_15px_rgba(59,130,246,0.5)]' };
+       case 'event': return { text: 'text-orange-500', bg: 'bg-orange-500', borderHover: 'hover:border-orange-500', shadow: 'shadow-[0_0_15px_rgba(249,115,22,0.5)]' };
+       case 'engineering': return { text: 'text-cyan-500', bg: 'bg-cyan-500', borderHover: 'hover:border-cyan-500', shadow: 'shadow-[0_0_15px_rgba(6,182,212,0.5)]' };
+       case 'milestone': return { text: 'text-purple-500', bg: 'bg-purple-500', borderHover: 'hover:border-purple-500', shadow: 'shadow-[0_0_15px_rgba(168,85,247,0.5)]' };
+       default: return { text: 'text-zinc-500', bg: 'bg-zinc-500', borderHover: 'hover:border-zinc-500', shadow: 'shadow-[0_0_15px_rgba(113,113,122,0.5)]' };
+   }
+}
+---
+
+<!doctype html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>Resume | Koby L.</title>
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
+    <ClientRouter fallback="swap" />
+</head>
+<body class="bg-zinc-950 text-zinc-50 h-screen w-screen overflow-hidden flex flex-col font-sans antialiased">
+    <canvas id="parallax-canvas" transition:persist="parallax-bg-canvas" transition:animate="none" class="fixed top-0 left-0 w-screen h-screen pointer-events-none mix-blend-screen z-0"></canvas>
+    
+
+
+    <!-- Black overlay for cinematic transitions -->
+    <div id="blackout-overlay" class="fixed inset-0 bg-black opacity-0 pointer-events-none z-[100] transition-opacity duration-[1200ms] ease-in-out"></div>
+    
+    <!-- Timeline Exit Button -->
+    <div id="timeline-exit-container" class="fixed top-8 left-8 z-50 opacity-0 pointer-events-none transition-opacity duration-500 group">
+        <a href="/" class="flex items-center gap-3 px-6 py-2.5 bg-zinc-950/40 backdrop-blur-md border border-white/10 rounded-full text-white/70 hover:text-white hover:bg-zinc-900/60 hover:border-purple-500/50 transition-all duration-300 shadow-xl shadow-black/20 group-hover:shadow-[0_0_15px_rgba(168,85,247,0.2)]">
+            <svg class="w-4 h-4 transition-transform duration-300 group-hover:-translate-x-1.5 text-purple-400 group-hover:text-purple-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+            <span class="font-sans text-sm font-medium tracking-widest uppercase">Home</span>
+        </a>
+    </div>
+
+    <!-- Timeline Skip Button -->
+    <button id="timeline-skip-btn" class="fixed bottom-8 left-8 z-50 opacity-0 pointer-events-none transition-all duration-500 text-zinc-600 hover:text-zinc-400 font-mono text-xs tracking-[0.2em] flex items-center gap-2 group cursor-pointer">
+        SKIP <span class="group-hover:translate-x-1 transition-transform duration-300">&gt;&gt;&gt;</span>
+    </button>
+
+    <!-- Timeline Instructions -->
+    <div
+        id="timeline-instructions"
+        class="fixed bottom-12 left-1/2 -translate-x-1/2 z-50 transition-all duration-1000 opacity-0 pointer-events-none flex items-center gap-4 text-white/80 drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)] transform translate-y-4"
+    >
+        <span class="font-mono text-sm tracking-widest uppercase font-semibold">Scroll to navigate</span>
+        <svg class="w-6 h-6 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+    </div>
+
+    <!-- Pure Timeline Container (No vertical scrolling allowed on page) -->
+    <main class="flex-grow w-full relative flex items-center bg-gradient-to-br from-zinc-950 via-zinc-950 to-zinc-900 overflow-hidden">
+        
+        <!-- Fixed Floating Header -->
+        <div id="timeline-floating-header" class="absolute top-24 left-4 md:left-12 z-40 pointer-events-none drop-shadow-[0_4px_20px_rgba(0,0,0,1)] mix-blend-screen hidden md:block opacity-0 transition-opacity duration-1000">
+            <h1 class="text-4xl md:text-5xl font-black mb-1 tracking-tighter text-white">The Timeline</h1>
+            <p class="text-zinc-300 max-w-sm text-sm leading-relaxed"><span class="text-purple-400 font-bold block">(Click on an event to view the breakdown).</span></p>
+        </div>
+        
+        <main class="w-full min-h-screen relative z-10 flex flex-col justify-center pointer-events-auto" transition:animate="slide">
+                        <!-- Home Exit Button -->
+                        <div id="resume-home-exit" class="absolute top-8 right-8 md:right-16 z-50 transition-opacity duration-500 group cursor-pointer">
+                            <a href="/" class="flex items-center gap-3 px-6 py-2.5 bg-zinc-950/40 backdrop-blur-md border border-white/10 rounded-full text-white/70 hover:text-white hover:bg-zinc-900/60 hover:border-rose-500/50 transition-all duration-300 shadow-xl shadow-black/20 group-hover:shadow-[0_0_15px_rgba(244,63,94,0.2)]">
+                                <span class="font-sans text-sm font-medium tracking-widest uppercase">Home</span>
+                                <svg class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1.5 text-rose-400 group-hover:text-rose-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                            </a>
+                        </div>
+
+                        <main class="relative z-10 w-full max-w-6xl mx-auto px-6 pt-24 h-screen flex flex-col md:flex-row gap-12">
+                            <!-- Left Sidebar (Sticky) -->
+                            <aside id="resume-left-col" class="w-full md:w-1/3 flex flex-col gap-8 h-full pb-24 overflow-y-auto no-scrollbar" onwheel="event.stopPropagation()">
+                                <div class="bg-zinc-900/50 backdrop-blur-xl border border-zinc-800 rounded-3xl p-8 shadow-2xl">
+                                    <h1 class="text-4xl font-black tracking-tight text-white mb-2">Koby Miller</h1>
+                                    <p class="text-rose-400 font-medium mb-6 leading-tight">Senior Associate<br/>Software Engineer</p>
+                                    <div class="space-y-3 text-sm text-zinc-300">
+                                        <p class="flex items-center gap-3"><span class="text-rose-500">📍</span> Viera, FL</p>
+                                        <p class="flex items-center gap-3"><span class="text-rose-500">📧</span> KobyLMiller@outlook.com</p>
+                                        <p class="flex items-center gap-3"><span class="text-rose-500">📱</span> 321-313-4355</p>
+                                    </div>
+                                    <div class="mt-8 inline-flex items-center gap-2 px-5 py-2.5 bg-rose-500/10 border border-rose-500/30 rounded-xl shadow-[0_0_20px_rgba(244,63,94,0.15)] text-rose-300 font-bold tracking-widest text-sm uppercase">
+                                        <span class="text-rose-500 text-lg">🛡️</span> TS/SCI Cleared
+                                    </div>
+                                </div>
+
+                                <div class="bg-zinc-900/50 backdrop-blur-xl border border-zinc-800 rounded-3xl p-8 shadow-2xl">
+                                    <h2 class="text-xs font-bold text-zinc-500 uppercase tracking-widest mb-4">Skills</h2>
+                                    <div class="flex flex-wrap gap-2">
+                                        {skills.map(skill => (
+                                            <span class="px-3 py-1 bg-zinc-800/80 border border-zinc-700/50 rounded-lg text-xs text-zinc-300 hover:text-white hover:border-rose-500/50 transition-colors">
+                                                {skill}
+                                            </span>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                <div class="bg-zinc-900/50 backdrop-blur-xl border border-zinc-800 rounded-3xl p-8 shadow-2xl">
+                                    <h2 class="text-xs font-bold text-zinc-500 uppercase tracking-widest mb-4 border-b border-zinc-800 pb-2">Education</h2>
+                                    <p class="text-white font-bold mb-1">University of Florida</p>
+                                    <p class="text-zinc-400 text-sm mb-1">B.S. Computer Engineering</p>
+                                    <p class="text-zinc-500 text-xs">Graduated 12/2020</p>
+                                    
+                                    <h2 class="text-xs font-bold text-zinc-400 uppercase tracking-widest mt-10 mb-4 border-b border-zinc-800 pb-2">Certifications</h2>
+                                    <div class="mb-4">
+                                        <p class="text-white font-bold mb-1">CompTIA Security+</p>
+                                        <p class="text-zinc-500 text-xs">Exp. 05/2026</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-white font-bold mb-1">SAFe Practitioner</p>
+                                        <p class="text-zinc-500 text-xs">Active Certification</p>
+                                    </div>
+                                </div>
+
+                                <a href="/assets/KobyMillerResume.pdf" download="KobyMillerResume.pdf" class="w-full py-4 bg-rose-600/10 border border-rose-500/50 hover:bg-rose-600 text-rose-100 hover:text-white hover:shadow-[0_0_25px_rgba(225,29,72,0.4)] text-center rounded-2xl transition-all duration-300 font-bold tracking-wide shadow-xl flex items-center justify-center gap-3 group">
+                                    <svg class="w-5 h-5 transition-transform duration-300 group-hover:-translate-y-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                                    Download PDF
+                                </a>
+                            </aside>
+
+                            <!-- Right Content Area -->
+                            <div id="resume-right-col" class="w-full md:w-2/3 flex flex-col gap-8 h-full pb-24 overflow-y-auto no-scrollbar" onwheel="event.stopPropagation()">
+                                <div class="bg-zinc-900/30 backdrop-blur-sm border border-zinc-800/50 rounded-3xl p-8 shadow-xl">
+                                    <h2 class="text-sm font-bold text-rose-400 uppercase tracking-widest mb-8">Professional Experience</h2>
+                                    
+                                    <div class="mb-10 relative">
+                                        <div class="flex flex-col md:flex-row justify-between md:items-center mb-2">
+                                            <h3 class="text-2xl font-bold text-white">Dark Wolf</h3>
+                                            <span class="text-rose-400/80 text-sm font-mono tracking-widest uppercase">07/2023 — Present</span>
+                                        </div>
+                                        <h4 class="text-blue-400 font-medium text-base mb-4">Senior Associate Software Engineer</h4>
+                                        <ul class="space-y-3 text-zinc-300 text-sm list-disc list-inside marker:text-zinc-600 leading-relaxed">
+                                            <li><strong class="text-zinc-200 font-medium">Manticore:</strong> Developed full-stack features for mission-critical tools within the Manticore system, including enhancements to Master Station Log and Cyber Mission Mapping.</li>
+                                            <li><strong class="text-zinc-200 font-medium">MSL SME:</strong> Acted as the primary technical representative for the team, interfacing directly with customers, end users, and cross-functional teams; led demos and communicated system capabilities to operators.</li>
+                                            <li><strong class="text-zinc-200 font-medium">Ownership & Delivery:</strong> Designed and delivered multiple large-scale features from concept through deployment, leading development efforts and coordinating a small team to implement operator-driven requirements.</li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="mb-10 relative">
+                                        <div class="flex flex-col md:flex-row justify-between md:items-center mb-2">
+                                            <h3 class="text-2xl font-bold text-white">L3Harris Technologies</h3>
+                                            <span class="text-rose-400/80 text-sm font-mono tracking-widest uppercase">05/2021 — 07/2023</span>
+                                        </div>
+                                        <h4 class="text-blue-400 font-medium text-base mb-4">Software Engineer I</h4>
+                                        <ul class="space-y-3 text-zinc-300 text-sm list-disc list-inside marker:text-zinc-600 leading-relaxed">
+                                            <li><strong class="text-zinc-200 font-medium">ISW / ATSS:</strong> Diagnosed and resolved issues in a complex counter-communication system, working directly with hardware (spectrum analyzers, decoders, attenuators) and improving system reliability. Modified installation scripts and altered code to pass Coverity scans.</li>
+                                            <li><strong class="text-zinc-200 font-medium">Training Records:</strong> Created an internal tool made from scratch to aid Technical Trainers in keeping track of all employees' training process.</li>
+                                            <li><strong class="text-zinc-200 font-medium">GBOSS & TRAX:</strong> Supported integration of Syntrack (JPL software) into deep space telescope systems, and collaborated on a company-wide survey platform.</li>
+                                            <li><strong class="text-zinc-200 font-medium">PEER Coordinator:</strong> Led program that helps new hires, minimizing transition downtime.</li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="relative">
+                                        <div class="flex flex-col md:flex-row justify-between md:items-center mb-2">
+                                            <h3 class="text-2xl font-bold text-white">SS&C Advent</h3>
+                                            <span class="text-rose-400/80 text-sm font-mono tracking-widest uppercase">05/2019 — 08/2019</span>
+                                        </div>
+                                        <h4 class="text-blue-400 font-medium text-base mb-4">Product Development Intern</h4>
+                                        <ul class="space-y-3 text-zinc-300 text-sm list-disc list-inside marker:text-zinc-600 leading-relaxed">
+                                            <li>Created internal tools to monitor client data ingestion processes, increasing visibility into system performance.</li>
+                                            <li>Automated anomaly detection by connecting SQL queries to Slack notifications, enabling real-time issue awareness.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="bg-zinc-900/30 backdrop-blur-sm border border-zinc-800/50 rounded-3xl p-8 shadow-xl">
+                                    <h2 class="text-sm font-bold text-rose-400 uppercase tracking-widest mb-8">Projects</h2>
+                                    <div class="mb-10">
+                                        <div class="flex flex-col md:flex-row justify-between md:items-center mb-4">
+                                            <h3 class="text-2xl font-bold text-white">Stock Calculator</h3>
+                                            <div class="flex items-center gap-4 mt-2 md:mt-0">
+                                                <a href="/projects/stock-project-v2" class="text-cyan-400 hover:text-cyan-300 text-sm font-bold flex items-center gap-1.5"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg> View Timeline</a>
+                                            </div>
+                                        </div>
+                                        <ul class="space-y-3 text-zinc-300 text-sm list-disc list-inside marker:text-zinc-600 leading-relaxed">
+                                            <li>Architected a full-stack algorithmic analysis platform to back a self-theorized trading strategy.</li>
+                                            <li>Engineered a Python/FastAPI backend leveraging Pandas and custom knapsack optimization algorithms to generate efficient, non-overlapping trade schedules.</li>
+                                            <li>Built an interactive React dashboard with dynamic visualizations for projected equity curves, portfolio distributions, and predictive confidence metrics.</li>
+                                        </ul>
+                                    </div>
+
+                                    <div>
+                                        <div class="flex flex-col md:flex-row justify-between md:items-center mb-4">
+                                            <h3 class="text-2xl font-bold text-white">Cuttlefish Lights</h3>
+                                            <div class="flex items-center gap-4 mt-2 md:mt-0">
+                                                <a href="/projects/cuttlefish-v3" class="text-cyan-400 hover:text-cyan-300 text-sm font-bold flex items-center gap-1.5"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg> View Timeline</a>
+                                                <a href="https://github.com/Koby1997/CuttlefishLights" target="_blank" class="text-zinc-400 hover:text-white text-sm font-bold flex items-center gap-1.5"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg> GitHub</a>
+                                            </div>
+                                        </div>
+                                        <ul class="space-y-3 text-zinc-300 text-sm list-disc list-inside marker:text-zinc-600 leading-relaxed">
+                                            <li>Engineered an Arduino-based system that synchronizes LED lighting effects with live audio input.</li>
+                                            <li>Programmed dynamic visual effects using the FastLED library to respond to distinct musical cues.</li>
+                                            <li>Built a desktop application to provide an intuitive interface for controlling lighting behaviors.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </main>
+                    </div>
+                    </div>
+                </div>
+
+                <!-- 1. The Unified Home Screen (Demo 3) -->
+                <div id="unified-home-screen" class="w-[100vw] h-full shrink-0 flex flex-col justify-center relative z-20 px-4 md:px-0">
+                    <div class="w-full max-w-6xl mx-auto px-6 lg:px-8 flex flex-col justify-center h-full pt-20 md:pt-32 relative">
+                        
+                        <div class="max-w-4xl mb-16 text-center mx-auto relative z-[60]">
+                            
+                            <!-- Absolute Positioning Anchor Point (Center of Text Block) -->
+                            <!-- This perfectly locks the components to the exact pixel offsets of a 1920x1080 monitor relative to the 'Koby' text -->
+                            <div id="home-media-elements" class="absolute left-1/2 top-0 w-0 h-0 hidden md:block">
+                                <!-- Floating Image Cycler -->
+                                <div class="absolute top-[-250px] left-[450px] w-80 h-[28rem] rounded-[2rem] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10 z-[70] bg-zinc-900/50 backdrop-blur-sm transition-transform duration-500">
+                                    <img id="home-cycler-img-1" src="/assets/projects/home-page/1.jpg" alt="Koby" class="absolute inset-0 w-full h-full object-cover transition-opacity duration-[1500ms] opacity-100 z-10" style="image-rendering: high-quality; transform: translateZ(0);" />
+                                    <img id="home-cycler-img-2" src="" alt="Koby Next" class="absolute inset-0 w-full h-full object-cover transition-opacity duration-[1500ms] opacity-0 z-0" style="image-rendering: high-quality; transform: translateZ(0);" />
+                                </div>
+
+                            <!-- Solid White Curved Arrow -->
+                            <svg class="absolute top-[-190px] left-[15px] w-[560px] h-[220px] z-[70] text-white pointer-events-none" viewBox="0 0 200 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M0,90 C 25,20 80,10 156,22" stroke="white" stroke-width="6" stroke-linecap="round" fill="none" vector-effect="non-scaling-stroke" />
+                                <path d="M152,11 L165,23 L148,32 Z" fill="white" stroke="white" stroke-width="3" stroke-linejoin="round" vector-effect="non-scaling-stroke" />
+                            </svg>
+                            </div>
+
+                            <h1 id="cinematic-koby-text" class="text-7xl md:text-[7rem] font-bold text-white mb-6 tracking-tighter relative z-[60]">
+                                <span class="cinematic-extra-text transition-opacity duration-[800ms]">Hi, I'm&nbsp;</span><span id="cinematic-koby-only" class="inline-block transition-transform duration-[800ms] ease-in-out origin-center">K<span id="zoom-target-o" class="relative inline-block origin-center">o</span>by</span><span class="cinematic-extra-text transition-opacity duration-[800ms]"></span>
+                            </h1>
+                            <p class="text-2xl text-zinc-400 font-light leading-relaxed">
+                                I'm just a fun guy trying to make cool things
+                            </p>
+                        </div>
+
+                        <!-- The 3 Evenly Spaced Gateways (Sleek Outline Pills) -->
+                        <div class="flex flex-col md:flex-row justify-center items-center gap-6 mt-4">
+                            <a href="/resume" id="unified-resume-trigger" class="group relative px-8 py-4 border border-zinc-700/50 hover:border-rose-500/50 bg-zinc-900/20 hover:bg-zinc-900/80 backdrop-blur-md rounded-xl transition-all duration-300 shadow-xl overflow-hidden text-center z-20">
+                                <div class="absolute inset-0 bg-gradient-to-br from-rose-500/0 via-rose-500/0 to-rose-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                                <h3 class="relative z-10 text-sm md:text-base font-bold text-zinc-300 group-hover:text-white uppercase tracking-[0.2em] transition-colors">My Career</h3>
+                            </a>
+
+                            <a href="/brain" id="brain-link-trigger" class="group relative px-8 py-4 border border-zinc-700/50 hover:border-blue-500/50 bg-zinc-900/20 hover:bg-zinc-900/80 backdrop-blur-md rounded-xl transition-all duration-300 shadow-xl overflow-hidden text-center z-20">
+                                <div class="absolute inset-0 bg-gradient-to-br from-blue-500/0 via-blue-500/0 to-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                                <h3 class="relative z-10 text-sm md:text-base font-bold text-zinc-300 group-hover:text-white uppercase tracking-[0.2em] transition-colors">My Interests</h3>
+                            </a>
+
+                            <a href="#" id="unified-timeline-trigger" class="group relative px-8 py-4 border border-zinc-700/50 hover:border-purple-500/50 bg-zinc-900/20 hover:bg-zinc-900/80 backdrop-blur-md rounded-xl transition-all duration-300 shadow-xl overflow-hidden text-center z-20">
+                                <div class="absolute inset-0 bg-gradient-to-br from-purple-500/0 via-purple-500/0 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                                <h3 class="relative z-10 text-sm md:text-base font-bold text-zinc-300 group-hover:text-white uppercase tracking-[0.2em] transition-colors">My Journey</h3>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- INSTANT NATIVE SCROLL SYNC (Prevents Blink on Fresh Load) -->
+                <script is:inline>
+                    (function() {
+                        var container = document.getElementById('timeline-container');
+                        if (container) {
+                            var savedScroll = sessionStorage.getItem('timeline_scroll');
+                            if (!savedScroll) {
+                                // 150vw is the exact width of the resume-runway before the home screen
+                                container.scrollLeft = window.innerWidth * 1.5;
+                            } else {
+                                container.scrollLeft = parseFloat(savedScroll);
+                            }
+                        }
+                    })();
+                </script>
+
+                <!-- 2. Cinematic Intro Runway (The Void 0-1997) -->
+                <div id="cinematic-runway" class="flex-row relative h-full items-center mr-0 md:mr-32 flex">
+                    <!-- The Sticky Void Counter -->
+                    <div id="cinematic-sticky-counter-container" class="hidden absolute top-0 left-0 w-[800vw] h-full flex-row items-center pointer-events-none z-50 transition-opacity duration-300">
+                        <div class="sticky left-8 z-0 flex items-center opacity-20 pointer-events-none">
+                            <span id="cinematic-sticky-counter" class="text-[8rem] md:text-[14rem] font-black text-zinc-600 leading-none tracking-tighter mix-blend-overlay">0</span>
+                        </div>
+                    </div>
+                    
+                    <div class="w-[800vw] h-full shrink-0 relative flex items-center pointer-events-none"></div>
+
+                    <!-- Highway 1997 to 2017 mapped strictly -->
+                    {postYears.map(year => (
+                        <div class="flex flex-row relative h-full items-center mr-0 md:mr-32 shrink-0 min-w-[40vw] w-max">
+                            <div class="sticky left-8 z-0 flex items-center self-stretch opacity-20 pointer-events-none mb-0">
+                                <span class="text-[8rem] md:text-[14rem] font-black text-zinc-600 leading-none tracking-tighter mix-blend-overlay">{year}</span>
+                            </div>
+                            
+                            {year === 1997 && (
+                                <div id="baby-1997-marker" class="relative w-[85vw] md:w-80 shrink-0 flex flex-col items-center group mx-4 md:mx-8 cursor-pointer transition-transform md:-translate-y-[20vh] z-30">
+                                    <div class="hidden md:block w-5 h-5 rounded-full bg-purple-600 absolute shadow-[0_0_15px_rgba(168,85,247,0.5)] z-20 bottom-[-4.5rem]"></div>
+                                    <div class="hidden md:block absolute left-1/2 w-[2px] h-16 bg-zinc-800 z-10 bottom-[-4rem]"></div>
+                                    
+                                    <div class="w-full bg-zinc-900 border border-purple-800 rounded-2xl overflow-hidden shadow-2xl z-30 relative backdrop-blur-md pb-6 group-hover:scale-[1.02] transition-transform">
+                                        <div class="aspect-video bg-zinc-800 flex flex-col items-center justify-center text-zinc-600 font-mono text-sm relative">
+                                            <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors z-10 pointer-events-none"></div>
+                                            <img src="/assets/projects/baby-picture/BabyKoby.jpg" alt="Baby Koby 1997" class="w-full h-full object-cover opacity-100" />
+                                        </div>
+                                        <div class="p-6 h-full">
+                                            <h3 class="text-xl text-purple-400 font-bold mb-2">Baby Koby!</h3>
+                                            <p class="text-zinc-400 text-sm">My eating habits have not changed one bit.</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div id="baby-hidden-message" class="absolute top-[140%] w-max left-1/2 -translate-x-1/2 opacity-0 translate-y-6 transition-all duration-1000 ease-out z-40">
+                                        <p class="text-zinc-400 text-2xl md:text-3xl font-semibold italic tracking-wide">... Not far enough. Let's keep going.</p>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    ))}
+                </div>
+
+                {years.map((yearStr, idx) => (
+                    <div id={idx === 0 ? "real-timeline-start" : undefined} class="flex flex-row relative h-full items-center mr-0 md:mr-32">
+                        <!-- The Sticky Year Header -->
+                        <div class="sticky left-8 z-0 flex items-center self-stretch opacity-20 pointer-events-none mb-0">
+                            <span class="text-[8rem] md:text-[14rem] font-black text-zinc-600 leading-none tracking-tighter mix-blend-overlay">{yearStr}</span>
+                        </div>
+
+                        {projectsByYear[yearStr].map((project, idx) => {
+                            const isTop = idx % 2 === 0;
+                            const primaryCategory = project.data.categories[0] || 'Unknown';
+                            const colors = getColorConfig(primaryCategory);
+                            
+                            return (
+                                <a href={`/projects/${project.id}`} class={`relative w-[85vw] md:w-80 shrink-0 flex flex-col items-center group mx-4 md:mx-8 cursor-pointer transition-transform ${isTop ? 'md:-translate-y-[20vh]' : 'md:translate-y-[20vh]'}`}>
+                                    
+                                    <!-- Node & Trunk Line (Desktop Only) -->
+                                    <div class={`hidden md:block w-5 h-5 rounded-full ${colors.bg} absolute ${colors.shadow} z-20 transition-transform group-hover:scale-150 ${isTop ? 'bottom-[-4.5rem]' : 'top-[-4.5rem]'}`}></div>
+                                    <div class={`hidden md:block absolute left-1/2 w-[2px] h-16 bg-zinc-800 z-10 ${isTop ? 'bottom-[-4rem]' : 'top-[-4rem]'}`}></div>
+                                    
+                                    <!-- The Teaser Card -->
+                                    <div 
+                                        transition:name={`project-box-${project.id}`}
+                                        class={`w-full bg-zinc-900 border border-zinc-700 rounded-2xl overflow-hidden ${colors.borderHover} transition-all duration-300 shadow-2xl z-30 relative group-hover:scale-[1.02]`}
+                                    >
+                                        
+                                        <div class="aspect-video bg-zinc-800 flex items-center justify-center text-zinc-700 relative overflow-hidden font-mono text-xs origin-center">
+                                            <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors z-10 pointer-events-none"></div>
+                                            {project.data.coverImage ? (
+                                                /\.(mp4|webm|mov)$/i.test(project.data.coverImage) ? (
+                                                    <video 
+                                                        src={project.data.coverImage} 
+                                                        autoplay loop muted playsinline 
+                                                        class="w-full h-full object-cover opacity-100" 
+                                                    ></video>
+                                                ) : (
+                                                    <img 
+                                                        src={project.data.coverImage} 
+                                                        alt={project.data.title} 
+                                                        class="w-full h-full object-cover opacity-100" 
+                                                    />
+                                                )
+                                            ) : (
+                                                <span>[ {primaryCategory.toUpperCase()} VISUAL ]</span>
+                                            )}
+                                        </div>
+                                        
+                                        <div class="p-6 relative bg-zinc-900">
+                                            <div class="flex flex-wrap gap-x-3 gap-y-1 mb-3">
+                                                {project.data.categories.map((cat) => {
+                                                    const subColors = getColorConfig(cat);
+                                                    return <span class={`text-[10px] font-bold ${subColors.text} tracking-widest uppercase flex items-center`}><span class={`w-1 h-1 rounded-full ${subColors.bg} mr-1.5`}></span>{cat}</span>;
+                                                })}
+                                            </div>
+                                            <h3 class="text-xl text-white font-bold mb-3 inline-block whitespace-nowrap">
+                                                {project.data.title}
+                                            </h3>
+                                            <p class="text-zinc-400 text-sm line-clamp-3">{project.data.description}</p>
+                                        </div>
+                                    </div>
+                                </a>
+                            );
+                        })}
+                    </div>
+                ))}
+                
+            </div>
+        </div>
+    </main>
+
+    <style>
+        .CustomScrollContainer::-webkit-scrollbar { height: 12px; }
+        .CustomScrollContainer::-webkit-scrollbar-track { background: #09090b; }
+        .CustomScrollContainer::-webkit-scrollbar-thumb { background: #27272a; border-radius: 8px; }
+        .CustomScrollContainer::-webkit-scrollbar-thumb:hover { background: #3f3f46; }
+    </style>
+
+    <script>
+        // Store scroll position seamlessly before jumping back/forward
+        document.addEventListener('astro:page-load', () => {
+        // Resume Smooth Column Scrolling Logic
+        const leftCol = document.getElementById('resume-left-col');
+        const rightCol = document.getElementById('resume-right-col');
+        
+        if (leftCol && rightCol) {
+            const states = {
+                'resume-left-col': { target: 0, current: 0, active: false },
+                'resume-right-col': { target: 0, current: 0, active: false }
+            };
+
+            const doSmoothScroll = (el, delta) => {
+                const state = states[el.id];
+                if (!state.active) {
+                    state.current = el.scrollTop;
+                    state.target = el.scrollTop;
+                }
+                
+                state.target += delta;
+                state.target = Math.max(0, Math.min(state.target, el.scrollHeight - el.clientHeight));
+                
+                if (!state.active) {
+                    state.active = true;
+                    const animate = () => {
+                        if (Math.abs(state.target - state.current) < 0.5) {
+                            state.current = state.target;
+                            el.scrollTop = state.current;
+                            state.active = false;
+                            return;
+                        }
+                        state.current += (state.target - state.current) * 0.12;
+                        el.scrollTop = state.current;
+                        requestAnimationFrame(animate);
+                    };
+                    requestAnimationFrame(animate);
+                }
+            };
+
+            const handleWheel = (e, current, other) => {
+                const atTop = current.scrollTop <= 5;
+                const atBottom = Math.ceil(current.scrollTop + current.clientHeight) >= (current.scrollHeight - 5);
+                const isMouseWheelTick = Math.abs(e.deltaY) >= 40 || e.deltaMode !== 0;
+
+                e.stopPropagation();
+                e.preventDefault();
+
+                if ((e.deltaY < 0 && atTop) || (e.deltaY > 0 && atBottom)) {
+                    if (isMouseWheelTick) doSmoothScroll(other, e.deltaY);
+                    else other.scrollTop += e.deltaY;
+                } else {
+                    if (isMouseWheelTick) doSmoothScroll(current, e.deltaY);
+                    else current.scrollTop += e.deltaY;
+                }
+            };
+
+            leftCol.addEventListener('wheel', (e) => handleWheel(e, leftCol, rightCol), { passive: false });
+            rightCol.addEventListener('wheel', (e) => handleWheel(e, rightCol, leftCol), { passive: false });
+        }
+
+            // Global Seamless Canvas Parallax Renderer
+            if (!window.parallaxCanvasInitialized) {
+                window.parallaxCanvasInitialized = true;
+                window.bgTargetOffset = 0;
+                window.bgCurrentOffset = 0;
+                window.bgStartOffset = 0;
+                window.bgAnimStartTime = null;
+
+                const hues = [];
+
+                // 1. THE RED ZONE (Resume to Left Edge of Home)
+                // Using Rose colors for Resume
+                hues.push({ cx: -40, cy: 30, size: 80, color: '244, 63, 94', type: 'red' });
+                hues.push({ cx: -20, cy: 75, size: 65, color: '225, 29, 72', type: 'red' });
+                hues.push({ cx: 0, cy: 85, size: 90, color: '244, 63, 94', type: 'red' });
+                hues.push({ cx: -10, cy: 25, size: 85, color: '225, 29, 72', type: 'red' });
+                hues.push({ cx: 20, cy: 50, size: 65, color: '244, 63, 94', type: 'red' });
+
+                // 2. THE BLUE ZONE (Center of Home)
+                // 75% size requested by user
+                hues.push({ cx: 50, cy: 25, size: 48, color: '59, 130, 246', type: 'blue' });
+                hues.push({ cx: 70, cy: 75, size: 41, color: '14, 165, 233', type: 'blue' });
+                hues.push({ cx: 60, cy: 55, size: 56, color: '37, 99, 235', type: 'blue' });
+
+                // 3. THE PURPLE ZONE (Right Edge of Home to Infinity)
+                hues.push({ cx: 90, cy: 20, size: 70, color: '168, 85, 247', type: 'purple' });
+                hues.push({ cx: 110, cy: 80, size: 90, color: '217, 70, 239', type: 'purple' });
+                hues.push({ cx: 130, cy: 40, size: 100, color: '168, 85, 247', type: 'purple' });
+                for (let i = 3; i < 40; i++) {
+                    hues.push({
+                        cx: 100 + (i * 40) + (Math.random() * 20 - 10), 
+                        cy: 20 + (Math.random() * 60),
+                        size: 50 + (Math.random() * 60),
+                        color: Math.random() > 0.4 ? '168, 85, 247' : '217, 70, 239',
+                        type: 'purple'
+                    });
+                }
+
+                const canvas = document.getElementById('parallax-canvas');
+                if (canvas) {
+                    const ctx = canvas.getContext('2d', { alpha: true });
+                    
+                    const resizeCanvas = () => {
+                        canvas.width = window.innerWidth;
+                        canvas.height = window.innerHeight;
+                    };
+                    window.addEventListener('resize', resizeCanvas);
+                    resizeCanvas();
+
+                    const renderCanvas = () => {
+                        requestAnimationFrame(renderCanvas);
+                        
+                        const path = window.location.pathname.replace(/\/$/, '') || '/';
+                        
+                        const pageOffsets = { '/resume': -50, '/': 0, '/timeline': 50 };
+                        const target = pageOffsets[path] !== undefined ? pageOffsets[path] : 0;
+
+                        if (window.bgTargetOffset !== target) {
+                            window.bgStartOffset = window.bgCurrentOffset;
+                            window.bgTargetOffset = target;
+                            window.bgAnimStartTime = performance.now();
+                        }
+
+                        if (window.bgAnimStartTime) {
+                            const elapsed = (performance.now() - window.bgAnimStartTime) / 1200;
+                            if (elapsed >= 1) {
+                                window.bgCurrentOffset = window.bgTargetOffset;
+                                window.bgAnimStartTime = null;
+                            } else {
+                                const t = elapsed < 0.5 ? 4 * elapsed * elapsed * elapsed : 1 - Math.pow(-2 * elapsed + 2, 3) / 2;
+                                window.bgCurrentOffset = window.bgStartOffset + (window.bgTargetOffset - window.bgStartOffset) * t;
+                            }
+                        }
+
+                        let scrollOffsetVw = 0;
+                        const container = document.querySelector('.CustomScrollContainer');
+                        if (container) {
+                            scrollOffsetVw = (container.scrollLeft / window.innerWidth) * 100 * 0.15;
+                        }
+
+                        const totalCameraX = window.bgCurrentOffset + scrollOffsetVw;
+
+                        ctx.clearRect(0, 0, canvas.width, canvas.height);
+                        
+                        const vw = window.innerWidth / 100;
+                        const vh = window.innerHeight / 100;
+                        
+                        for (let i = 0; i < hues.length; i++) {
+                            const h = hues[i];
+                            
+                            const screenX = (h.cx - totalCameraX) * vw;
+                            const screenY = h.cy * vh;
+                            
+                            const sizePx = Math.max(300, Math.min(h.size * vw, 1200)); 
+                            const radius = sizePx / 2;
+                            
+                            if (screenX + radius < 0 || screenX - radius > canvas.width) continue;
+                            
+                            let alphaMult = 1.0;
+                            if (h.type === 'blue') {
+                                alphaMult = Math.max(0, 1 - (Math.abs(totalCameraX) / 30));
+                            } else if (h.type === 'red') {
+                                alphaMult = totalCameraX > 10 ? Math.max(0, 1 - ((totalCameraX - 10) / 30)) : 1.0;
+                            } else if (h.type === 'purple') {
+                                alphaMult = totalCameraX < -10 ? Math.max(0, 1 - ((-totalCameraX - 10) / 30)) : 1.0;
+                            }
+
+                            if (alphaMult <= 0) continue;
+
+                            const gradient = ctx.createRadialGradient(screenX, screenY, 0, screenX, screenY, radius);
+                            gradient.addColorStop(0, "rgba(" + h.color + ", " + (0.22 * alphaMult) + ")");
+                            gradient.addColorStop(0.5, "rgba(" + h.color + ", " + (0.08 * alphaMult) + ")");
+                            gradient.addColorStop(1, "rgba(" + h.color + ", 0)");
+                            
+                            ctx.fillStyle = gradient;
+                            ctx.beginPath();
+                            ctx.arc(screenX, screenY, radius, 0, Math.PI * 2);
+                            ctx.fill();
+                        }
+                    };
+                    requestAnimationFrame(renderCanvas);
+                }
+            }
+
+        });
+    </script>
+    <style>
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</body>
+</html>
+
