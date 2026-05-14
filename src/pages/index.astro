@@ -18,12 +18,6 @@ allProjects.forEach(project => {
 const years = Object.keys(projectsByYear).sort();
 const postYears = Array.from({ length: 24 }, (_, i) => 1993 + i);
 
-const parallaxHues = Array.from({ length: 100 }, (_, i) => ({
-    top: i % 2 === 0 ? Math.floor(Math.random() * 20) + 10 : Math.floor(Math.random() * 20) + 60,
-    left: i * 15 + 30, // Spaced every 15vw covering 1500vw
-    size: Math.floor(Math.random() * 15) + 20,
-    blur: Math.floor(Math.random() * 4) + 6
-}));
 
 const getColorConfig = (category) => {
    switch(category.toLowerCase()) {
@@ -86,23 +80,9 @@ const getColorConfig = (category) => {
     <!-- Pure Timeline Container (No vertical scrolling allowed on page) -->
     <main class="flex-grow w-full relative flex items-center bg-gradient-to-br from-zinc-950 via-zinc-950 to-zinc-900 overflow-hidden">
         
-        <!-- The Parallax Background Layer -->
-        <div id="timeline-parallax-bg" class="absolute top-0 left-0 h-full w-[4000vw] z-0 pointer-events-none overflow-hidden will-change-transform translate-x-0">
-            <!-- Simulated Demo-3 Background Base (Overlapping Blue & Teal to brighten the Violet Origin Point) -->
-            <!-- Central Aura (Home Screen) -->
-            <div class="absolute top-1/4 left-[50vw] -translate-x-1/2 bg-blue-500/20 rounded-full mix-blend-screen transition-opacity duration-1000" style="width: clamp(30rem, 35vw, 80rem); height: clamp(30rem, 35vw, 80rem); filter: blur(clamp(100px, 8vw, 300px));"></div>
-            <!-- Timeline Aura (Home Screen) -->
-            <div class="absolute top-1/3 left-[115vw] bg-purple-500/25 rounded-full mix-blend-screen" style="width: clamp(30rem, 35vw, 80rem); height: clamp(30rem, 35vw, 80rem); filter: blur(clamp(100px, 8vw, 300px));"></div>
-            <!-- Resume Aura (Home Screen) -->
-            <div class="absolute bottom-[-15%] left-[-5vw] bg-rose-500/20 rounded-full mix-blend-screen" style="width: clamp(30rem, 35vw, 80rem); height: clamp(30rem, 35vw, 80rem); filter: blur(clamp(100px, 8vw, 300px));"></div>
-
-            <!-- Extended scattered violet hues matching Home page Demo 3 transition -->
-            {parallaxHues.map((hue, i) => (
-                <div 
-                    class="absolute bg-purple-500/10 rounded-full mix-blend-screen"
-                    style={`top: ${hue.top}%; left: ${hue.left}vw; width: clamp(20rem, ${hue.size}vw, 80rem); height: clamp(20rem, ${hue.size}vw, 80rem); filter: blur(clamp(100px, ${hue.blur}vw, 300px));`}
-                ></div>
-            ))}
+        <!-- The Continuous Parallax Background Layer (Canvas) -->
+        <div id="timeline-parallax-bg" class="absolute top-0 left-0 h-full w-[4000vw] z-0 pointer-events-none overflow-hidden will-change-transform translate-x-0 transition-opacity duration-[2400ms]">
+            <canvas id="timeline-parallax-canvas" class="w-full h-full opacity-80"></canvas>
         </div>
 
         <!-- Fixed Floating Header -->
@@ -115,14 +95,11 @@ const getColorConfig = (category) => {
         <div id="timeline-container" class="w-full h-full overflow-x-hidden overflow-y-hidden flex items-center CustomScrollContainer relative">
             <div class="flex flex-row items-center h-full w-max mt-24 md:mt-0 relative">
                 <!-- The Master Horizontal Line -->
-                <div class="absolute top-1/2 left-[250vw] w-[calc(100%-250vw)] h-[2px] bg-zinc-800 -translate-y-1/2 z-0 hidden md:block"></div>
+                <div class="absolute top-1/2 left-[400vw] w-[calc(100%-400vw)] h-[2px] bg-zinc-800 -translate-y-1/2 z-0 hidden md:block"></div>
 
                 <!-- 0. Left Runway for Resume Transition -->
-                <div id="resume-runway" class="w-[150vw] h-full shrink-0 relative flex items-center justify-start">
+                <div id="resume-runway" class="w-[300vw] h-full shrink-0 relative flex items-center justify-start">
                     <!-- Thematic Red Auras to welcome the user into the Resume zone -->
-                    <div class="absolute left-[-5vw] bg-rose-600/20 rounded-full mix-blend-screen pointer-events-none" style="width: clamp(20rem, 30vw, 50rem); height: clamp(20rem, 30vw, 50rem); filter: blur(clamp(80px, 6vw, 200px)); z-index: 0;"></div>
-                    <div class="absolute right-[20vw] bg-rose-500/20 rounded-full mix-blend-screen pointer-events-none" style="width: clamp(30rem, 40vw, 80rem); height: clamp(30rem, 40vw, 80rem); filter: blur(clamp(100px, 8vw, 300px)); z-index: 0;"></div>
-                    <div class="absolute right-[70vw] bg-red-600/15 rounded-full mix-blend-screen pointer-events-none" style="width: clamp(20rem, 30vw, 60rem); height: clamp(20rem, 30vw, 60rem); filter: blur(clamp(100px, 6vw, 250px)); z-index: 0;"></div>
 
                     <!-- RESUME PAGE CONTENT -->
                     <div class="w-[100vw] h-full relative z-10 flex flex-col justify-center pointer-events-auto">
@@ -334,7 +311,7 @@ const getColorConfig = (category) => {
                 <!-- 2. Cinematic Intro Runway (The Void 0-1997) -->
                 <div id="cinematic-runway" class="flex-row relative h-full items-center mr-0 md:mr-32 flex">
                     <!-- The Sticky Void Counter -->
-                    <div id="cinematic-sticky-counter-container" class="hidden absolute top-0 left-0 w-[800vw] h-full flex-row items-center pointer-events-none z-50 transition-opacity duration-300">
+                    <div id="cinematic-sticky-counter-container" class="opacity-0 flex absolute top-0 left-0 w-[800vw] h-full flex-row items-center pointer-events-none z-50 transition-opacity duration-300">
                         <div class="sticky left-8 z-0 flex items-center opacity-20 pointer-events-none">
                             <span id="cinematic-sticky-counter" class="text-[8rem] md:text-[14rem] font-black text-zinc-600 leading-none tracking-tighter mix-blend-overlay">0</span>
                         </div>
@@ -357,7 +334,7 @@ const getColorConfig = (category) => {
                                     <div class="w-full bg-zinc-900 border border-purple-800 rounded-2xl overflow-hidden shadow-2xl z-30 relative backdrop-blur-md pb-6 group-hover:scale-[1.02] transition-transform">
                                         <div class="aspect-video bg-zinc-800 flex flex-col items-center justify-center text-zinc-600 font-mono text-sm relative">
                                             <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors z-10 pointer-events-none"></div>
-                                            <img src="/assets/projects/baby-picture/BabyKoby.jpg" alt="Baby Koby 1997" class="w-full h-full object-cover opacity-100" />
+                                            <img data-src="/assets/projects/baby-picture/BabyKoby.jpg" alt="Baby Koby 1997" class="lazy-media w-full h-full object-cover opacity-100" />
                                         </div>
                                         <div class="p-6 h-full">
                                             <h3 class="text-xl text-purple-400 font-bold mb-2">Baby Koby!</h3>
@@ -404,15 +381,15 @@ const getColorConfig = (category) => {
                                             {project.data.coverImage ? (
                                                 /\.(mp4|webm|mov)$/i.test(project.data.coverImage) ? (
                                                     <video 
-                                                        src={project.data.coverImage} 
-                                                        autoplay loop muted playsinline 
-                                                        class="w-full h-full object-cover opacity-100" 
+                                                        data-src={project.data.coverImage} 
+                                                        loop muted playsinline 
+                                                        class="lazy-media w-full h-full object-cover opacity-100" 
                                                     ></video>
                                                 ) : (
                                                     <img 
-                                                        src={project.data.coverImage} 
+                                                        data-src={project.data.coverImage} 
                                                         alt={project.data.title} 
-                                                        class="w-full h-full object-cover opacity-100" 
+                                                        class="lazy-media w-full h-full object-cover opacity-100" 
                                                     />
                                                 )
                                             ) : (
@@ -473,6 +450,87 @@ const getColorConfig = (category) => {
         document.addEventListener('astro:page-load', () => {
         const scrollContainer = document.querySelector('.CustomScrollContainer');
         const parallaxBg = document.getElementById('timeline-parallax-bg');
+        const realCanvas = document.getElementById('timeline-parallax-canvas');
+
+        // --- One-Time Pre-Rendered Canvas Background ---
+        if (realCanvas && parallaxBg) {
+            const ctx = realCanvas.getContext('2d');
+            
+            const initCanvas = () => {
+                const scale = 0.05; 
+                const vw = window.innerWidth / 100;
+                const vh = window.innerHeight / 100;
+                
+                realCanvas.width = Math.floor(4000 * vw * scale);
+                realCanvas.height = Math.floor(100 * vh * scale);
+                
+                ctx.clearRect(0, 0, realCanvas.width, realCanvas.height);
+                ctx.globalCompositeOperation = 'lighter';
+                
+                const clamp = (val, min, max) => Math.max(min, Math.min(max, val));
+                const rem = 16;
+                
+                const drawOrb = (x, y, r, c0, c1) => {
+                    const sx = x * scale;
+                    const sy = y * scale;
+                    const sr = r * scale;
+                    if (sr <= 0) return;
+                    
+                    const grad = ctx.createRadialGradient(sx, sy, 0, sx, sy, sr);
+                    grad.addColorStop(0, c0);
+                    grad.addColorStop(1, c1);
+                    ctx.fillStyle = grad;
+                    ctx.beginPath();
+                    ctx.arc(sx, sy, sr, 0, Math.PI * 2);
+                    ctx.fill();
+                };
+                
+                // 1. RESUME ZONE (Canvas 0vw - 100vw) [Red/Rose Auras]
+                // 300vw runway gives us plenty of space to paint deep reds!
+                const rW1 = clamp(40 * vw, 30 * rem, 50 * rem);
+                drawOrb(10 * vw, 50 * vh, rW1/2, 'rgba(225, 29, 72, 0.25)', 'rgba(225, 29, 72, 0)');
+                
+                const rW2 = clamp(60 * vw, 40 * rem, 80 * rem);
+                drawOrb(40 * vw, 40 * vh, rW2/2, 'rgba(244, 63, 94, 0.25)', 'rgba(244, 63, 94, 0)');
+                
+                const rW3 = clamp(45 * vw, 30 * rem, 60 * rem);
+                drawOrb(80 * vw, 60 * vh, rW3/2, 'rgba(220, 38, 38, 0.2)', 'rgba(220, 38, 38, 0)');
+
+                // 2. HOME ZONE (Canvas 110vw - 175vw) [Red -> Blue -> Purple]
+                const w = clamp(35 * vw, 30 * rem, 80 * rem);
+                drawOrb(110 * vw, 65 * vh, w/2, 'rgba(244, 63, 94, 0.4)', 'rgba(244, 63, 94, 0)'); // Red
+                drawOrb(140 * vw, 25 * vh + w/2, w/2, 'rgba(59, 130, 246, 0.4)', 'rgba(59, 130, 246, 0)'); // Original Blue
+                drawOrb(150 * vw, 15 * vh + w/2, w/2, 'rgba(59, 130, 246, 0.35)', 'rgba(59, 130, 246, 0)'); // Second Blue (Up and right)
+                drawOrb(175 * vw, 50 * vh, w/2, 'rgba(168, 85, 247, 0.4)', 'rgba(168, 85, 247, 0)'); // Purple
+                
+                // 3. THE UNIFORM PURPLE NEBULA (Canvas 175vw - 2000vw)
+                // We use a seeded pseudo-random generator so it doesn't flicker/change layout every window resize
+                let seed = 1997;
+                const random = () => {
+                    const x = Math.sin(seed++) * 10000;
+                    return x - Math.floor(x);
+                };
+                
+                // Spawn 60 massive purple orbs spaced widely through the void and timeline
+                for (let i = 0; i < 60; i++) {
+                    const hw = clamp((25 + random() * 35) * vw, 40 * rem, 100 * rem); // Large massive orbs like Resume
+                    const hx = 175 * vw + (i * 30 * vw) + ((random() * 20 - 10) * vw); // Spaced roughly 30vw apart
+                    const hy = (10 + random() * 80) * vh; // Kept vertically between 10% and 90%
+                    
+                    const opacity = 0.15 + (random() * 0.15); // Random opacity between 0.15 and 0.30
+                    drawOrb(hx, hy, hw/2, `rgba(168, 85, 247, ${opacity.toFixed(2)})`, 'rgba(168, 85, 247, 0)');
+                }
+            };
+            
+            initCanvas();
+            
+            let resizeTimer;
+            window.addEventListener('resize', () => {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(initCanvas, 300);
+            });
+        }
+        // ----------------------------------------------------
         
         let isAnimating = false;
         let isRewindingHome = false;
@@ -570,7 +628,7 @@ const getColorConfig = (category) => {
                 currentScroll = homeScreen.offsetLeft;
                 targetScroll = homeScreen.offsetLeft;
                 scrollLimitMin = homeScreen.offsetLeft;
-                if (parallaxBg) parallaxBg.style.transform = `translateX(${-currentScroll * 0.08}px)`;
+                if (parallaxBg) parallaxBg.style.transform = `translateX(${-currentScroll * 0.3}px)`;
             } else if (savedScroll) {
                 // If we restored scroll state and are already past the home screen, activate timeline mode immediately
                 if (currentScroll > homeScreen.offsetLeft && realStart && currentScroll >= realStart.offsetLeft - 100) {
@@ -586,7 +644,7 @@ const getColorConfig = (category) => {
                     }
                     checkTimelineInstructions();
                 }
-                if (parallaxBg) parallaxBg.style.transform = `translateX(${-currentScroll * 0.08}px)`;
+                if (parallaxBg) parallaxBg.style.transform = `translateX(${-currentScroll * 0.3}px)`;
                 sessionStorage.removeItem('timeline_scroll'); // clear it so fresh loads start at home
             }
 
@@ -594,11 +652,6 @@ const getColorConfig = (category) => {
                 timelineTrigger.addEventListener('click', (e) => {
                     e.preventDefault();
                     
-                    scrollContainer.style.pointerEvents = 'none';
-                    if(cinematicStickyCounter) {
-                        document.getElementById('cinematic-sticky-counter-container').style.display = 'flex';
-                        document.getElementById('cinematic-sticky-counter-container').style.opacity = '1';
-                    }
                     const babyMarker = document.getElementById('baby-1997-marker');
                     const getOffsetLeft = (el) => {
                         let offset = 0;
@@ -608,7 +661,12 @@ const getColorConfig = (category) => {
                         }
                         return offset;
                     };
-                    const pos1997 = getOffsetLeft(babyMarker) - (window.innerWidth / 2) + (babyMarker.offsetWidth / 2); 
+                    const pos1997 = babyMarker ? getOffsetLeft(babyMarker) - (window.innerWidth / 2) + (babyMarker.offsetWidth / 2) : 0; 
+                    
+                    // scrollContainer.style.pointerEvents = 'none'; // Removed to prevent Layout Thrashing
+                    if(cinematicStickyCounter) {
+                        document.getElementById('cinematic-sticky-counter-container').style.opacity = '1';
+                    }
                     const easeInOutCubic = (t) => t < .5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
 
                     timelineSkipRequested = false;
@@ -622,7 +680,7 @@ const getColorConfig = (category) => {
                         targetScroll = targetPos;
                         timelineActive = true;
                         scrollContainer.style.pointerEvents = 'auto'; 
-                        if(parallaxBg) parallaxBg.style.transform = `translateX(${-targetPos * 0.08}px)`;
+                        if(parallaxBg) parallaxBg.style.transform = `translateX(${-targetPos * 0.3}px)`;
                         
                         if (floatingHeader) {
                             floatingHeader.classList.remove('opacity-0');
@@ -680,14 +738,13 @@ const getColorConfig = (category) => {
                             cinematicStickyCounter.innerText = counterVal;
                         }
                         
-                        if(parallaxBg) parallaxBg.style.transform = `translateX(${-scrollContainer.scrollLeft * 0.08}px)`;
+                        if(parallaxBg) parallaxBg.style.transform = `translateX(${-scrollContainer.scrollLeft * 0.3}px)`;
 
                         if (t < 1) {
                             requestAnimationFrame(animatePhase1);
                         } else {
                             if(cinematicStickyCounter) {
                                 document.getElementById('cinematic-sticky-counter-container').style.opacity = '0';
-                                setTimeout(() => document.getElementById('cinematic-sticky-counter-container').style.display = 'none', 300);
                             }
                             startPhase1_5(); 
                         }
@@ -716,7 +773,7 @@ const getColorConfig = (category) => {
                             
                             const currentS = startPos + (t * crawlDistance);
                             scrollContainer.scrollLeft = currentS;
-                            if(parallaxBg) parallaxBg.style.transform = `translateX(${-currentS * 0.08}px)`;
+                            if(parallaxBg) parallaxBg.style.transform = `translateX(${-currentS * 0.3}px)`;
                             
                             if (t < 1) {
                                 requestAnimationFrame(animatePhase1_5);
@@ -752,7 +809,7 @@ const getColorConfig = (category) => {
                             const currentS = startPos + (easedT * distance);
                             scrollContainer.scrollLeft = currentS;
                             
-                            if(parallaxBg) parallaxBg.style.transform = `translateX(${-currentS * 0.08}px)`;
+                            if(parallaxBg) parallaxBg.style.transform = `translateX(${-currentS * 0.3}px)`;
 
                             if (t < 1) {
                                 requestAnimationFrame(animatePhase2);
@@ -795,7 +852,7 @@ const getColorConfig = (category) => {
                     targetScroll = scrollLimitMin;
                 }
                 scrollContainer.scrollLeft = currentScroll;
-                if(parallaxBg) parallaxBg.style.transform = `translateX(${-currentScroll * 0.08}px)`;
+                if(parallaxBg) parallaxBg.style.transform = `translateX(${-currentScroll * 0.3}px)`;
                 if (Math.abs(targetScroll - currentScroll) > 1) {
                     requestAnimationFrame(updateScroll);
                 } else {
@@ -834,7 +891,7 @@ const getColorConfig = (category) => {
                      targetScroll = currentScroll;
                 }
                 if (parallaxBg) {
-                     parallaxBg.style.transform = `translateX(${-scrollContainer.scrollLeft * 0.08}px)`;
+                     parallaxBg.style.transform = `translateX(${-scrollContainer.scrollLeft * 0.3}px)`;
                 }
                 if (timelineActive) {
                      dismissTimelineInstructions();
@@ -846,7 +903,10 @@ const getColorConfig = (category) => {
                 link.addEventListener('click', (e) => {
                     e.preventDefault();
                     
-                    scrollContainer.style.pointerEvents = 'none';
+                    const startScroll = scrollContainer.scrollLeft;
+                    const endScroll = homeScreen ? homeScreen.offsetLeft : 0;
+                    
+                    // scrollContainer.style.pointerEvents = 'none'; // Prevent Layout Thrashing
                     isAnimating = true; // freeze normal wheel actions
                     isRewindingHome = true;
                     
@@ -863,9 +923,7 @@ const getColorConfig = (category) => {
                         timelineInstructions.style.transform = 'translateY(4px)';
                     }
 
-                    const startScroll = scrollContainer.scrollLeft;
-                    const endScroll = homeScreen ? homeScreen.offsetLeft : 0;
-                    const duration = 2400; // Increased from 1200 to smoothen the rewind deceleration
+                    const duration = 2400;  // Increased from 1200 to smoothen the rewind deceleration
                     const startTime = performance.now();
                     const easeOutQuint = (t) => 1 - Math.pow(1 - t, 5);
 
@@ -875,7 +933,7 @@ const getColorConfig = (category) => {
                         
                         const easedS = startScroll - ((startScroll - endScroll) * easeOutQuint(t));
                         scrollContainer.scrollLeft = easedS;
-                        if(parallaxBg) parallaxBg.style.transform = `translateX(${-easedS * 0.08}px)`;
+                        if(parallaxBg) parallaxBg.style.transform = `translateX(${-easedS * 0.3}px)`;
 
                         if (t < 1) {
                             requestAnimationFrame(swipeBack);
@@ -1178,17 +1236,14 @@ const getColorConfig = (category) => {
                 const parallaxBg = document.getElementById('timeline-parallax-bg');
                 
                 if (scrollContainer) {
-                    scrollContainer.style.pointerEvents = 'none';
+                    const startScroll = scrollContainer.scrollLeft;
+                    const endScroll = 0; // Pan to the far left edge (the runway)
+                    
+                    // scrollContainer.style.pointerEvents = 'none'; // Prevent Layout Thrashing
                     isAnimating = true;
                     scrollLimitMin = 0; // Unlock scrolling to the left
                     
-                    if (parallaxBg) {
-                        parallaxBg.style.transition = 'opacity 2.4s ease-in-out';
-                        parallaxBg.style.opacity = '0'; // Hide the blue hues
-                    }
-                    
-                    const startScroll = scrollContainer.scrollLeft;
-                    const endScroll = 0; // Pan to the far left edge (the runway)
+                    // Removed legacy opacity fade so the unified canvas stays visible!
                     const duration = 2400; 
                     const startTime = performance.now();
                     
@@ -1200,7 +1255,7 @@ const getColorConfig = (category) => {
                         
                         const easedS = startScroll - ((startScroll - endScroll) * easeInOutQuint(t));
                         scrollContainer.scrollLeft = easedS;
-                        if(parallaxBg) parallaxBg.style.transform = `translateX(${-easedS * 0.08}px)`;
+                        if(parallaxBg) parallaxBg.style.transform = `translateX(${-easedS * 0.3}px)`;
 
                         if (t < 1) {
                             requestAnimationFrame(swipeForward);
@@ -1227,27 +1282,24 @@ const getColorConfig = (category) => {
                 const homeScreen = document.getElementById('unified-home-screen');
                 
                 if (scrollContainer && homeScreen) {
-                    scrollContainer.style.pointerEvents = 'none';
-                    isAnimating = true;
-                    
-                    if (parallaxBg) {
-                        parallaxBg.style.transition = 'opacity 2.4s ease-in-out';
-                        parallaxBg.style.opacity = '1'; // Bring back timeline background
-                    }
-                    
                     const startScroll = scrollContainer.scrollLeft;
                     const endScroll = homeScreen.offsetLeft;
+                    
+                    // scrollContainer.style.pointerEvents = 'none'; // Prevent Layout Thrashing
+                    isAnimating = true;
+                    
+                    // Removed legacy opacity fade!
                     const duration = 2400; 
                     const startTime = performance.now();
-                    const easeOutQuint = (t) => 1 - Math.pow(1 - t, 5);
+                    const easeInOutQuint = (t) => t < .5 ? 16 * t * t * t * t * t : 1 - Math.pow(-2 * t + 2, 5) / 2;
 
                     const swipeBackHome = (time) => {
                         let t = (time - startTime) / duration;
                         if (t > 1) t = 1;
                         
-                        const easedS = startScroll + ((endScroll - startScroll) * easeOutQuint(t));
+                        const easedS = startScroll + ((endScroll - startScroll) * easeInOutQuint(t));
                         scrollContainer.scrollLeft = easedS;
-                        if(parallaxBg) parallaxBg.style.transform = `translateX(${-easedS * 0.08}px)`;
+                        if(parallaxBg) parallaxBg.style.transform = `translateX(${-easedS * 0.3}px)`;
 
                         if (t < 1) {
                             requestAnimationFrame(swipeBackHome);
@@ -1320,6 +1372,41 @@ const getColorConfig = (category) => {
 
             leftCol.addEventListener('wheel', (e) => handleWheel(e, leftCol, rightCol), { passive: false });
             rightCol.addEventListener('wheel', (e) => handleWheel(e, rightCol, leftCol), { passive: false });
+        }
+
+        // --- MEDIA LAZY LOADING & PAUSING (Performance Fix) ---
+        const lazyMediaElements = document.querySelectorAll('.lazy-media');
+        if (lazyMediaElements.length > 0 && scrollContainer) {
+            const mediaObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const media = entry.target;
+                    if (entry.isIntersecting) {
+                        // Hydrate src if not loaded yet
+                        if (media.dataset.src) {
+                            media.src = media.dataset.src;
+                            media.removeAttribute('data-src');
+                        }
+                        // Play if it's a video
+                        if (media.tagName === 'VIDEO') {
+                            const playPromise = media.play();
+                            if (playPromise !== undefined) {
+                                playPromise.catch(error => console.log('Video autoplay prevented', error));
+                            }
+                        }
+                    } else {
+                        // Pause immediately when leaving screen to free up the CPU/GPU
+                        if (media.tagName === 'VIDEO') {
+                            media.pause();
+                        }
+                    }
+                });
+            }, {
+                root: scrollContainer,
+                rootMargin: '0px 100% 0px 100%', // Pre-load 1 screen to the left and right
+                threshold: 0
+            });
+
+            lazyMediaElements.forEach(el => mediaObserver.observe(el));
         }
         });
     </script>
