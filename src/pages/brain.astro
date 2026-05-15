@@ -112,6 +112,7 @@ import { ClientRouter } from "astro:transitions";
             <a
                 id="exit-btn"
                 href="/"
+                data-astro-reload
                 class="flex items-center gap-3 px-6 py-2.5 bg-zinc-950/40 backdrop-blur-md border border-white/10 rounded-full text-white/70 hover:text-white hover:bg-zinc-900/60 hover:border-white/30 transition-all duration-300 shadow-xl shadow-black/20 group"
             >
                 <svg
@@ -632,6 +633,22 @@ import { ClientRouter } from "astro:transitions";
                     loadedModel.rotation.y = Math.PI / 2; // Spin it 90 degrees just to see the side profile better immediately
 
                     brainGroup.add(loadedModel);
+                    // PERFORMANCE FIX: Pre-compile all shaders NOW while the screen is black!
+                    // This prevents the massive main-thread lag spike when the model first renders.
+                    renderer.compile(scene, camera);
+                    
+                    // Start the cinematic flight!
+                    if (window.startCinematicEntrance) {
+                        window.startCinematicEntrance();
+                        window.startCinematicEntrance = null; // Prevent double-firing from fallback timeout
+                    }
+                }, undefined, (error) => {
+                    console.error("GLTF Loading Error:", error);
+                    // If the massive brain asset fails to load, STILL start the experience so the user isn't stuck on a black screen!
+                    if (window.startCinematicEntrance) {
+                        window.startCinematicEntrance();
+                        window.startCinematicEntrance = null;
+                    }
                 });
 
                 // ----------------------------------------------------
@@ -949,6 +966,8 @@ import { ClientRouter } from "astro:transitions";
                     const overlay = document.getElementById(
                         "brain-entrance-overlay",
                     );
+                    const labelsContainer = document.getElementById("labels-container");
+                    if (labelsContainer) labelsContainer.style.display = "none"; // Instantly hide labels to prevent DOM lag!
 
                     // Fly out slowly into the deep void (20000) over 3.5s so it NEVER stops before navigation!
                     flyTo(new THREE.Vector3(0, 0, 0), 20000, "CORE", 3500);
@@ -963,6 +982,7 @@ import { ClientRouter } from "astro:transitions";
                         sessionStorage.setItem("from_brain", "true"); // Required to trigger the reverse 'o' zoom on the home page!
                         const link = document.createElement("a");
                         link.href = "/";
+                        link.setAttribute("data-astro-reload", "");
                         document.body.appendChild(link);
                         link.click();
                     }, 1500);
@@ -1355,9 +1375,27 @@ import { ClientRouter } from "astro:transitions";
                 // RENDER LOOP & LOGICC
                 // ----------------------------------------------------
                 const vProj = new THREE.Vector3();
+                let frameCount = 0;
+                let flightStartedFrame = 0;
+                let lastFrameTime = performance.now();
+                const pageLoadTime = performance.now();
 
                 function animate() {
                     requestAnimationFrame(animate);
+                    
+                    const now = performance.now();
+                    const deltaSinceLastFrame = now - lastFrameTime;
+                    lastFrameTime = now;
+                    
+                    frameCount++;
+                    
+                    if (window.startCinematicEntrance === null && flightStartedFrame === 0) {
+                        flightStartedFrame = frameCount;
+                    }
+                    
+                    if (window.startCinematicEntrance === null && flightStartedFrame === 0) {
+                        flightStartedFrame = frameCount;
+                    }
 
                     // ----------------------------------------------------
                     // TUNNEL CLIPPING ENGINE: Calculate Foreground "Empty Space"
@@ -1547,8 +1585,8 @@ import { ClientRouter } from "astro:transitions";
                 // Start WebGL
                 animate();
 
-                // Cinematic Entrance
-                setTimeout(() => {
+                // Cinematic Entrance (Triggered by GLTFLoader!)
+                window.startCinematicEntrance = function() {
                     const overlay = document.getElementById(
                         "brain-entrance-overlay",
                     );
@@ -1557,7 +1595,16 @@ import { ClientRouter } from "astro:transitions";
                     // Fly in slowly from the deep void (10000) to the standard resting distance (1500)
                     // Duration of 2700ms guarantees it outlasts the 1.0s overlay fade!
                     flyTo(new THREE.Vector3(0, 0, 0), 1500, "CORE", 2700);
-                }, 100);
+                };
+                
+                // Fallback Timeout: If GLTF utterly fails or network hangs for 5 seconds, start anyway so user isn't permanently trapped!
+                setTimeout(() => {
+                    if (window.startCinematicEntrance) {
+                        console.warn("GLTFLoader took too long, fallback triggering entrance.");
+                        window.startCinematicEntrance();
+                        window.startCinematicEntrance = null;
+                    }
+                }, 5000);
             } catch (error) {
                 // FATAL ERROR CATCHER FOR DEBUGGING
                 const errDiv = document.createElement("div");
