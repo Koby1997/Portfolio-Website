@@ -1464,7 +1464,11 @@ import { ClientRouter } from "astro:transitions";
 
                 // Inject the precise Hobbies/Children tightly grouped into 3-Tier Networks
                 window.USER_HUBS.forEach((hub) => {
-                    if (hub.isFloating) return;
+                    if (
+                        hub.isFloating &&
+                        (!hub.categories || hub.categories.length === 0)
+                    )
+                        return;
                     const hubCenter = new THREE.Vector3(hub.x, hub.y, hub.z);
 
                     // TIER 2: The Core Categories (e.g. Movies, Tabletop)
@@ -1515,93 +1519,101 @@ import { ClientRouter } from "astro:transitions";
                     hub.categories.forEach((cat, catIndex) => {
                         let catPos;
                         let c2D;
-                        // Execute a brute-force randomized scattered trial up to 200 times purely to find a non-overlapping chaotic vector!
-                        for (let attempt = 0; attempt < 200; attempt++) {
-                            const rXYZ = new THREE.Vector3(
-                                (Math.random() - 0.5) * 2,
-                                (Math.random() - 0.5) * 2,
-                                (Math.random() - 0.5) * 2,
-                            ).normalize();
-                            const dist = 40 + Math.random() * 30; // Drastically tightened max boundary down relative to Layer 1 Core to satisfy user constraint
-                            const candidate = hubCenter
-                                .clone()
-                                .add(rXYZ.multiplyScalar(dist));
+                        if (cat.invisibleCategory) {
+                            catPos = hubCenter.clone();
+                            c2D = toScreen(catPos);
+                        } else {
+                            // Execute a brute-force randomized scattered trial up to 200 times purely to find a non-overlapping chaotic vector!
+                            for (let attempt = 0; attempt < 200; attempt++) {
+                                const rXYZ = new THREE.Vector3(
+                                    (Math.random() - 0.5) * 2,
+                                    (Math.random() - 0.5) * 2,
+                                    (Math.random() - 0.5) * 2,
+                                ).normalize();
+                                const dist = 40 + Math.random() * 30; // Drastically tightened max boundary down relative to Layer 1 Core to satisfy user constraint
+                                const candidate = hubCenter
+                                    .clone()
+                                    .add(rXYZ.multiplyScalar(dist));
 
-                            const cand2D = toScreen(candidate);
-                            const source2D = toScreen(hubCenter);
-                            let overlap = false;
+                                const cand2D = toScreen(candidate);
+                                const source2D = toScreen(hubCenter);
+                                let overlap = false;
 
-                            for (let s of occupied) {
-                                if (s.type === "node") {
-                                    // Tighter bounding requirements to permit denser, shorter clusters
-                                    if (
-                                        Math.hypot(
-                                            cand2D.x - s.obj.x,
-                                            cand2D.y - s.obj.y,
-                                        ) <
-                                        s.r + 20
-                                    )
-                                        overlap = true;
-
-                                    const isSourceNode =
-                                        Math.hypot(
-                                            s.obj.x - source2D.x,
-                                            s.obj.y - source2D.y,
-                                        ) < 1;
-                                    const isCandNode =
-                                        Math.hypot(
-                                            s.obj.x - cand2D.x,
-                                            s.obj.y - cand2D.y,
-                                        ) < 1;
-                                    if (!isSourceNode && !isCandNode) {
+                                for (let s of occupied) {
+                                    if (s.type === "node") {
+                                        // Tighter bounding requirements to permit denser, shorter clusters
                                         if (
-                                            distToSegment(
-                                                s.obj,
-                                                source2D,
-                                                cand2D,
+                                            Math.hypot(
+                                                cand2D.x - s.obj.x,
+                                                cand2D.y - s.obj.y,
                                             ) <
-                                            s.r + 5
+                                            s.r + 20
+                                        )
+                                            overlap = true;
+
+                                        const isSourceNode =
+                                            Math.hypot(
+                                                s.obj.x - source2D.x,
+                                                s.obj.y - source2D.y,
+                                            ) < 1;
+                                        const isCandNode =
+                                            Math.hypot(
+                                                s.obj.x - cand2D.x,
+                                                s.obj.y - cand2D.y,
+                                            ) < 1;
+                                        if (!isSourceNode && !isCandNode) {
+                                            if (
+                                                distToSegment(
+                                                    s.obj,
+                                                    source2D,
+                                                    cand2D,
+                                                ) <
+                                                s.r + 5
+                                            )
+                                                overlap = true;
+                                        }
+                                    } else if (s.type === "line") {
+                                        if (
+                                            distToSegment(cand2D, s.p1, s.p2) <
+                                            15
                                         )
                                             overlap = true;
                                     }
-                                } else if (s.type === "line") {
-                                    if (distToSegment(cand2D, s.p1, s.p2) < 15)
-                                        overlap = true;
+                                    if (overlap) break;
                                 }
-                                if (overlap) break;
+                                if (!overlap) {
+                                    catPos = candidate;
+                                    c2D = cand2D;
+                                    break;
+                                }
                             }
-                            if (!overlap) {
-                                catPos = candidate;
-                                c2D = cand2D;
-                                break;
+
+                            // Fallback math failsafe if tree is incredibly dense
+                            if (!catPos) {
+                                const fallbackAngle =
+                                    (catIndex / hub.categories.length) *
+                                    Math.PI *
+                                    2;
+                                catPos = hubCenter
+                                    .clone()
+                                    .add(
+                                        new THREE.Vector3(
+                                            Math.cos(fallbackAngle) * 50,
+                                            150,
+                                            Math.sin(fallbackAngle) * 50,
+                                        ),
+                                    );
+                                c2D = toScreen(catPos);
                             }
-                        }
 
-                        // Fallback math failsafe if tree is incredibly dense
-                        if (!catPos) {
-                            const fallbackAngle =
-                                (catIndex / hub.categories.length) *
-                                Math.PI *
-                                2;
-                            catPos = hubCenter
-                                .clone()
-                                .add(
-                                    new THREE.Vector3(
-                                        Math.cos(fallbackAngle) * 50,
-                                        150,
-                                        Math.sin(fallbackAngle) * 50,
-                                    ),
-                                );
-                            c2D = toScreen(catPos);
+                            // Shrink the enforced bounding area heavily so dense clusters succeed natively
+                            occupied.push({ obj: c2D, type: "node", r: 25 });
+                            occupied.push({
+                                p1: toScreen(hubCenter),
+                                p2: c2D,
+                                type: "line",
+                            });
                         }
-
-                        // Shrink the enforced bounding area heavily so dense clusters succeed natively
-                        occupied.push({ obj: c2D, type: "node", r: 25 });
-                        occupied.push({
-                            p1: toScreen(hubCenter),
-                            p2: c2D,
-                            type: "line",
-                        });
 
                         // Calculate 60/40 blended color for the category!
                         let catColor = new THREE.Color(hub.color);
@@ -1638,63 +1650,65 @@ import { ClientRouter } from "astro:transitions";
                         }
 
                         // Generation: Category Mesh (Medium Node)
-                        const cG = new THREE.SphereGeometry(8, 16, 16);
-                        const cM = new THREE.MeshBasicMaterial({
-                            color: catColor,
-                            transparent: true,
-                        });
-                        const catMeshRender = new THREE.Mesh(cG, cM);
-                        catMeshRender.position.copy(catPos);
-                        catMeshRender.userData.treeId = hub.id;
-                        catMeshRender.userData.name = cat.name;
-                        catMeshRender.userData.baseColor = catColor.clone();
-                        scene.add(catMeshRender);
+                        if (!cat.invisibleCategory) {
+                            const cG = new THREE.SphereGeometry(8, 16, 16);
+                            const cM = new THREE.MeshBasicMaterial({
+                                color: catColor,
+                                transparent: true,
+                            });
+                            const catMeshRender = new THREE.Mesh(cG, cM);
+                            catMeshRender.position.copy(catPos);
+                            catMeshRender.userData.treeId = hub.id;
+                            catMeshRender.userData.name = cat.name;
+                            catMeshRender.userData.baseColor = catColor.clone();
+                            scene.add(catMeshRender);
 
-                        // Generation: Hidden Enlarged Cursor Hitbox - Solving tiny 3D pointer accuracy natively!
-                        const hitGeo = new THREE.SphereGeometry(15, 8, 8);
-                        const hitMat = new THREE.MeshBasicMaterial({
-                            visible: false,
-                        });
-                        const hitMesh = new THREE.Mesh(hitGeo, hitMat);
-                        hitMesh.position.copy(catPos);
-                        hitMesh.userData.hitMesh = true;
-                        hitMesh.userData.visibleMesh = catMeshRender;
-                        hitMesh.userData.name = cat.name;
-                        hitMesh.userData.treeId = hub.id;
+                            // Generation: Hidden Enlarged Cursor Hitbox - Solving tiny 3D pointer accuracy natively!
+                            const hitGeo = new THREE.SphereGeometry(15, 8, 8);
+                            const hitMat = new THREE.MeshBasicMaterial({
+                                visible: false,
+                            });
+                            const hitMesh = new THREE.Mesh(hitGeo, hitMat);
+                            hitMesh.position.copy(catPos);
+                            hitMesh.userData.hitMesh = true;
+                            hitMesh.userData.visibleMesh = catMeshRender;
+                            hitMesh.userData.name = cat.name;
+                            hitMesh.userData.treeId = hub.id;
 
-                        scene.add(hitMesh);
-                        clickableMeshes.push(hitMesh);
-                        clickableMeshes.push(catMeshRender);
+                            scene.add(hitMesh);
+                            clickableMeshes.push(hitMesh);
+                            clickableMeshes.push(catMeshRender);
 
-                        // Generation: Thick Hierarchical Link directly to Parent Hub
-                        createThickLine(
-                            hubCenter,
-                            catPos,
-                            new THREE.Color(hub.color),
-                            1.8,
-                            0.8,
-                            hub.id,
-                            hub.name,
-                            cat.name,
-                        );
+                            // Generation: Thick Hierarchical Link directly to Parent Hub
+                            createThickLine(
+                                hubCenter,
+                                catPos,
+                                new THREE.Color(hub.color),
+                                1.8,
+                                0.8,
+                                hub.id,
+                                hub.name,
+                                cat.name,
+                            );
 
-                        // Bind HTML label for the CATEGORY node
-                        const catEl = document.createElement("div");
-                        catEl.className =
-                            "absolute top-0 left-0 font-mono text-5xl font-bold tracking-widest text-white uppercase select-none pointer-events-auto cursor-pointer z-40 origin-center";
-                        catEl.innerText = cat.name;
-                        catEl.style.textShadow = `0px 2px 4px #000, 0px 0px 10px #000, 0px 0px 20px #000, 0px 0px 30px #000, 0px 0px 40px ${catCssColor}`;
+                            // Bind HTML label for the CATEGORY node
+                            const catEl = document.createElement("div");
+                            catEl.className =
+                                "absolute top-0 left-0 font-mono text-5xl font-bold tracking-widest text-white uppercase select-none pointer-events-auto cursor-pointer z-40 origin-center";
+                            catEl.innerText = cat.name;
+                            catEl.style.textShadow = `0px 2px 4px #000, 0px 0px 10px #000, 0px 0px 20px #000, 0px 0px 30px #000, 0px 0px 40px ${catCssColor}`;
 
-                        bindHTMLClick(catEl, catPos, 250, cat.name);
-                        labelsContainer.appendChild(catEl);
+                            bindHTMLClick(catEl, catPos, 250, cat.name);
+                            labelsContainer.appendChild(catEl);
 
-                        HTML_LABELS.push({
-                            element: catEl,
-                            position: catPos,
-                            type: "category",
-                            treeId: hub.id,
-                            name: cat.name,
-                        });
+                            HTML_LABELS.push({
+                                element: catEl,
+                                position: catPos,
+                                type: "category",
+                                treeId: hub.id,
+                                name: cat.name,
+                            });
+                        }
 
                         globalNodeMap.set(cat.name, {
                             position: catPos,
@@ -1714,7 +1728,9 @@ import { ClientRouter } from "astro:transitions";
                                     (Math.random() - 0.5) * 2,
                                     (Math.random() - 0.5) * 2,
                                 ).normalize();
-                                const dist = 35 + Math.random() * 45; // Dropping max depth out by 40 units recursively wraps the items deeply around Category nodes so they don't break the active screen borders
+                                const dist = cat.invisibleCategory
+                                    ? 42 + Math.random() * 18
+                                    : 35 + Math.random() * 45; // Dropping max depth out by 40 units recursively wraps the items deeply around Category nodes so they don't break the active screen borders
                                 const candidate = catPos
                                     .clone()
                                     .add(rXYZ.multiplyScalar(dist));
@@ -1722,7 +1738,14 @@ import { ClientRouter } from "astro:transitions";
                                 const cand2D = toScreen(candidate);
                                 let overlap = false;
 
-                                for (let s of occupied) {
+                                for (
+                                    let idx = 0;
+                                    idx < occupied.length;
+                                    idx++
+                                ) {
+                                    if (cat.invisibleCategory && idx === 0)
+                                        continue;
+                                    const s = occupied[idx];
                                     if (s.type === "node") {
                                         if (
                                             Math.hypot(
@@ -1772,13 +1795,21 @@ import { ClientRouter } from "astro:transitions";
                             if (!itemPos) {
                                 const fallbackAngle =
                                     (index / cat.items.length) * Math.PI * 2;
+                                const fallbackDist = cat.invisibleCategory
+                                    ? 20
+                                    : 30;
+                                const fallbackY = cat.invisibleCategory
+                                    ? -20
+                                    : -50;
                                 itemPos = catPos
                                     .clone()
                                     .add(
                                         new THREE.Vector3(
-                                            Math.cos(fallbackAngle) * 30,
-                                            -50,
-                                            Math.sin(fallbackAngle) * 30,
+                                            Math.cos(fallbackAngle) *
+                                                fallbackDist,
+                                            fallbackY,
+                                            Math.sin(fallbackAngle) *
+                                                fallbackDist,
                                         ),
                                     );
                                 i2D = toScreen(itemPos);
@@ -1854,17 +1885,30 @@ import { ClientRouter } from "astro:transitions";
                             clickableMeshes.push(hitMesh);
                             clickableMeshes.push(leafMeshRender);
 
-                            // Generation: Thick Hierarchical Link directly to Parent Category
-                            createThickLine(
-                                catPos,
-                                itemPos,
-                                catColor,
-                                1.0,
-                                0.6,
-                                hub.id,
-                                cat.name,
-                                itemName,
-                            );
+                            // Generation: Thick Hierarchical Link directly to Parent (Hub if category is invisible, otherwise Category)
+                            if (cat.invisibleCategory) {
+                                createThickLine(
+                                    hubCenter,
+                                    itemPos,
+                                    catColor,
+                                    1.0,
+                                    0.6,
+                                    hub.id,
+                                    hub.name,
+                                    itemName,
+                                );
+                            } else {
+                                createThickLine(
+                                    catPos,
+                                    itemPos,
+                                    catColor,
+                                    1.0,
+                                    0.6,
+                                    hub.id,
+                                    cat.name,
+                                    itemName,
+                                );
+                            }
 
                             // Bind HTML label for the exact Data Item
                             const itemEl = document.createElement("div");

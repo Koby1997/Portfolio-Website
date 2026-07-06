@@ -14,7 +14,7 @@ export const hubs = [
                 secondaryParents: ['PLAY / STRATEGY', 'Competitive'],
                 items: [
                     'Lacrosse', 'Indoor Volleyball', 'Sand Volleyball',
-                    'Dodgeball', { name: 'Rock Climbing', secondaryParents: ['Mindset', 'Self Challenging'] }, 'Paintball', 'Ultimate Frisbee'
+                    'Dodgeball', { name: 'Rock Climbing', secondaryParents: ['Mindset', 'Self Challenging', 'Favorites'] }, 'Paintball', 'Ultimate Frisbee'
                 ]
             },
             {
@@ -29,7 +29,7 @@ export const hubs = [
     {
         id: '2',
         name: 'PLAY / STRATEGY',
-        x: 10, y: 100, z: 85, // Behind the brain center, close to center X
+        x: 10, y: 100, z: 150, // Behind the brain center, close to center X
         color: 0x10b981, // Emerald Green
         cssColor: 'rgba(16, 185, 129, 0.8)',
         categories: [
@@ -53,7 +53,7 @@ export const hubs = [
             {
                 name: 'Video Games',
                 items: [
-                    { name: 'Spider-Man', note: '100% The best Super Hero', secondaryParents: ['Marvel'] },
+                    { name: 'Spider-Man', note: '100% The best Super Hero', secondaryParents: ['Marvel', 'Favorites'] },
                     'Ghost of Yōtei', 'God of War', 'The Last of Us',
                     { name: 'Keep Talking and Nobody Explodes', secondaryParents: ['Puzzles'] },
                     { name: 'It Takes Two', secondaryParents: ['Puzzles'] },
@@ -72,7 +72,7 @@ export const hubs = [
             {
                 name: 'Movies',
                 items: [
-                    { name: 'Tenet', note: 'Easily my favorite movie', secondaryParents: ['Thought Provoking', 'Problem Solver'] },
+                    { name: 'Tenet', note: 'Easily my favorite movie', secondaryParents: ['Thought Provoking', 'Problem Solver', 'Favorites'] },
                     { name: 'Inception', secondaryParents: ['Thought Provoking', 'Problem Solver'] },
                     { name: 'Interstellar', secondaryParents: ['Space Exploration'] },
                     { name: 'The Prestige', secondaryParents: ['Thought Provoking'] },
@@ -96,15 +96,16 @@ export const hubs = [
                 name: 'Books',
                 items: [
                     'The Stormlight Archive', 'Red Rising',
-                    { name: 'Project Hail Mary', secondaryParents: ['Thought Provoking'] }
+                    { name: 'Project Hail Mary', note: "Listen to the audio book!", secondaryParents: ['Thought Provoking'] }
                 ]
             },
             {
                 name: 'Story Worlds',
                 items: [
-                    { name: 'Star Wars', secondaryParents: ['Movies', 'Shows'] },
+                    { name: 'Star Wars', secondaryParents: ['Movies', 'Shows', 'Favorites'] },
                     { name: 'Marvel', secondaryParents: ['Movies'] },
-                    { name: 'Lord of the Rings', secondaryParents: ['Movies'] }
+                    { name: 'Lord of the Rings', secondaryParents: ['Movies'] },
+                    { name: 'Greek Mythology', note: "Thanks Percy Jackson" }
                 ]
             }
         ]
@@ -144,7 +145,7 @@ export const hubs = [
     {
         id: '5',
         name: 'CHARACTER',
-        x: -160, y: -60, z: 120, // Bottom-Left-Back Brain
+        x: -160, y: -20, z: 120, // Bottom-Left-Back Brain
         color: 0xf59e0b, // Amber
         cssColor: 'rgba(245, 158, 11, 0.8)',
         categories: [
@@ -192,6 +193,24 @@ export const hubs = [
         color: 0xfa1b0b, // Red/Orange to match cssColor
         cssColor: 'rgba(250, 27, 11, 0.88)',
         categories: []
+    },
+    {
+        id: '8',
+        name: 'Favorites',
+        isFloating: true,
+        x: 5, y: 220, z: -50, // Front-Right-Top
+        color: 0xf8fafc, // Diamond White / Starlight
+        cssColor: 'rgba(250, 250, 250, 1)',
+        categories: [
+            {
+                name: 'Core Favorites',
+                invisibleCategory: true,
+                items: [
+                    'Cuttlefish',
+                    { name: "If I Ain't Got You", note: "This song is a banger" }
+                ]
+            }
+        ]
     }
 ];
 

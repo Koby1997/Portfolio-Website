@@ -10,7 +10,7 @@ ACTIVE
 		Indoor Volleyball
 		Sand Volleyball
 		Dodgeball
-		Rock Climbing [+Mindset, +Self Challenging]
+		Rock Climbing [+Mindset, +Self Challenging, +Favorites]
 		Paintball
 		Ultimate Frisbee
 	Racing [+PLAY / STRATEGY, +Competitive]
@@ -28,7 +28,7 @@ PLAY / STRATEGY
 		Logic Puzzles [+Thought Provoking]
 		Wooden/Metal Puzzles
 	Video Games
-		Spider-Man - "100% The best Super Hero" [+Marvel]
+		Spider-Man - "100% The best Super Hero" [+Marvel, +Favorites]
 		Ghost of Yōtei
 		God of War
 		The Last of Us
@@ -38,7 +38,7 @@ PLAY / STRATEGY
 
 Stories
 	Movies
-		Tenet - "Easily my favorite movie" [+Thought Provoking, +Problem Solver]
+		Tenet - "Easily my favorite movie" [+Thought Provoking, +Problem Solver, +Favorites]
 		Inception [+Thought Provoking, +Problem Solver]
 		Interstellar [+Space Exploration]
 		The Prestige [+Thought Provoking]
@@ -59,9 +59,10 @@ Stories
 		Red Rising
 		Project Hail Mary [+Thought Provoking]
 	Story Worlds
-		Star Wars [+Movies, +Shows]
+		Star Wars [+Movies, +Shows, +Favorites]
 		Marvel [+Movies]
 		Lord of the Rings [+Movies]
+		Greek Mythology
 
 ENGINEERING
 	Software [+Problem Solver, +Self Challenging]
@@ -95,3 +96,7 @@ CHARACTER
 
 Thought Provoking [FLOATING]
 Self Challenging [FLOATING]
+Favorites [FLOATING]
+	Core Favorites
+		Cuttlefish
+		If I Ain't Got You - "This song is a banger"
