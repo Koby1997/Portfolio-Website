@@ -449,7 +449,7 @@ import { ClientRouter } from "astro:transitions";
                     antialias: true,
                     alpha: true,
                 });
-                renderer.setPixelRatio(window.devicePixelRatio);
+                renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
                 renderer.setSize(window.innerWidth, window.innerHeight);
                 renderer.localClippingEnabled = true; // Enables our X-Ray Tunnel shader!
                 container.appendChild(renderer.domElement);
@@ -457,7 +457,7 @@ import { ClientRouter } from "astro:transitions";
                 // Map OrbitControls to the entire document body! This allows the user to click-and-drag right through the HTML label wrappers!
                 const controls = new OrbitControls(camera, document.body);
                 controls.enableDamping = true;
-                controls.dampingFactor = 0.05;
+                controls.dampingFactor = 0.12;
                 controls.enablePan = false; // Just zoom and rotate
                 controls.minDistance = 50; // Let them fly ultra deep inside to inspect the leaves
                 controls.maxDistance = 3000;
@@ -553,6 +553,8 @@ import { ClientRouter } from "astro:transitions";
                         window.activeVisibleNodes = new Set();
                     }
 
+                    rebuildRaycastTargets(); // Dynamic Partitioning Update!
+
                     // Show notes only for the active localized neighborhood!
                     document.querySelectorAll(".layer-4-note").forEach((el) => {
                         if (
@@ -622,7 +624,47 @@ import { ClientRouter } from "astro:transitions";
                 const raycaster = new THREE.Raycaster();
                 const mouse = new THREE.Vector2();
                 const hoverMouse = new THREE.Vector2(-1000, -1000);
+                let mouseMoved = false;
                 const clickableMeshes = [];
+                let raycastTargets = [];
+                let hoveredObj = null;
+
+                let currentCursor = "default";
+                function setBodyCursor(newCursor) {
+                    if (currentCursor !== newCursor) {
+                        renderer.domElement.style.cursor = newCursor;
+                        currentCursor = newCursor;
+                    }
+                }
+
+                function rebuildRaycastTargets() {
+                    raycastTargets = [];
+                    clickableMeshes.forEach((mesh) => {
+                        if (mesh.userData.name) {
+                            raycastTargets.push(mesh);
+                        }
+                    });
+
+                    const isFocused =
+                        activeFocusNodeName !== null &&
+                        activeFocusNodeName !== "CORE";
+                    if (isFocused) {
+                        clickableMeshes.forEach((mesh) => {
+                            if (mesh.userData.endpoints) {
+                                const connectsActive =
+                                    window.activeVisibleNodes.has(
+                                        mesh.userData.endpoints[0],
+                                    ) &&
+                                    window.activeVisibleNodes.has(
+                                        mesh.userData.endpoints[1],
+                                    );
+                                if (connectsActive) {
+                                    raycastTargets.push(mesh);
+                                }
+                            }
+                        });
+                    }
+                }
 
                 let pointerDownTime = 0;
                 let pointerDownPos = new THREE.Vector2();
@@ -631,6 +673,7 @@ import { ClientRouter } from "astro:transitions";
                     hoverMouse.x = (event.clientX / window.innerWidth) * 2 - 1;
                     hoverMouse.y =
                         -(event.clientY / window.innerHeight) * 2 + 1;
+                    mouseMoved = true;
 
                     // FOCUS MODE UX: Dragging no longer breaks focus mode, allowing you to explore isolated nodes in focus.
                 });
@@ -684,7 +727,7 @@ import { ClientRouter } from "astro:transitions";
                     raycaster.setFromCamera(mouse, camera);
 
                     const intersects = raycaster
-                        .intersectObjects(clickableMeshes)
+                        .intersectObjects(raycastTargets)
                         .filter((hit) => isValidTarget(hit.object));
 
                     if (intersects.length > 0) {
@@ -746,6 +789,7 @@ import { ClientRouter } from "astro:transitions";
                                 focusCloseBtn.style.opacity = "0";
                                 focusCloseBtn.style.pointerEvents = "none";
                             }
+                            rebuildRaycastTargets(); // Rebuild raycast targets since focus reset!
                             advanceTutorial(4);
                         }
                     }
@@ -942,6 +986,7 @@ import { ClientRouter } from "astro:transitions";
 
                 // UI Label for the mechanical core
                 const coreLabelEl = document.createElement("div");
+                coreLabelEl.style.willChange = "transform, opacity";
                 // Explicitly removed CSS translate logic entirely + explicitly forced Javascript Transform-Origin Center
                 coreLabelEl.className =
                     "absolute top-0 left-0 font-bold text-4xl sans-serif tracking-tight drop-shadow-lg mix-blend-screen select-none pointer-events-auto cursor-pointer z-50 text-white origin-center";
@@ -1126,6 +1171,7 @@ import { ClientRouter } from "astro:transitions";
 
                     // Create HTML Label Element (Tier 1 or Tier 2 sized depending on isFloating)
                     const labelEl = document.createElement("div");
+                    labelEl.style.willChange = "transform, opacity";
                     // Explicitly destroyed mix-blend-screen and forced stark organic black backing!
                     if (isFloating) {
                         labelEl.className =
@@ -1912,6 +1958,7 @@ import { ClientRouter } from "astro:transitions";
 
                             // Bind HTML label for the exact Data Item
                             const itemEl = document.createElement("div");
+                            itemEl.style.willChange = "transform, opacity";
                             // Completely stripped pointer-events from the massive invisible parent container to block invisible 2D overlapping!
                             itemEl.className =
                                 "absolute top-0 left-0 flex flex-col items-center justify-center font-sans tracking-wide select-none pointer-events-none z-30 origin-center";
@@ -2047,6 +2094,11 @@ import { ClientRouter } from "astro:transitions";
                 let lastFrameTime = performance.now();
                 const pageLoadTime = performance.now();
 
+                const tempCamDir = new THREE.Vector3();
+                const tempPlaneOrigin = new THREE.Vector3();
+                const prevCamPos = new THREE.Vector3();
+                let wasCameraMovingLastFrame = false;
+
                 function animate() {
                     requestAnimationFrame(animate);
 
@@ -2055,6 +2107,22 @@ import { ClientRouter } from "astro:transitions";
                     lastFrameTime = now;
 
                     frameCount++;
+
+                    const camMoved =
+                        prevCamPos.distanceToSquared(camera.position) > 0.00001;
+                    prevCamPos.copy(camera.position);
+
+                    // FPS & Render Time metrics for performance HUD
+                    const rt = Math.round(deltaSinceLastFrame * 10) / 10;
+                    if (frameCount % 10 === 0 && showPerfHUD) {
+                        const fps = Math.round(1000 / deltaSinceLastFrame);
+                        const fpsEl = document.getElementById("hud-fps");
+                        const rtEl = document.getElementById("hud-rt");
+                        const rtgEl = document.getElementById("hud-rtg");
+                        if (fpsEl) fpsEl.innerText = isNaN(fps) ? "0" : fps;
+                        if (rtEl) rtEl.innerText = rt;
+                        if (rtgEl) rtgEl.innerText = raycastTargets.length;
+                    }
 
                     if (
                         window.startCinematicEntrance === null &&
@@ -2077,17 +2145,16 @@ import { ClientRouter } from "astro:transitions";
                         activeFocusNodeName !== null &&
                         activeFocusNodeName !== "CORE"
                     ) {
-                        const camDir = new THREE.Vector3();
-                        camera.getWorldDirection(camDir); // Pushes natively OUT into the screen
+                        camera.getWorldDirection(tempCamDir); // Pushes natively OUT into the screen
                         // Plane pushed DEEP into the node structure (50 units BEHIND the target vector node on the Z axis)
                         // Since the focused tree doesn't have clipping planes assigned mathematically, it physically ignores this and stays alive perfectly,
                         // while ALL ambient structures (background lines, outer brain walls) that exist in front of this slice vanish forever!
-                        const planeOrigin = targetControlsPos
-                            .clone()
-                            .add(camDir.clone().multiplyScalar(50));
+                        tempPlaneOrigin
+                            .copy(targetControlsPos)
+                            .addScaledVector(tempCamDir, 50);
                         focusClipPlane.setFromNormalAndCoplanarPoint(
-                            camDir,
-                            planeOrigin,
+                            tempCamDir,
+                            tempPlaneOrigin,
                         );
                     }
 
@@ -2142,7 +2209,7 @@ import { ClientRouter } from "astro:transitions";
                     // Auto-rotation disabled for now by request.
 
                     // Iterate through every active label to sync HTML coordinates with WebGL 3D projections!
-                    HTML_LABELS.forEach((data) => {
+                    HTML_LABELS.forEach((data, index) => {
                         // FOCUS MODE ENGINE: Calculate absolute Opacity based on localized graph neighborhood
                         // If Core is explicitly focused (meaning we zoomed out cleanly), skip the ghost execution entirely!
                         const isGhosted =
@@ -2151,6 +2218,21 @@ import { ClientRouter } from "astro:transitions";
                             !window.activeVisibleNodes.has(data.name);
                         const nativeOpacity = isGhosted ? 0.05 : 1.0;
 
+                        // Round-robin execution culling for ghosted labels to save CPU layout/render time!
+                        // These are shifted to 1/5th update rate (round robin). Since opacity is 0.05, the tiny lag is unnoticeable.
+                        if (isGhosted) {
+                            if ((frameCount + index) % 5 !== 0) {
+                                // Guarantee opacity is set to 0.05 (once) and keep display block
+                                if (data.lastOpacity !== "0.05") {
+                                    data.element.style.opacity = "0.05";
+                                    data.lastOpacity = "0.05";
+                                    data.element.style.display = "block";
+                                    data.lastDisplay = "block";
+                                }
+                                return;
+                            }
+                        }
+
                         // Natively project the raw 3D Vector to the perspective camera
                         vProj.copy(data.position);
                         vProj.applyMatrix4(brainGroup.matrixWorld); // Account for the ambient rotation!
@@ -2158,7 +2240,10 @@ import { ClientRouter } from "astro:transitions";
 
                         // Project handles hidden elements naturally via z bounds natively if we enforce it:
                         if (vProj.z > 1 || vProj.z < -1) {
-                            data.element.style.display = "none"; // Behind camera lens
+                            if (data.lastDisplay !== "none") {
+                                data.element.style.display = "none";
+                                data.lastDisplay = "none";
+                            }
                             return;
                         }
 
@@ -2169,66 +2254,120 @@ import { ClientRouter } from "astro:transitions";
 
                         // Execute HTML overlay opacity math
                         if (distToCamera > fadeBounds) {
-                            data.element.style.transform = `translate(-50%, -50%) scale(0)`;
-                            data.element.style.opacity = "0";
+                            const transformStr =
+                                "translate(-50%, -50%) scale(0)";
+                            if (data.lastTransform !== transformStr) {
+                                data.element.style.transform = transformStr;
+                                data.lastTransform = transformStr;
+                            }
+                            if (data.lastOpacity !== "0") {
+                                data.element.style.opacity = "0";
+                                data.lastOpacity = "0";
+                            }
+                            if (data.lastDisplay !== "none") {
+                                data.element.style.display = "none";
+                                data.lastDisplay = "none";
+                            }
                         } else {
-                            data.element.style.display = "block";
-                            data.element.style.opacity =
-                                nativeOpacity.toString();
+                            if (data.lastDisplay !== "block") {
+                                data.element.style.display = "block";
+                                data.lastDisplay = "block";
+                            }
+
+                            const opacityStr = nativeOpacity.toString();
+                            if (data.lastOpacity !== opacityStr) {
+                                data.element.style.opacity = opacityStr;
+                                data.lastOpacity = opacityStr;
+                            }
 
                             // Native HTML canvas translation centering math
-                            const x = (vProj.x * 0.5 + 0.5) * window.innerWidth;
+                            const x =
+                                Math.round(
+                                    (vProj.x * 0.5 + 0.5) *
+                                        window.innerWidth *
+                                        10,
+                                ) / 10;
                             const y =
-                                (vProj.y * -0.5 + 0.5) * window.innerHeight;
+                                Math.round(
+                                    (vProj.y * -0.5 + 0.5) *
+                                        window.innerHeight *
+                                        10,
+                                ) / 10;
 
                             // Scale effect (closer camera = bigger text)
-                            const scaleEffect = Math.max(
-                                0.2,
-                                (fadeBounds - distToCamera) / fadeBounds,
-                            );
+                            const scaleEffect =
+                                Math.round(
+                                    Math.max(
+                                        0.2,
+                                        (fadeBounds - distToCamera) /
+                                            fadeBounds,
+                                    ) * 100,
+                                ) / 100;
 
                             // Strictly mapping translate(-50%, -50%) to inherently align the text origin-center across the Mesh
-                            data.element.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%) scale(${scaleEffect})`;
+                            const transformStr = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%) scale(${scaleEffect})`;
+                            if (data.lastTransform !== transformStr) {
+                                data.element.style.transform = transformStr;
+                                data.lastTransform = transformStr;
+                            }
                         }
                     });
 
                     // Raycast for hover state!
-                    raycaster.setFromCamera(hoverMouse, camera);
-                    const hoverIntersects = raycaster
-                        .intersectObjects(clickableMeshes)
-                        .filter((hit) => isValidTarget(hit.object));
+                    // Lazy Raycasting Check: Skip raycast calculations entirely if user is flying, dragging, or camera is rotating due to damping/momentum!
+                    const isUserDragging = pointerDownTime !== 0;
+                    const isCameraMoving =
+                        camMoved || isFlying || isUserDragging;
 
-                    let hoveredObj = null;
+                    const cameraJustStopped =
+                        !isCameraMoving && wasCameraMovingLastFrame;
+                    wasCameraMovingLastFrame = isCameraMoving;
 
-                    if (hoverIntersects.length > 0 && !isFlying) {
-                        hoveredObj = hoverIntersects[0].object;
-                        if (
-                            hoveredObj.userData.name ||
-                            hoveredObj.userData.endpoints
-                        ) {
-                            document.body.style.cursor = "pointer";
+                    if (isCameraMoving) {
+                        hoveredObj = null;
+                        setBodyCursor(isUserDragging ? "grabbing" : "default");
+                        hoverRing.visible = false;
+                    } else if (mouseMoved || cameraJustStopped) {
+                        raycaster.setFromCamera(hoverMouse, camera);
+                        const hoverIntersects = raycaster
+                            .intersectObjects(raycastTargets)
+                            .filter((hit) => isValidTarget(hit.object));
+
+                        if (hoverIntersects.length > 0) {
+                            hoveredObj = hoverIntersects[0].object;
+                            if (
+                                hoveredObj.userData.name ||
+                                hoveredObj.userData.endpoints
+                            ) {
+                                setBodyCursor("pointer");
+                            } else {
+                                setBodyCursor("default");
+                            }
+
+                            // Activate Node Halo Ring natively
+                            if (hoveredObj.userData.name) {
+                                hoverRing.visible = true;
+                                const targetMeshRef =
+                                    hoveredObj.userData.visibleMesh ||
+                                    hoveredObj;
+                                hoverRing.position.copy(targetMeshRef.position);
+                                // Set ring size perfectly to boundary of the sphere geometry
+                                const r =
+                                    targetMeshRef.geometry.parameters.radius ||
+                                    3;
+                                hoverRing.scale.setScalar(r);
+                                hoverRing.lookAt(camera.position);
+                            } else {
+                                hoverRing.visible = false;
+                            }
                         } else {
-                            document.body.style.cursor = "default";
-                        }
-
-                        // Activate Node Halo Ring natively
-                        if (hoveredObj.userData.name) {
-                            hoverRing.visible = true;
-                            const targetMeshRef =
-                                hoveredObj.userData.visibleMesh || hoveredObj;
-                            hoverRing.position.copy(targetMeshRef.position);
-                            // Set ring size perfectly to boundary of the sphere geometry
-                            const r =
-                                targetMeshRef.geometry.parameters.radius || 3;
-                            hoverRing.scale.setScalar(r);
-                            hoverRing.lookAt(camera.position);
-                        } else {
+                            hoveredObj = null;
+                            setBodyCursor("default");
                             hoverRing.visible = false;
                         }
-                    } else {
-                        document.body.style.cursor = "default";
-                        hoverRing.visible = false;
                     }
+
+                    mouseMoved = false;
 
                     // Opacity Engine for literal 3D Meshes (Nodes, Biological Ambient Structures, and Thick Core Lines!)
                     clickableMeshes.forEach((mesh) => {
@@ -2279,41 +2418,52 @@ import { ClientRouter } from "astro:transitions";
                                 mesh.userData.baseOpacity || 0.6;
                         }
 
-                        // Apply Hover Highlight!
-                        if (isHovered && !isGhostedMesh) {
-                            if (mesh.userData.name) {
-                                // Using the physical hoverRing instead of modifying the node!
-                            } else if (mesh.userData.endpoints) {
+                        const targetOpacity =
+                            isHovered &&
+                            !isGhostedMesh &&
+                            mesh.userData.endpoints
+                                ? 1.0
+                                : isGhostedMesh
+                                  ? 0.05
+                                  : baseTargetOpacity;
+
+                        // Check if opacity changed to avoid redundant uniform uploads
+                        if (mesh.userData.lastOpacity !== targetOpacity) {
+                            mesh.material.opacity = targetOpacity;
+                            mesh.userData.lastOpacity = targetOpacity;
+                        }
+
+                        // Check if color changed to avoid redundant uniform uploads
+                        const isColorHovered = !!(
+                            isHovered &&
+                            !isGhostedMesh &&
+                            mesh.userData.endpoints
+                        );
+                        if (mesh.userData.lastColorHovered !== isColorHovered) {
+                            if (isColorHovered) {
                                 mesh.material.color
                                     .copy(mesh.userData.baseColor)
                                     .lerp(new THREE.Color(0xffffff), 0.6);
-                                mesh.material.opacity = 1.0;
-                            }
-                        } else {
-                            if (mesh.userData.name) {
-                                // Reverting safe defaults
-                                if (mesh.userData.baseColor) {
-                                    mesh.material.color.copy(
-                                        mesh.userData.baseColor,
-                                    );
-                                }
-                            } else if (mesh.userData.endpoints) {
+                            } else {
                                 if (mesh.userData.baseColor) {
                                     mesh.material.color.copy(
                                         mesh.userData.baseColor,
                                     );
                                 }
                             }
-                            mesh.material.opacity = isGhostedMesh
-                                ? 0.05
-                                : baseTargetOpacity;
+                            mesh.userData.lastColorHovered = isColorHovered;
                         }
 
                         // If this is a biological array blocking the camera and we are focused on a tree, literally slice it transparent!
-                        mesh.material.clippingPlanes =
+                        const wantsClipping = !!(
                             isGhostedMesh && mesh.userData.isAmbient
+                        );
+                        if (mesh.userData.lastClipping !== wantsClipping) {
+                            mesh.material.clippingPlanes = wantsClipping
                                 ? [focusClipPlane]
                                 : [];
+                            mesh.userData.lastClipping = wantsClipping;
+                        }
                     });
 
                     // Faint down the Outer GLTF Biological Shell and slice it!
@@ -2321,19 +2471,22 @@ import { ClientRouter } from "astro:transitions";
                         const isGhostedShell =
                             activeFocusNodeName !== null &&
                             activeFocusNodeName !== "CORE";
-                        window.brainModelRef.traverse((child) => {
-                            if (child.isMesh) {
-                                const nativeTarget = child.material.wireframe
-                                    ? 0.03
-                                    : 0.06;
-                                child.material.opacity = isGhostedShell
-                                    ? 0.01
-                                    : nativeTarget;
-                                child.material.clippingPlanes = isGhostedShell
-                                    ? [focusClipPlane]
-                                    : [];
-                            }
-                        });
+                        if (window.lastGhostedShellState !== isGhostedShell) {
+                            window.brainModelRef.traverse((child) => {
+                                if (child.isMesh) {
+                                    const nativeTarget = child.material
+                                        .wireframe
+                                        ? 0.03
+                                        : 0.06;
+                                    child.material.opacity = isGhostedShell
+                                        ? 0.01
+                                        : nativeTarget;
+                                    child.material.clippingPlanes =
+                                        isGhostedShell ? [focusClipPlane] : [];
+                                }
+                            });
+                            window.lastGhostedShellState = isGhostedShell;
+                        }
                     }
 
                     renderer.render(scene, camera);
@@ -2347,6 +2500,7 @@ import { ClientRouter } from "astro:transitions";
                 });
 
                 // Start WebGL
+                rebuildRaycastTargets(); // Initial Partitioning Build!
                 animate();
 
                 // Cinematic Entrance (Triggered by GLTFLoader!)
@@ -2371,6 +2525,32 @@ import { ClientRouter } from "astro:transitions";
                         window.startCinematicEntrance = null;
                     }
                 }, 5000);
+                // ----------------------------------------------------
+                // PERFORMANCE HUD MONITOR INITIALIZATION
+                // ----------------------------------------------------
+                let showPerfHUD = false;
+                const hudContainer = document.createElement("div");
+                hudContainer.id = "perf-hud";
+                hudContainer.className =
+                    "fixed bottom-6 right-6 z-[99] hidden font-mono text-xs text-emerald-400 bg-zinc-950/90 backdrop-blur-md border border-emerald-500/30 rounded-md px-3 py-2.5 leading-relaxed shadow-2xl pointer-events-none";
+                hudContainer.innerHTML = `
+                    <div style="font-weight: bold; border-bottom: 1px solid rgba(16,185,129,0.3); margin-bottom: 6px; padding-bottom: 4px;">PERFORMANCE MONITOR</div>
+                    <div>FPS: <span id="hud-fps" style="font-weight: bold; color: #fff;">0</span></div>
+                    <div>Frame time: <span id="hud-rt" style="font-weight: bold; color: #fff;">0</span> ms</div>
+                    <div>Raycast targets: <span id="hud-rtg" style="font-weight: bold; color: #fff;">0</span></div>
+                `;
+                document.body.appendChild(hudContainer);
+
+                window.addEventListener("keydown", (e) => {
+                    if (e.key.toLowerCase() === "p") {
+                        showPerfHUD = !showPerfHUD;
+                        if (showPerfHUD) {
+                            hudContainer.classList.remove("hidden");
+                        } else {
+                            hudContainer.classList.add("hidden");
+                        }
+                    }
+                });
             } catch (error) {
                 // FATAL ERROR CATCHER FOR DEBUGGING
                 const errDiv = document.createElement("div");
