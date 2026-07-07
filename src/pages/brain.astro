@@ -782,7 +782,10 @@ import { ClientRouter } from "astro:transitions";
                             activeFocusNodeName = null;
                             document
                                 .querySelectorAll(".layer-4-note")
-                                .forEach((el) => (el.style.opacity = "0"));
+                                .forEach((el) => {
+                                    el.style.opacity = "0";
+                                    el.style.pointerEvents = "none";
+                                });
                             const focusCloseBtn =
                                 document.getElementById("focus-close-btn");
                             if (focusCloseBtn) {
@@ -989,8 +992,8 @@ import { ClientRouter } from "astro:transitions";
                 coreLabelEl.style.willChange = "transform, opacity";
                 // Explicitly removed CSS translate logic entirely + explicitly forced Javascript Transform-Origin Center
                 coreLabelEl.className =
-                    "absolute top-0 left-0 font-bold text-4xl sans-serif tracking-tight drop-shadow-lg mix-blend-screen select-none pointer-events-auto cursor-pointer z-50 text-white origin-center";
-                coreLabelEl.style.textShadow = `0px 0px 25px rgba(255,255,255,1)`;
+                    "absolute top-0 left-0 font-bold text-6xl sans-serif tracking-tight select-none pointer-events-auto cursor-pointer z-50 origin-center text-white";
+                coreLabelEl.style.textShadow = `0px 2px 4px #000, 0px 0px 10px #000, 0px 0px 20px #000, 0px 0px 40px #000, 0px 0px 60px rgba(255, 255, 255, 0.5)`;
                 coreLabelEl.innerText = "NEURAL CORE";
 
                 bindHTMLClick(
@@ -1002,6 +1005,7 @@ import { ClientRouter } from "astro:transitions";
                 labelsContainer.appendChild(coreLabelEl);
                 HTML_LABELS.push({
                     element: coreLabelEl,
+                    clickTarget: coreLabelEl,
                     position: new THREE.Vector3(0, 0, 0),
                     type: "hub",
                     treeId: "CORE",
@@ -1197,6 +1201,7 @@ import { ClientRouter } from "astro:transitions";
 
                     HTML_LABELS.push({
                         element: labelEl,
+                        clickTarget: labelEl,
                         position: new THREE.Vector3(hub.x, hub.y, hub.z),
                         type: isFloating ? "category" : "hub",
                         treeId: hub.id,
@@ -1749,6 +1754,7 @@ import { ClientRouter } from "astro:transitions";
 
                             HTML_LABELS.push({
                                 element: catEl,
+                                clickTarget: catEl,
                                 position: catPos,
                                 type: "category",
                                 treeId: hub.id,
@@ -2003,6 +2009,7 @@ import { ClientRouter } from "astro:transitions";
 
                             HTML_LABELS.push({
                                 element: itemEl,
+                                clickTarget: primaryNameEl,
                                 position: itemPos,
                                 type: "leaf",
                                 treeId: hub.id,
@@ -2217,6 +2224,14 @@ import { ClientRouter } from "astro:transitions";
                             activeFocusNodeName !== "CORE" &&
                             !window.activeVisibleNodes.has(data.name);
                         const nativeOpacity = isGhosted ? 0.05 : 1.0;
+
+                        // Disable pointer events on ghosted labels to prevent them from intercepting clicks!
+                        const targetPointerEvents = isGhosted ? "none" : "auto";
+                        const clickEl = data.clickTarget || data.element;
+                        if (data.lastPointerEvents !== targetPointerEvents) {
+                            clickEl.style.pointerEvents = targetPointerEvents;
+                            data.lastPointerEvents = targetPointerEvents;
+                        }
 
                         // Round-robin execution culling for ghosted labels to save CPU layout/render time!
                         // These are shifted to 1/5th update rate (round robin). Since opacity is 0.05, the tiny lag is unnoticeable.
