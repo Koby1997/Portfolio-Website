@@ -698,6 +698,8 @@ const getColorConfig = (category) => {
             if (timelineTrigger) {
                 timelineTrigger.addEventListener('click', (e) => {
                     e.preventDefault();
+                    if (isAnimating) return;
+                    isAnimating = true;
                     
                     const babyMarker = document.getElementById('baby-1997-marker');
                     const getOffsetLeft = (el) => {
@@ -727,6 +729,7 @@ const getColorConfig = (category) => {
                         targetScroll = targetPos;
                         timelineActive = true;
                         scrollContainer.style.pointerEvents = 'auto'; 
+                        isAnimating = false;
                         if(parallaxBg) parallaxBg.style.transform = `translateX(${-targetPos * 0.3}px)`;
                         
                         if (floatingHeader) {
@@ -867,6 +870,7 @@ const getColorConfig = (category) => {
                                 targetScroll = currentS;
                                 timelineActive = true;
                                 scrollContainer.style.pointerEvents = 'auto'; 
+                                isAnimating = false;
                                 
                                 if (skipBtn) {
                                     skipBtn.classList.add('opacity-0', 'pointer-events-none');
@@ -959,6 +963,7 @@ const getColorConfig = (category) => {
             document.querySelectorAll('a[href="/"]').forEach(link => {
                 link.addEventListener('click', (e) => {
                     e.preventDefault();
+                    if (isAnimating) return;
                     
                     const startScroll = scrollContainer.scrollLeft;
                     const endScroll = homeScreen ? homeScreen.offsetLeft : 0;
@@ -1020,6 +1025,8 @@ const getColorConfig = (category) => {
         if (brainTrigger) {
             brainTrigger.addEventListener('click', (e) => {
                 e.preventDefault();
+                if (isAnimating) return;
+                isAnimating = true;
                 
                 const targetO = document.getElementById('zoom-target-o');
                 const textContainer = document.getElementById('cinematic-koby-text');
@@ -1281,6 +1288,7 @@ const getColorConfig = (category) => {
         if (resumeTrigger) {
             resumeTrigger.addEventListener('click', (e) => {
                 e.preventDefault();
+                if (isAnimating) return;
                 
                 const scrollContainer = document.querySelector('.CustomScrollContainer');
                 const parallaxBg = document.getElementById('timeline-parallax-bg');
@@ -1327,6 +1335,7 @@ const getColorConfig = (category) => {
             homeExit.addEventListener('click', (e) => {
                 e.preventDefault();
                 e.stopPropagation(); // prevent global link hijacker from interfering
+                if (isAnimating) return;
                 
                 const scrollContainer = document.querySelector('.CustomScrollContainer');
                 const parallaxBg = document.getElementById('timeline-parallax-bg');
