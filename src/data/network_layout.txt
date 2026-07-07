@@ -1,5 +1,5 @@
 # Neural Network Builder Template
-# The current live 3D brain map topology is restricted natively to the physical mappings defined here!
+# The current live 3D brain map topology is restricted natively to the physical mappings defined here
 # Graph Syntax: You can add secondary connections to nodes using the [+Category] tag format.
 # Notes can be added with a hyphen: - "Note text"
 # Example: Stock Analysis [+Strategy, +Software] - "A note here"
@@ -54,6 +54,7 @@ Stories
 		The Office
 		Death Note [+Thought Provoking]
 		Hunter X Hunter
+		Survivor [+PLAY / STRATEGY, +Competitive]
 	Books
 		The Stormlight Archive
 		Red Rising

@@ -5,8 +5,8 @@ export const hubs = [
     {
         id: '1',
         name: 'ACTIVE',
-        x: 180, y: 150, z: -100, // Top-Right-Front Brain
-        color: 0x3b82f6, // Vibrant Blue
+        x: 180, y: 150, z: -100,
+        color: 0x3b82f6,
         cssColor: 'rgba(59, 130, 246, 0.8)',
         categories: [
             {
@@ -29,8 +29,8 @@ export const hubs = [
     {
         id: '2',
         name: 'PLAY / STRATEGY',
-        x: 10, y: 100, z: 150, // Behind the brain center, close to center X
-        color: 0x10b981, // Emerald Green
+        x: 10, y: 100, z: 150,
+        color: 0x10b981,
         cssColor: 'rgba(16, 185, 129, 0.8)',
         categories: [
             {
@@ -65,8 +65,8 @@ export const hubs = [
     {
         id: '3',
         name: 'Stories',
-        x: -110, y: 90, z: -180, // Front Left Lobe (Moved up and left)
-        color: 0x8b5cf6, // Violet
+        x: -110, y: 90, z: -180,
+        color: 0x8b5cf6,
         cssColor: 'rgba(139, 92, 246, 0.8)',
         categories: [
             {
@@ -89,7 +89,8 @@ export const hubs = [
                     { name: 'Clone Wars', secondaryParents: ['Star Wars'] },
                     'The Office',
                     { name: 'Death Note', secondaryParents: ['Thought Provoking'] },
-                    'Hunter X Hunter'
+                    'Hunter X Hunter',
+                    { name: 'Survivor', secondaryParents: ['PLAY / STRATEGY', 'Competitive'] }
                 ]
             },
             {
@@ -113,8 +114,8 @@ export const hubs = [
     {
         id: '4',
         name: 'ENGINEERING',
-        x: 160, y: -40, z: 150, // Bottom-Right-Back Brain
-        color: 0xef4444, // Bright Red
+        x: 160, y: -40, z: 150,
+        color: 0xef4444,
         cssColor: 'rgba(239, 68, 68, 0.8)',
         categories: [
             {
@@ -145,8 +146,8 @@ export const hubs = [
     {
         id: '5',
         name: 'CHARACTER',
-        x: -160, y: -20, z: 120, // Bottom-Left-Back Brain
-        color: 0xf59e0b, // Amber
+        x: -160, y: -20, z: 120,
+        color: 0xf59e0b,
         cssColor: 'rgba(245, 158, 11, 0.8)',
         categories: [
             {
@@ -180,8 +181,8 @@ export const hubs = [
         id: '6',
         name: 'Thought Provoking',
         isFloating: true,
-        x: 45, y: 70, z: -120, // Central front-middle lobe
-        color: 0xec4899, // Pink/Rose color for this special category!
+        x: 45, y: 70, z: -120,
+        color: 0xec4899,
         cssColor: 'rgba(236, 72, 153, 0.8)',
         categories: []
     },
@@ -189,8 +190,8 @@ export const hubs = [
         id: '7',
         name: 'Self Challenging',
         isFloating: true,
-        x: -100, y: 40, z: -60, // Floating hub on left-middle side
-        color: 0xfa1b0b, // Red/Orange to match cssColor
+        x: -100, y: 40, z: -60,
+        color: 0xfa1b0b,
         cssColor: 'rgba(250, 27, 11, 0.88)',
         categories: []
     },
@@ -198,8 +199,8 @@ export const hubs = [
         id: '8',
         name: 'Favorites',
         isFloating: true,
-        x: 5, y: 220, z: -50, // Front-Right-Top
-        color: 0xf8fafc, // Diamond White / Starlight
+        x: 5, y: 220, z: -50,
+        color: 0xf8fafc,
         cssColor: 'rgba(250, 250, 250, 1)',
         categories: [
             {
