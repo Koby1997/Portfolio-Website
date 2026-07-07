@@ -54,6 +54,12 @@ const getColorConfig = (category) => {
 
     <!-- Black overlay for cinematic transitions -->
     <div id="blackout-overlay" class="fixed inset-0 bg-black opacity-0 pointer-events-none z-[100] transition-opacity duration-[1200ms] ease-in-out"></div>
+    <script is:inline>
+        if (sessionStorage.getItem('from_brain') === 'true') {
+            document.getElementById('blackout-overlay').style.transition = 'none';
+            document.getElementById('blackout-overlay').style.opacity = '1';
+        }
+    </script>
     
     <!-- Timeline Exit Button -->
     <div id="timeline-exit-container" class="fixed top-8 left-8 z-50 opacity-0 pointer-events-none transition-opacity duration-500 group">
@@ -78,7 +84,7 @@ const getColorConfig = (category) => {
     </div>
 
     <!-- Pure Timeline Container (No vertical scrolling allowed on page) -->
-    <main class="flex-grow w-full relative flex items-center bg-gradient-to-br from-zinc-950 via-zinc-950 to-zinc-900 overflow-hidden">
+    <main class="flex-grow w-full relative flex items-center bg-zinc-950 overflow-hidden">
         
         <!-- The Continuous Parallax Background Layer (Canvas) -->
         <div id="timeline-parallax-bg" class="absolute top-0 left-0 h-full w-[4000vw] z-0 pointer-events-none overflow-hidden will-change-transform translate-x-0 transition-opacity duration-[2400ms]">
@@ -498,9 +504,9 @@ const getColorConfig = (category) => {
 
                 // 2. HOME ZONE (Canvas 110vw - 175vw) [Red -> Blue -> Purple]
                 const w = clamp(35 * vw, 30 * rem, 80 * rem);
-                drawOrb(110 * vw, 65 * vh, w/2, 'rgba(244, 63, 94, 0.4)', 'rgba(244, 63, 94, 0)'); // Red
-                drawOrb(140 * vw, 25 * vh + w/2, w/2, 'rgba(59, 130, 246, 0.4)', 'rgba(59, 130, 246, 0)'); // Original Blue
-                drawOrb(150 * vw, 15 * vh + w/2, w/2, 'rgba(59, 130, 246, 0.35)', 'rgba(59, 130, 246, 0)'); // Second Blue (Up and right)
+                drawOrb(110 * vw, 75 * vh, w/2, 'rgba(244, 63, 94, 0.4)', 'rgba(244, 63, 94, 0)'); // Red
+                drawOrb(130 * vw, 0 * vh + w/3, w/2, 'rgba(59, 130, 246, 0.35)', 'rgba(59, 130, 246, 0)'); // Right Blue
+                drawOrb(140 * vw, 25 * vh + w/2, w/2, 'rgba(59, 130, 246, 0.4)', 'rgba(59, 130, 246, 0)'); // Left Blue
                 drawOrb(175 * vw, 50 * vh, w/2, 'rgba(168, 85, 247, 0.4)', 'rgba(168, 85, 247, 0)'); // Purple
                 
                 // 3. THE UNIFORM PURPLE NEBULA (Canvas 175vw - 2000vw)
@@ -514,7 +520,7 @@ const getColorConfig = (category) => {
                 // Spawn 60 massive purple orbs spaced widely through the void and timeline
                 for (let i = 0; i < 60; i++) {
                     const hw = clamp((25 + random() * 35) * vw, 40 * rem, 100 * rem); // Large massive orbs like Resume
-                    const hx = 175 * vw + (i * 30 * vw) + ((random() * 20 - 10) * vw); // Spaced roughly 30vw apart
+                    const hx = 175 * vw + (i * 40 * vw) + ((random() * 20 - 10) * vw); // Spaced roughly 40vw apart
                     const hy = (10 + random() * 80) * vh; // Kept vertically between 10% and 90%
                     
                     const opacity = 0.15 + (random() * 0.15); // Random opacity between 0.15 and 0.30
@@ -527,7 +533,46 @@ const getColorConfig = (category) => {
             let resizeTimer;
             window.addEventListener('resize', () => {
                 clearTimeout(resizeTimer);
-                resizeTimer = setTimeout(initCanvas, 300);
+                resizeTimer = setTimeout(() => {
+                    initCanvas();
+                    const homeScreenEl = document.getElementById('unified-home-screen');
+                    const realStartEl = document.getElementById('real-timeline-start');
+                    if (scrollContainer && homeScreenEl && realStartEl) {
+                        // Recalculate scrollLimitMin based on active zone
+                        if (resumeActive) {
+                            scrollLimitMin = 0;
+                        } else if (timelineActive) {
+                            scrollLimitMin = realStartEl.offsetLeft;
+                        } else {
+                            scrollLimitMin = homeScreenEl.offsetLeft;
+                        }
+                        
+                        if (resumeActive) {
+                            // Snap to the Resume page
+                            scrollContainer.scrollLeft = 0;
+                            currentScroll = 0;
+                            targetScroll = 0;
+                        } else if (!timelineActive) {
+                            // Snap to the Home page
+                            scrollContainer.scrollLeft = homeScreenEl.offsetLeft;
+                            currentScroll = homeScreenEl.offsetLeft;
+                            targetScroll = homeScreenEl.offsetLeft;
+                        } else {
+                            // Scale timeline position
+                            const maxScroll = scrollContainer.scrollWidth - scrollContainer.clientWidth;
+                            const timelineRange = maxScroll - scrollLimitMin;
+                            const newScrollLeft = scrollLimitMin + (timelineScrollRatio * timelineRange);
+                            
+                            scrollContainer.scrollLeft = newScrollLeft;
+                            currentScroll = newScrollLeft;
+                            targetScroll = newScrollLeft;
+                        }
+                        
+                        if (parallaxBg) {
+                            parallaxBg.style.transform = `translateX(${-scrollContainer.scrollLeft * 0.3}px)`;
+                        }
+                    }
+                }, 150);
             });
         }
         // ----------------------------------------------------
@@ -539,6 +584,8 @@ const getColorConfig = (category) => {
         let currentScroll = scrollContainer ? scrollContainer.scrollLeft : 0;
         let targetScroll = scrollContainer ? scrollContainer.scrollLeft : 0;
         let scrollLimitMin = 0;
+        let timelineScrollRatio = 0;
+        let resumeActive = false;
 
         if (scrollContainer) {
 
@@ -651,6 +698,8 @@ const getColorConfig = (category) => {
             if (timelineTrigger) {
                 timelineTrigger.addEventListener('click', (e) => {
                     e.preventDefault();
+                    if (isAnimating) return;
+                    isAnimating = true;
                     
                     const babyMarker = document.getElementById('baby-1997-marker');
                     const getOffsetLeft = (el) => {
@@ -680,6 +729,7 @@ const getColorConfig = (category) => {
                         targetScroll = targetPos;
                         timelineActive = true;
                         scrollContainer.style.pointerEvents = 'auto'; 
+                        isAnimating = false;
                         if(parallaxBg) parallaxBg.style.transform = `translateX(${-targetPos * 0.3}px)`;
                         
                         if (floatingHeader) {
@@ -820,6 +870,7 @@ const getColorConfig = (category) => {
                                 targetScroll = currentS;
                                 timelineActive = true;
                                 scrollContainer.style.pointerEvents = 'auto'; 
+                                isAnimating = false;
                                 
                                 if (skipBtn) {
                                     skipBtn.classList.add('opacity-0', 'pointer-events-none');
@@ -890,6 +941,16 @@ const getColorConfig = (category) => {
                      currentScroll = scrollContainer.scrollLeft;
                      targetScroll = currentScroll;
                 }
+                
+                // Track relative scroll progress ratio inside the timeline to prevent shift on resize
+                const maxScroll = scrollContainer.scrollWidth - scrollContainer.clientWidth;
+                const timelineRange = maxScroll - scrollLimitMin;
+                if (timelineActive && timelineRange > 0) {
+                     timelineScrollRatio = Math.max(0, Math.min(1, (scrollContainer.scrollLeft - scrollLimitMin) / timelineRange));
+                } else {
+                     timelineScrollRatio = 0;
+                }
+
                 if (parallaxBg) {
                      parallaxBg.style.transform = `translateX(${-scrollContainer.scrollLeft * 0.3}px)`;
                 }
@@ -902,6 +963,7 @@ const getColorConfig = (category) => {
             document.querySelectorAll('a[href="/"]').forEach(link => {
                 link.addEventListener('click', (e) => {
                     e.preventDefault();
+                    if (isAnimating) return;
                     
                     const startScroll = scrollContainer.scrollLeft;
                     const endScroll = homeScreen ? homeScreen.offsetLeft : 0;
@@ -963,6 +1025,8 @@ const getColorConfig = (category) => {
         if (brainTrigger) {
             brainTrigger.addEventListener('click', (e) => {
                 e.preventDefault();
+                if (isAnimating) return;
+                isAnimating = true;
                 
                 const targetO = document.getElementById('zoom-target-o');
                 const textContainer = document.getElementById('cinematic-koby-text');
@@ -1019,13 +1083,15 @@ const getColorConfig = (category) => {
                         // 2. Wait for fade & slide, PAUSE for 300ms, then start the zoom
                         setTimeout(() => {
                             // Extra slow start, aggressive acceleration at the end
-                            kobyOnly.style.transition = 'transform 2.0s cubic-bezier(0.8, 0, 1, 1)';
+                            kobyOnly.style.transition = 'transform 2.0s cubic-bezier(0.8, 0, 1, 1), opacity 1.5s ease-in 0.3s';
                             kobyOnly.style.transform = `translate3d(${moveX}px, ${moveY}px, 0) scale(100)`;
+                            kobyOnly.style.opacity = '0';
 
                             setTimeout(() => {
                                 if (heroSection) heroSection.style.zIndex = '';
                                 const link = document.createElement('a');
                                 link.href = '/brain';
+                                link.setAttribute('data-astro-reload', '');
                                 document.body.appendChild(link);
                                 link.click();
                             }, 1900);
@@ -1034,6 +1100,7 @@ const getColorConfig = (category) => {
                 } else {
                     const link = document.createElement('a');
                     link.href = '/brain';
+                    link.setAttribute('data-astro-reload', '');
                     document.body.appendChild(link);
                     link.click();
                 }
@@ -1092,18 +1159,7 @@ const getColorConfig = (category) => {
                 const moveX = windowCenterX - oScreenX;
                 const moveY = windowCenterY - oScreenY;
                 
-                // --- ROBUST DEBUG LOGGING ---
-                console.log('--- REVERSE TRANSITION INITIATED ---');
-                let debugTick = 0;
-                const debugInterval = setInterval(() => {
-                    if (!kobyOnly) return;
-                    const rect = kobyOnly.getBoundingClientRect();
-                    const style = window.getComputedStyle(kobyOnly);
-                    const heroStyle = heroSection ? window.getComputedStyle(heroSection) : null;
-                    console.log(`[${debugTick}ms] kobyOnly | rect: ${rect.width.toFixed(1)}x${rect.height.toFixed(1)} at (${rect.x.toFixed(1)}, ${rect.y.toFixed(1)}) | op: ${style.opacity} | z: ${style.zIndex} | transform: ${style.transform !== 'none' ? 'active' : 'none'} | heroZ: ${heroStyle ? heroStyle.zIndex : 'N/A'}`);
-                    debugTick += 100;
-                }, 100);
-                setTimeout(() => clearInterval(debugInterval), 3000);
+
                 
                 // --- TRICK CHROME: THE INVISIBLE PRE-SCALE ---
                 kobyOnly.style.transformOrigin = `${originX}px ${originY}px`;
@@ -1111,8 +1167,9 @@ const getColorConfig = (category) => {
                 kobyOnly.style.zIndex = '9999';
                 
                 // Start at 1x size, perfectly centered, virtually invisible
+                kobyOnly.style.willChange = 'transform, opacity';
                 kobyOnly.style.transform = `translate3d(${moveX}px, ${moveY}px, 0) scale(1)`;
-                kobyOnly.style.opacity = '0.01';
+                kobyOnly.style.opacity = '0';
                 
                 textContainer.style.zIndex = '9999';
                 blackout.style.zIndex = '9990'; 
@@ -1133,9 +1190,9 @@ const getColorConfig = (category) => {
                     kobyOnly.style.transform = `translate3d(${moveX}px, ${moveY}px, 0) scale(60)`;
                     
                     setTimeout(() => {
-                        // The massive texture is now safely in GPU memory! Make it visible and shrink it!
+                        // The massive texture is now safely in GPU memory! Fade it in while shrinking it!
+                        kobyOnly.style.transition = 'transform 2s cubic-bezier(0.1, 0.7, 0.4, 0.95), opacity 2.0s ease-out 0.3s';
                         kobyOnly.style.opacity = '1';
-                        kobyOnly.style.transition = 'transform 2.5s cubic-bezier(0.1, 0.7, 0.4, 0.95)';
                         kobyOnly.style.transform = `translate3d(${moveX}px, ${moveY}px, 0) scale(1)`;
                         
                         // Wait for the 2.5s zoom to finish...
@@ -1231,6 +1288,7 @@ const getColorConfig = (category) => {
         if (resumeTrigger) {
             resumeTrigger.addEventListener('click', (e) => {
                 e.preventDefault();
+                if (isAnimating) return;
                 
                 const scrollContainer = document.querySelector('.CustomScrollContainer');
                 const parallaxBg = document.getElementById('timeline-parallax-bg');
@@ -1242,6 +1300,7 @@ const getColorConfig = (category) => {
                     // scrollContainer.style.pointerEvents = 'none'; // Prevent Layout Thrashing
                     isAnimating = true;
                     scrollLimitMin = 0; // Unlock scrolling to the left
+                    resumeActive = true;
                     
                     // Removed legacy opacity fade so the unified canvas stays visible!
                     const duration = 2400; 
@@ -1276,6 +1335,7 @@ const getColorConfig = (category) => {
             homeExit.addEventListener('click', (e) => {
                 e.preventDefault();
                 e.stopPropagation(); // prevent global link hijacker from interfering
+                if (isAnimating) return;
                 
                 const scrollContainer = document.querySelector('.CustomScrollContainer');
                 const parallaxBg = document.getElementById('timeline-parallax-bg');
@@ -1309,6 +1369,7 @@ const getColorConfig = (category) => {
                             targetScroll = endScroll;
                             scrollContainer.style.pointerEvents = 'auto';
                             isAnimating = false;
+                            resumeActive = false;
                         }
                     };
                     requestAnimationFrame(swipeBackHome);

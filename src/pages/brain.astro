@@ -37,7 +37,9 @@ import { ClientRouter } from "astro:transitions";
             id="onboarding-controls"
             class="fixed top-12 left-1/2 -translate-x-1/2 pointer-events-none z-[60] transition-opacity duration-1000 opacity-0 hidden md:flex flex-col items-center"
         >
-            <div class="relative w-[300px] h-[60px] flex justify-center items-center">
+            <div
+                class="relative w-[300px] h-[60px] flex justify-center items-center"
+            >
                 <!-- Step 1: Rotate -->
                 <div
                     id="tutorial-step-1"
@@ -55,7 +57,8 @@ import { ClientRouter } from "astro:transitions";
                             d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"
                         ></path></svg
                     >
-                    <span class="text-xl font-light tracking-wide whitespace-nowrap"
+                    <span
+                        class="text-xl font-light tracking-wide whitespace-nowrap"
                         >Click and Drag to rotate</span
                     >
                 </div>
@@ -76,7 +79,8 @@ import { ClientRouter } from "astro:transitions";
                             stroke-width="1.5"
                             d="M8 9l4-4 4 4m0 6l-4 4-4-4"></path></svg
                     >
-                    <span class="text-xl font-light tracking-wide whitespace-nowrap"
+                    <span
+                        class="text-xl font-light tracking-wide whitespace-nowrap"
                         >Scroll to zoom</span
                     >
                 </div>
@@ -92,8 +96,31 @@ import { ClientRouter } from "astro:transitions";
                         viewBox="0 0 24 24"
                         ><circle cx="12" cy="12" r="6"></circle></svg
                     >
-                    <span class="text-xl font-light tracking-wide whitespace-nowrap"
+                    <span
+                        class="text-xl font-light tracking-wide whitespace-nowrap"
                         >Click on nodes to focus</span
+                    >
+                </div>
+
+                <!-- Step 4: Reset Focus -->
+                <div
+                    id="tutorial-step-4"
+                    class="absolute flex items-center gap-4 text-white/80 drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)] transition-all duration-700 ease-in-out transform translate-y-4 opacity-0 pointer-events-none"
+                >
+                    <svg
+                        class="w-6 h-6 text-white"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        ><path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="1.5"
+                            d="M6 18L18 6M6 6l12 12"></path></svg
+                    >
+                    <span
+                        class="text-xl font-light tracking-wide whitespace-nowrap"
+                        >Click empty space to reset focus</span
                     >
                 </div>
             </div>
@@ -112,6 +139,7 @@ import { ClientRouter } from "astro:transitions";
             <a
                 id="exit-btn"
                 href="/"
+                data-astro-reload
                 class="flex items-center gap-3 px-6 py-2.5 bg-zinc-950/40 backdrop-blur-md border border-white/10 rounded-full text-white/70 hover:text-white hover:bg-zinc-900/60 hover:border-white/30 transition-all duration-300 shadow-xl shadow-black/20 group"
             >
                 <svg
@@ -138,10 +166,49 @@ import { ClientRouter } from "astro:transitions";
                 class="flex items-center gap-2 px-4 py-2.5 bg-zinc-950/40 backdrop-blur-md border border-white/10 rounded-full text-zinc-500 hover:text-white hover:bg-zinc-900/60 hover:border-white/30 transition-all duration-300 shadow-xl shadow-black/20"
                 title="Restart Tutorial"
             >
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                <span class="font-sans text-xs font-medium tracking-widest uppercase">Help</span>
+                <svg
+                    class="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    ><path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    ></path></svg
+                >
+                <span
+                    class="font-sans text-xs font-medium tracking-widest uppercase"
+                    >Help</span
+                >
             </button>
         </div>
+
+        <!-- Focus Mode Close Button -->
+        <button
+            id="focus-close-btn"
+            style="opacity: 0; pointer-events: none;"
+            class="fixed top-8 right-8 z-50 flex items-center gap-2 px-5 py-2.5 bg-zinc-950/40 backdrop-blur-md border border-white/10 rounded-full text-white/70 hover:text-white hover:bg-zinc-900/60 hover:border-white/30 transition-all duration-300 shadow-xl shadow-black/20 group cursor-pointer"
+            title="Reset Focus"
+        >
+            <span
+                class="font-sans text-xs font-medium tracking-widest uppercase"
+                >Reset Focus</span
+            >
+            <svg
+                class="w-4 h-4 transition-transform duration-300 group-hover:rotate-90"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+            >
+                <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+        </button>
 
         <!-- The 3D Render Target -->
         <div
@@ -186,9 +253,9 @@ import { ClientRouter } from "astro:transitions";
                     <input
                         type="range"
                         id="slider-density"
-                        min="10"
+                        min="0"
                         max="1000"
-                        value="300"
+                        value="0"
                         class="w-full h-1.5 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-blue-500 hover:accent-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all"
                     />
                 </div>
@@ -207,9 +274,9 @@ import { ClientRouter } from "astro:transitions";
                     <input
                         type="range"
                         id="slider-connections"
-                        min="20"
+                        min="0"
                         max="250"
-                        value="100"
+                        value="0"
                         class="w-full h-1.5 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-orange-500 hover:accent-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-500/50 transition-all"
                     />
                 </div>
@@ -230,39 +297,57 @@ import { ClientRouter } from "astro:transitions";
                 // ----------------------------------------------------
                 // INTERACTIVE TUTORIAL STATE MACHINE
                 // ----------------------------------------------------
-                let tutorialState = parseInt(sessionStorage.getItem('brain_tutorial_completed') || '0');
+                let completedVal = sessionStorage.getItem(
+                    "brain_tutorial_completed",
+                );
+                if (completedVal === "3") {
+                    sessionStorage.setItem("brain_tutorial_completed", "4");
+                    completedVal = "4";
+                }
+                let tutorialState = parseInt(completedVal || "0");
                 let cumulativeRotation = 0;
                 let lastCameraPos = new THREE.Vector3();
                 let initCameraDist = null;
                 let tutorialActive = false;
 
-                const onboardingControls = document.getElementById('onboarding-controls');
-                const restartTutorialBtn = document.getElementById('restart-tutorial-btn');
-                const skipTutorialBtn = document.getElementById('skip-tutorial-btn');
+                const onboardingControls = document.getElementById(
+                    "onboarding-controls",
+                );
+                const restartTutorialBtn = document.getElementById(
+                    "restart-tutorial-btn",
+                );
+                const skipTutorialBtn =
+                    document.getElementById("skip-tutorial-btn");
                 const tSteps = [
-                    document.getElementById('tutorial-step-1'),
-                    document.getElementById('tutorial-step-2'),
-                    document.getElementById('tutorial-step-3')
+                    document.getElementById("tutorial-step-1"),
+                    document.getElementById("tutorial-step-2"),
+                    document.getElementById("tutorial-step-3"),
+                    document.getElementById("tutorial-step-4"),
                 ];
 
                 function updateTutorialUI() {
-                    if (tutorialState >= 3) {
+                    if (tutorialState >= 4) {
                         if (onboardingControls) {
-                            onboardingControls.style.opacity = '0';
-                            onboardingControls.style.pointerEvents = 'none';
+                            onboardingControls.style.opacity = "0";
+                            onboardingControls.style.pointerEvents = "none";
                         }
-                        if (restartTutorialBtn) restartTutorialBtn.style.display = 'flex';
+                        if (restartTutorialBtn)
+                            restartTutorialBtn.style.display = "flex";
                         return;
                     }
-                    
+
                     if (!tutorialActive) return;
-                    
-                    if (restartTutorialBtn) restartTutorialBtn.style.display = 'none';
+
+                    if (restartTutorialBtn)
+                        restartTutorialBtn.style.display = "none";
                     if (onboardingControls) {
-                        onboardingControls.classList.remove('hidden');
+                        onboardingControls.classList.remove("hidden");
                         setTimeout(() => {
-                            if (onboardingControls.style.opacity === '0' || onboardingControls.style.opacity === '') {
-                                onboardingControls.style.opacity = '1';
+                            if (
+                                onboardingControls.style.opacity === "0" ||
+                                onboardingControls.style.opacity === ""
+                            ) {
+                                onboardingControls.style.opacity = "1";
                             }
                         }, 50);
                     }
@@ -270,53 +355,68 @@ import { ClientRouter } from "astro:transitions";
                     tSteps.forEach((step, index) => {
                         if (!step) return;
                         if (index === tutorialState) {
-                            step.style.opacity = '1';
-                            step.style.pointerEvents = 'auto';
-                            step.style.transform = 'translateY(0)';
+                            step.style.opacity = "1";
+                            step.style.pointerEvents = "auto";
+                            step.style.transform = "translateY(0)";
                         } else {
-                            step.style.opacity = '0';
-                            step.style.pointerEvents = 'none';
-                            step.style.transform = 'translateY(4px)';
+                            step.style.opacity = "0";
+                            step.style.pointerEvents = "none";
+                            step.style.transform = "translateY(4px)";
                         }
                     });
                 }
 
                 function advanceTutorial(targetState) {
-                    if (tutorialState >= targetState || tutorialState >= 3) return;
+                    if (tutorialState >= targetState || tutorialState >= 4)
+                        return;
                     tutorialState = targetState;
-                    if (tutorialState >= 3) {
-                        sessionStorage.setItem('brain_tutorial_completed', '3');
+                    if (tutorialState >= 4) {
+                        sessionStorage.setItem("brain_tutorial_completed", "4");
                     }
                     if (tutorialState === 1) {
-                        initCameraDist = camera.position.distanceTo(controls.target);
+                        initCameraDist = camera.position.distanceTo(
+                            controls.target,
+                        );
                     }
                     updateTutorialUI();
                 }
 
                 if (skipTutorialBtn) {
-                    skipTutorialBtn.addEventListener('pointerdown', (e) => e.stopPropagation());
-                    skipTutorialBtn.addEventListener('pointerup', (e) => e.stopPropagation());
-                    skipTutorialBtn.addEventListener('pointermove', (e) => e.stopPropagation());
-                    skipTutorialBtn.addEventListener('click', (e) => {
+                    skipTutorialBtn.addEventListener("pointerdown", (e) =>
+                        e.stopPropagation(),
+                    );
+                    skipTutorialBtn.addEventListener("pointerup", (e) =>
+                        e.stopPropagation(),
+                    );
+                    skipTutorialBtn.addEventListener("pointermove", (e) =>
+                        e.stopPropagation(),
+                    );
+                    skipTutorialBtn.addEventListener("click", (e) => {
                         e.stopPropagation();
-                        advanceTutorial(3);
+                        advanceTutorial(4);
                     });
                 }
 
                 if (restartTutorialBtn) {
-                    restartTutorialBtn.addEventListener('pointerdown', (e) => e.stopPropagation());
-                    restartTutorialBtn.addEventListener('pointerup', (e) => e.stopPropagation());
-                    restartTutorialBtn.addEventListener('pointermove', (e) => e.stopPropagation());
-                    restartTutorialBtn.addEventListener('click', (e) => {
+                    restartTutorialBtn.addEventListener("pointerdown", (e) =>
+                        e.stopPropagation(),
+                    );
+                    restartTutorialBtn.addEventListener("pointerup", (e) =>
+                        e.stopPropagation(),
+                    );
+                    restartTutorialBtn.addEventListener("pointermove", (e) =>
+                        e.stopPropagation(),
+                    );
+                    restartTutorialBtn.addEventListener("click", (e) => {
                         e.stopPropagation();
-                        sessionStorage.removeItem('brain_tutorial_completed');
+                        sessionStorage.removeItem("brain_tutorial_completed");
                         tutorialState = 0;
                         cumulativeRotation = 0;
                         initCameraDist = null;
                         updateTutorialUI();
                     });
                 }
-                
+
                 // Initialize instantly for states >= 3 (Help Button)
                 updateTutorialUI();
 
@@ -349,7 +449,7 @@ import { ClientRouter } from "astro:transitions";
                     antialias: true,
                     alpha: true,
                 });
-                renderer.setPixelRatio(window.devicePixelRatio);
+                renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
                 renderer.setSize(window.innerWidth, window.innerHeight);
                 renderer.localClippingEnabled = true; // Enables our X-Ray Tunnel shader!
                 container.appendChild(renderer.domElement);
@@ -357,45 +457,47 @@ import { ClientRouter } from "astro:transitions";
                 // Map OrbitControls to the entire document body! This allows the user to click-and-drag right through the HTML label wrappers!
                 const controls = new OrbitControls(camera, document.body);
                 controls.enableDamping = true;
-                controls.dampingFactor = 0.05;
+                controls.dampingFactor = 0.12;
                 controls.enablePan = false; // Just zoom and rotate
                 controls.minDistance = 50; // Let them fly ultra deep inside to inspect the leaves
                 controls.maxDistance = 3000;
 
                 // Tutorial Interaction Tracking
-                controls.addEventListener('change', () => {
+                controls.addEventListener("change", () => {
                     if (!tutorialActive || tutorialState >= 3) return;
-                    
+
                     if (tutorialState === 0) {
                         if (!initCameraDist) {
-                            initCameraDist = camera.position.distanceTo(controls.target);
+                            initCameraDist = camera.position.distanceTo(
+                                controls.target,
+                            );
                             lastCameraPos.copy(camera.position);
                         }
-                        const distMoved = lastCameraPos.distanceTo(camera.position);
+                        const distMoved = lastCameraPos.distanceTo(
+                            camera.position,
+                        );
                         cumulativeRotation += distMoved;
                         lastCameraPos.copy(camera.position);
-                        
+
                         if (cumulativeRotation > 500) {
                             advanceTutorial(1);
                         }
                     } else if (tutorialState === 1) {
-                        if (!initCameraDist) initCameraDist = camera.position.distanceTo(controls.target);
-                        const currentDist = camera.position.distanceTo(controls.target);
-                        
+                        if (!initCameraDist)
+                            initCameraDist = camera.position.distanceTo(
+                                controls.target,
+                            );
+                        const currentDist = camera.position.distanceTo(
+                            controls.target,
+                        );
+
                         if (Math.abs(initCameraDist - currentDist) > 150) {
                             advanceTutorial(2);
                         }
                     }
                 });
 
-                // FOCUS MODE UX: If the user manually intervenes and violently drags the camera to explore, break the Focus Mode lock instantly!
-                let activeFocusTreeId = null;
-                controls.addEventListener("start", () => {
-                    activeFocusTreeId = null;
-                    document
-                        .querySelectorAll(".layer-4-note")
-                        .forEach((el) => (el.style.opacity = "0"));
-                });
+                let activeFocusNodeName = null;
 
                 // Cinematic Flight Engine State
                 let isFlying = false;
@@ -415,7 +517,7 @@ import { ClientRouter } from "astro:transitions";
                 function flyTo(
                     hubCenterVec,
                     zoomDistance = 450,
-                    treeId = null,
+                    nodeName = null,
                     durationMs = 1500,
                 ) {
                     flightDuration = durationMs;
@@ -435,25 +537,146 @@ import { ClientRouter } from "astro:transitions";
 
                     flightAlpha = 0;
                     isFlying = true;
-                    activeFocusTreeId = treeId; // Lock the shader focus
+                    activeFocusNodeName = nodeName; // Lock the shader focus
 
-                    // Show notes only for the actively focused category tree!
+                    // Calculate the neighborhood logic dynamically!
+                    if (nodeName && nodeName !== "CORE") {
+                        window.activeVisibleNodes = new Set([nodeName]);
+                        if (adjacencyMap.has(nodeName)) {
+                            adjacencyMap
+                                .get(nodeName)
+                                .forEach((conn) =>
+                                    window.activeVisibleNodes.add(conn),
+                                );
+                        }
+                    } else {
+                        window.activeVisibleNodes = new Set();
+                    }
+
+                    rebuildRaycastTargets(); // Dynamic Partitioning Update!
+
+                    // Show notes only for the active localized neighborhood!
                     document.querySelectorAll(".layer-4-note").forEach((el) => {
-                        if (treeId && el.dataset.treeId === treeId) {
+                        if (
+                            nodeName &&
+                            nodeName !== "CORE" &&
+                            window.activeVisibleNodes.has(el.dataset.name)
+                        ) {
                             el.style.opacity = "1";
                         } else {
                             el.style.opacity = "0";
                         }
                     });
+
+                    const focusCloseBtn =
+                        document.getElementById("focus-close-btn");
+                    if (focusCloseBtn) {
+                        if (nodeName && nodeName !== "CORE") {
+                            focusCloseBtn.style.opacity = "1";
+                            focusCloseBtn.style.pointerEvents = "auto";
+                        } else {
+                            focusCloseBtn.style.opacity = "0";
+                            focusCloseBtn.style.pointerEvents = "none";
+                        }
+                    }
                 }
 
-                // Raycasting for 3D Mesh Clicking
+                // Global UI Ring for Hovering Nodes
+                const ringGeo = new THREE.RingGeometry(1.2, 1.4, 32);
+                const ringMat = new THREE.MeshBasicMaterial({
+                    color: 0xffffff,
+                    transparent: true,
+                    opacity: 0.6,
+                    side: THREE.DoubleSide,
+                    depthWrite: false,
+                });
+                const hoverRing = new THREE.Mesh(ringGeo, ringMat);
+                hoverRing.visible = false;
+                scene.add(hoverRing);
+
+                // Centralized Raycast Target Validator to physically block clicking/hovering of ghosted background meshes!
+                function isValidTarget(mesh) {
+                    const isFocused =
+                        activeFocusNodeName !== null &&
+                        activeFocusNodeName !== "CORE";
+                    if (!isFocused) {
+                        // Global view: Only nodes are interactive. Lines are ignored to prevent misclicks.
+                        return !!mesh.userData.name;
+                    } else {
+                        // Focused view: Nodes are always interactive so they show the hover ring and can be clicked.
+                        // Lines (endpoints) are only interactive if they link active visible nodes.
+                        if (mesh.userData.name) {
+                            return true;
+                        } else if (mesh.userData.endpoints) {
+                            return (
+                                window.activeVisibleNodes.has(
+                                    mesh.userData.endpoints[0],
+                                ) &&
+                                window.activeVisibleNodes.has(
+                                    mesh.userData.endpoints[1],
+                                )
+                            );
+                        }
+                        return false;
+                    }
+                }
+
                 const raycaster = new THREE.Raycaster();
                 const mouse = new THREE.Vector2();
+                const hoverMouse = new THREE.Vector2(-1000, -1000);
+                let mouseMoved = false;
                 const clickableMeshes = [];
+                let raycastTargets = [];
+                let hoveredObj = null;
+
+                let currentCursor = "default";
+                function setBodyCursor(newCursor) {
+                    if (currentCursor !== newCursor) {
+                        renderer.domElement.style.cursor = newCursor;
+                        currentCursor = newCursor;
+                    }
+                }
+
+                function rebuildRaycastTargets() {
+                    raycastTargets = [];
+                    clickableMeshes.forEach((mesh) => {
+                        if (mesh.userData.name) {
+                            raycastTargets.push(mesh);
+                        }
+                    });
+
+                    const isFocused =
+                        activeFocusNodeName !== null &&
+                        activeFocusNodeName !== "CORE";
+                    if (isFocused) {
+                        clickableMeshes.forEach((mesh) => {
+                            if (mesh.userData.endpoints) {
+                                const connectsActive =
+                                    window.activeVisibleNodes.has(
+                                        mesh.userData.endpoints[0],
+                                    ) &&
+                                    window.activeVisibleNodes.has(
+                                        mesh.userData.endpoints[1],
+                                    );
+                                if (connectsActive) {
+                                    raycastTargets.push(mesh);
+                                }
+                            }
+                        });
+                    }
+                }
 
                 let pointerDownTime = 0;
                 let pointerDownPos = new THREE.Vector2();
+
+                window.addEventListener("pointermove", (event) => {
+                    hoverMouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+                    hoverMouse.y =
+                        -(event.clientY / window.innerHeight) * 2 + 1;
+                    mouseMoved = true;
+
+                    // FOCUS MODE UX: Dragging no longer breaks focus mode, allowing you to explore isolated nodes in focus.
+                });
 
                 window.addEventListener("pointerdown", (event) => {
                     pointerDownTime = Date.now();
@@ -461,6 +684,7 @@ import { ClientRouter } from "astro:transitions";
                 });
 
                 window.addEventListener("pointerup", (event) => {
+                    pointerDownTime = 0;
                     // INTERCEPT UI BUTTON CLICKS GLOBALLY!
                     // OrbitControls systematically steals pointer capture mathematically onto `document.body` on Mechanical Mousedown.
                     // When standard UI labels lose pointer-capture, their localized `pointerup` functions are physically aborted natively.
@@ -478,7 +702,7 @@ import { ClientRouter } from "astro:transitions";
                             flyTo(
                                 state.targetVector3,
                                 state.zoomScalar,
-                                state.treeId,
+                                state.nodeName,
                             );
                             return; // Successfully executed HTML button flyTo, abort Raycasting safely!
                         }
@@ -502,14 +726,42 @@ import { ClientRouter } from "astro:transitions";
                     mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
                     raycaster.setFromCamera(mouse, camera);
 
-                    const intersects =
-                        raycaster.intersectObjects(clickableMeshes);
+                    const intersects = raycaster
+                        .intersectObjects(raycastTargets)
+                        .filter((hit) => isValidTarget(hit.object));
+
                     if (intersects.length > 0) {
                         advanceTutorial(3);
+                        let targetNodeMesh = intersects[0].object;
+
+                        // If the user clicks a connection line instead of a node, travel down it!
+                        if (targetNodeMesh.userData.endpoints) {
+                            const [nameA, nameB] =
+                                targetNodeMesh.userData.endpoints;
+                            let targetName = nameB; // Default to traveling forwards/down
+
+                            // If we are currently focused on one end of the line, travel to the other end!
+                            if (activeFocusNodeName === nameB) {
+                                targetName = nameA;
+                            } else if (activeFocusNodeName === nameA) {
+                                targetName = nameB;
+                            }
+
+                            // Locate the physical mesh of the destination node so we can calculate its size and position natively
+                            const foundMesh = clickableMeshes.find(
+                                (m) => m.userData.name === targetName,
+                            );
+                            if (foundMesh) {
+                                targetNodeMesh = foundMesh;
+                            }
+                        }
+
                         // Determine zoom depth based on geometry size!
-                        const clickedObj = intersects[0].object;
+                        const targetMeshRef =
+                            targetNodeMesh.userData.visibleMesh ||
+                            targetNodeMesh;
                         const clickedRadius =
-                            clickedObj.geometry.parameters.radius;
+                            targetMeshRef.geometry.parameters.radius || 3;
 
                         let zoomScalar = 150;
                         if (clickedRadius >= 25) zoomScalar = 1500;
@@ -517,10 +769,32 @@ import { ClientRouter } from "astro:transitions";
                         else if (clickedRadius >= 8) zoomScalar = 250;
 
                         flyTo(
-                            clickedObj.position,
+                            targetNodeMesh.position,
                             zoomScalar,
-                            clickedObj.userData.treeId || null,
+                            targetNodeMesh.userData.name || null,
                         );
+                    } else {
+                        // Reset focus mode if clicked on empty space!
+                        if (
+                            activeFocusNodeName !== null &&
+                            activeFocusNodeName !== "CORE"
+                        ) {
+                            activeFocusNodeName = null;
+                            document
+                                .querySelectorAll(".layer-4-note")
+                                .forEach((el) => {
+                                    el.style.opacity = "0";
+                                    el.style.pointerEvents = "none";
+                                });
+                            const focusCloseBtn =
+                                document.getElementById("focus-close-btn");
+                            if (focusCloseBtn) {
+                                focusCloseBtn.style.opacity = "0";
+                                focusCloseBtn.style.pointerEvents = "none";
+                            }
+                            rebuildRaycastTargets(); // Rebuild raycast targets since focus reset!
+                            advanceTutorial(4);
+                        }
                     }
                 });
 
@@ -533,14 +807,14 @@ import { ClientRouter } from "astro:transitions";
                     htmlElement,
                     targetVector3,
                     zoomScalar = 450,
-                    treeId = null,
+                    nodeName = null,
                 ) {
                     htmlElement.addEventListener("pointerdown", (e) => {
                         // Initialize the physical tracked pointer origin state dynamically!
                         globalActiveClickState = {
                             targetVector3: targetVector3,
                             zoomScalar: zoomScalar,
-                            treeId: treeId,
+                            nodeName: nodeName,
                             dPos: { x: e.clientX, y: e.clientY },
                         };
                     });
@@ -555,6 +829,36 @@ import { ClientRouter } from "astro:transitions";
                 );
                 directionalLight.position.set(1, 1, 1);
                 scene.add(directionalLight);
+
+                // --- NEW GRAPH ENGINE LOOKUP MAP ---
+                const rawNodeDataMap = new Map();
+                window.USER_HUBS.forEach((hub) => {
+                    rawNodeDataMap.set(hub.name, {
+                        baseColor: new THREE.Color(hub.color),
+                    });
+                    hub.categories.forEach((cat) => {
+                        rawNodeDataMap.set(cat.name, {
+                            baseColor: new THREE.Color(hub.color),
+                        });
+                        cat.items.forEach((item) => {
+                            const itemName =
+                                typeof item === "string" ? item : item.name;
+                            rawNodeDataMap.set(itemName, {
+                                baseColor: new THREE.Color(hub.color),
+                            });
+                        });
+                    });
+                });
+                const globalNodeMap = new Map();
+                const adjacencyMap = new Map();
+                function addAdjacency(a, b) {
+                    if (!adjacencyMap.has(a)) adjacencyMap.set(a, new Set());
+                    if (!adjacencyMap.has(b)) adjacencyMap.set(b, new Set());
+                    adjacencyMap.get(a).add(b);
+                    adjacencyMap.get(b).add(a);
+                }
+                window.activeVisibleNodes = new Set();
+                // ------------------------------------
 
                 // ----------------------------------------------------
                 // LAYER 1: THE EXPLICIT ASSET BRAIN BOUNDARY
@@ -583,56 +887,80 @@ import { ClientRouter } from "astro:transitions";
 
                 // Use the Industry Standard GLTF Loader to load the actual artist-mapped medical brain
                 const loader = new GLTFLoader();
-                loader.load("/brain_low.glb", (gltf) => {
-                    const loadedModel = gltf.scene;
+                loader.load(
+                    "/brain_low.glb",
+                    (gltf) => {
+                        const loadedModel = gltf.scene;
 
-                    // Array to collect wireframes (cannot modify children while traversing them directly)
-                    const wireframes = [];
+                        // Array to collect wireframes (cannot modify children while traversing them directly)
+                        const wireframes = [];
 
-                    // Strip default downloaded materials and apply explicit Ghost Shell aesthetics
-                    loadedModel.traverse((child) => {
-                        if (child.isMesh) {
-                            child.material = shellMatBase;
+                        // Strip default downloaded materials and apply explicit Ghost Shell aesthetics
+                        loadedModel.traverse((child) => {
+                            if (child.isMesh) {
+                                child.material = shellMatBase;
 
-                            // To get the wireframe perfectly on top without Z-fighting, we use an identical second mesh
-                            const wireMesh = new THREE.Mesh(
-                                child.geometry,
-                                shellMatWire,
-                            );
-                            wireframes.push(wireMesh);
+                                // To get the wireframe perfectly on top without Z-fighting, we use an identical second mesh
+                                const wireMesh = new THREE.Mesh(
+                                    child.geometry,
+                                    shellMatWire,
+                                );
+                                wireframes.push(wireMesh);
+                            }
+                        });
+
+                        // Append all wireframes to the model natively
+                        wireframes.forEach((w) => loadedModel.add(w));
+
+                        // Auto-Center and Uniformly Scale the imported model (in case the downloaded model is massively huge or offset!)
+                        const box = new THREE.Box3().setFromObject(loadedModel);
+                        const size = box.getSize(new THREE.Vector3());
+                        const center = box.getCenter(new THREE.Vector3());
+
+                        // Snap the exact origin to 0,0,0
+                        loadedModel.position.x +=
+                            loadedModel.position.x - center.x;
+                        loadedModel.position.y +=
+                            loadedModel.position.y - center.y;
+                        loadedModel.position.z +=
+                            loadedModel.position.z - center.z;
+
+                        // Re-scale the asset to physically map OVER our Neural Network system
+                        // The interior system spans ~760 lengths on Z. We will map the max dimension of the downloaded model to 780 to wrap it perfectly.
+                        const targetLength = 780;
+                        const maxDimension = Math.max(size.x, size.y, size.z);
+                        const scaleFactor = targetLength / maxDimension;
+                        loadedModel.scale.set(
+                            scaleFactor,
+                            scaleFactor,
+                            scaleFactor,
+                        );
+                        window.brainModelRef = loadedModel;
+
+                        // The downloaded model might require default Y-rotation if it faces the wrong way, we will rotate it slightly for optimal starting angle
+                        loadedModel.rotation.y = Math.PI / 2; // Spin it 90 degrees just to see the side profile better immediately
+
+                        brainGroup.add(loadedModel);
+                        // PERFORMANCE FIX: Pre-compile all shaders NOW while the screen is black!
+                        // This prevents the massive main-thread lag spike when the model first renders.
+                        renderer.compile(scene, camera);
+
+                        // Start the cinematic flight!
+                        if (window.startCinematicEntrance) {
+                            window.startCinematicEntrance();
+                            window.startCinematicEntrance = null; // Prevent double-firing from fallback timeout
                         }
-                    });
-
-                    // Append all wireframes to the model natively
-                    wireframes.forEach((w) => loadedModel.add(w));
-
-                    // Auto-Center and Uniformly Scale the imported model (in case the downloaded model is massively huge or offset!)
-                    const box = new THREE.Box3().setFromObject(loadedModel);
-                    const size = box.getSize(new THREE.Vector3());
-                    const center = box.getCenter(new THREE.Vector3());
-
-                    // Snap the exact origin to 0,0,0
-                    loadedModel.position.x += loadedModel.position.x - center.x;
-                    loadedModel.position.y += loadedModel.position.y - center.y;
-                    loadedModel.position.z += loadedModel.position.z - center.z;
-
-                    // Re-scale the asset to physically map OVER our Neural Network system
-                    // The interior system spans ~760 lengths on Z. We will map the max dimension of the downloaded model to 780 to wrap it perfectly.
-                    const targetLength = 780;
-                    const maxDimension = Math.max(size.x, size.y, size.z);
-                    const scaleFactor = targetLength / maxDimension;
-                    loadedModel.scale.set(
-                        scaleFactor,
-                        scaleFactor,
-                        scaleFactor,
-                    );
-                    window.brainModelRef = loadedModel;
-
-                    // The downloaded model might require default Y-rotation if it faces the wrong way, we will rotate it slightly for optimal starting angle
-                    loadedModel.rotation.y = Math.PI / 2; // Spin it 90 degrees just to see the side profile better immediately
-
-                    brainGroup.add(loadedModel);
-                });
+                    },
+                    undefined,
+                    (error) => {
+                        console.error("GLTF Loading Error:", error);
+                        // If the massive brain asset fails to load, STILL start the experience so the user isn't stuck on a black screen!
+                        if (window.startCinematicEntrance) {
+                            window.startCinematicEntrance();
+                            window.startCinematicEntrance = null;
+                        }
+                    },
+                );
 
                 // ----------------------------------------------------
                 // LAYER 2: THE DATA HUBS AND FLOATING LABELS
@@ -661,10 +989,11 @@ import { ClientRouter } from "astro:transitions";
 
                 // UI Label for the mechanical core
                 const coreLabelEl = document.createElement("div");
+                coreLabelEl.style.willChange = "transform, opacity";
                 // Explicitly removed CSS translate logic entirely + explicitly forced Javascript Transform-Origin Center
                 coreLabelEl.className =
-                    "absolute top-0 left-0 font-bold text-4xl sans-serif tracking-tight drop-shadow-lg mix-blend-screen select-none pointer-events-auto cursor-pointer z-50 text-white origin-center";
-                coreLabelEl.style.textShadow = `0px 0px 25px rgba(255,255,255,1)`;
+                    "absolute top-0 left-0 font-bold text-6xl sans-serif tracking-tight select-none pointer-events-auto cursor-pointer z-50 origin-center text-white";
+                coreLabelEl.style.textShadow = `0px 2px 4px #000, 0px 0px 10px #000, 0px 0px 20px #000, 0px 0px 40px #000, 0px 0px 60px rgba(255, 255, 255, 0.5)`;
                 coreLabelEl.innerText = "NEURAL CORE";
 
                 bindHTMLClick(
@@ -676,10 +1005,71 @@ import { ClientRouter } from "astro:transitions";
                 labelsContainer.appendChild(coreLabelEl);
                 HTML_LABELS.push({
                     element: coreLabelEl,
+                    clickTarget: coreLabelEl,
                     position: new THREE.Vector3(0, 0, 0),
                     type: "hub",
                     treeId: "CORE",
+                    name: "CORE",
                 });
+
+                // Utility: Calculate the circular mean of HSL colors to keep blends saturated and pure
+                function averageColorsHSL(colorArray) {
+                    if (colorArray.length === 0) return new THREE.Color();
+                    if (colorArray.length === 1) return colorArray[0].clone();
+
+                    let sumX = 0;
+                    let sumY = 0;
+                    let sumS = 0;
+                    let sumL = 0;
+
+                    const tempHSL = { h: 0, s: 0, l: 0 };
+                    colorArray.forEach((c) => {
+                        c.getHSL(tempHSL);
+                        const angle = tempHSL.h * Math.PI * 2;
+                        sumX += Math.cos(angle);
+                        sumY += Math.sin(angle);
+                        sumS += tempHSL.s;
+                        sumL += tempHSL.l;
+                    });
+
+                    const count = colorArray.length;
+                    const avgX = sumX / count;
+                    const avgY = sumY / count;
+                    const avgS = sumS / count;
+                    const avgL = sumL / count;
+
+                    let avgH = Math.atan2(avgY, avgX) / (Math.PI * 2);
+                    if (avgH < 0) avgH += 1.0;
+
+                    const result = new THREE.Color();
+                    result.setHSL(avgH, avgS, avgL);
+                    return result;
+                }
+
+                // Utility: Blend two colors using HSL shortest-path interpolation
+                function blendColorsHSL(colorA, colorB, alpha) {
+                    const hslA = { h: 0, s: 0, l: 0 };
+                    const hslB = { h: 0, s: 0, l: 0 };
+                    colorA.getHSL(hslA);
+                    colorB.getHSL(hslB);
+
+                    let hA = hslA.h;
+                    let hB = hslB.h;
+                    let diff = hB - hA;
+                    if (diff > 0.5) {
+                        hA += 1.0;
+                    } else if (diff < -0.5) {
+                        hB += 1.0;
+                    }
+
+                    const h = (hA + (hB - hA) * alpha) % 1.0;
+                    const s = hslA.s + (hslB.s - hslA.s) * alpha;
+                    const l = hslA.l + (hslB.l - hslA.l) * alpha;
+
+                    const result = new THREE.Color();
+                    result.setHSL(h, s, l);
+                    return result;
+                }
 
                 // Utility: Generate physical WebGL 3D cylinder pipes to bypass LineBasicMaterial maximum 1px width limits on Windows/Angle drivers!
                 function createThickLine(
@@ -689,6 +1079,8 @@ import { ClientRouter } from "astro:transitions";
                     thickness,
                     opacity,
                     treeId,
+                    nameA,
+                    nameB,
                 ) {
                     const distance = vStart.distanceTo(vEnd);
                     const cylinderGeo = new THREE.CylinderGeometry(
@@ -712,14 +1104,52 @@ import { ClientRouter } from "astro:transitions";
                     mesh.position.copy(vStart);
                     mesh.lookAt(vEnd);
                     mesh.userData.treeId = treeId; // Bind it to the Ghost Opacity Engine!
+                    mesh.userData.baseColor = colorObj.clone();
+                    mesh.userData.baseOpacity = opacity;
+                    if (nameA && nameB) {
+                        mesh.userData.endpoints = [nameA, nameB];
+                    }
 
                     scene.add(mesh);
                     clickableMeshes.push(mesh); // Track it alongside everything else so the Opacity Engine loops over it automatically!
+
+                    // Create an invisible, thicker Hitbox so skinny lines are easy to click
+                    if (nameA && nameB) {
+                        const hitGeo = new THREE.CylinderGeometry(
+                            Math.max(thickness + 5, 8),
+                            Math.max(thickness + 5, 8),
+                            distance,
+                            6,
+                            1,
+                            false,
+                        );
+                        hitGeo.translate(0, distance / 2, 0);
+                        hitGeo.rotateX(Math.PI / 2);
+
+                        const hitMat = new THREE.MeshBasicMaterial({
+                            transparent: true,
+                            opacity: 0,
+                            depthWrite: false, // Prevents z-fighting invisibly
+                        });
+                        const hitMesh = new THREE.Mesh(hitGeo, hitMat);
+                        hitMesh.position.copy(vStart);
+                        hitMesh.lookAt(vEnd);
+
+                        hitMesh.userData.endpoints = [nameA, nameB];
+                        hitMesh.userData.hitMesh = true;
+                        hitMesh.userData.visibleMesh = mesh; // Link for the Opacity Engine!
+                        addAdjacency(nameA, nameB);
+
+                        scene.add(hitMesh);
+                        clickableMeshes.push(hitMesh);
+                    }
                 }
 
                 window.USER_HUBS.forEach((hub) => {
-                    // Massive Bright Glowing Core
-                    const coreGeo = new THREE.SphereGeometry(20, 32, 32);
+                    // Massive Bright Glowing Core (or category-sized for floating nodes)
+                    const isFloating = !!hub.isFloating;
+                    const radius = isFloating ? 8 : 20;
+                    const coreGeo = new THREE.SphereGeometry(radius, 32, 32);
                     // Ensuring the mesh IS colored solidly and intrinsically handles transparency dynamically
                     const coreMat = new THREE.MeshBasicMaterial({
                         color: hub.color,
@@ -728,30 +1158,59 @@ import { ClientRouter } from "astro:transitions";
                     const coreMesh = new THREE.Mesh(coreGeo, coreMat);
                     coreMesh.position.set(hub.x, hub.y, hub.z);
                     coreMesh.userData.treeId = hub.id; // Map specifically to isolate Focus trees!
+                    coreMesh.userData.name = hub.name;
+                    coreMesh.userData.baseColor = new THREE.Color(hub.color);
                     scene.add(coreMesh);
                     clickableMeshes.push(coreMesh); // Add to Raycaster
 
                     // Add literal Light Source so the brain shell glows around the Hub!
-                    const light = new THREE.PointLight(hub.color, 100, 800);
+                    const lightIntensity = isFloating ? 20 : 100;
+                    const lightDistance = isFloating ? 200 : 800;
+                    const light = new THREE.PointLight(
+                        hub.color,
+                        lightIntensity,
+                        lightDistance,
+                    );
                     coreMesh.add(light);
 
-                    // Create HTML Label Element (Tier 1)
+                    // Create HTML Label Element (Tier 1 or Tier 2 sized depending on isFloating)
                     const labelEl = document.createElement("div");
+                    labelEl.style.willChange = "transform, opacity";
                     // Explicitly destroyed mix-blend-screen and forced stark organic black backing!
-                    labelEl.className =
-                        "absolute top-0 left-0 font-bold text-6xl sans-serif tracking-tight select-none pointer-events-auto cursor-pointer z-50 origin-center text-white";
-                    labelEl.style.textShadow = `0px 2px 4px #000, 0px 0px 10px #000, 0px 0px 20px #000, 0px 0px 40px #000, 0px 0px 60px ${hub.cssColor}`;
+                    if (isFloating) {
+                        labelEl.className =
+                            "absolute top-0 left-0 font-mono text-5xl font-bold tracking-widest text-white uppercase select-none pointer-events-auto cursor-pointer z-40 origin-center";
+                        labelEl.style.textShadow = `0px 2px 4px #000, 0px 0px 10px #000, 0px 0px 20px #000, 0px 0px 30px #000, 0px 0px 40px ${hub.cssColor}`;
+                    } else {
+                        labelEl.className =
+                            "absolute top-0 left-0 font-bold text-6xl sans-serif tracking-tight select-none pointer-events-auto cursor-pointer z-50 origin-center text-white";
+                        labelEl.style.textShadow = `0px 2px 4px #000, 0px 0px 10px #000, 0px 0px 20px #000, 0px 0px 40px #000, 0px 0px 60px ${hub.cssColor}`;
+                    }
                     labelEl.innerText = hub.name;
 
                     // Execute physical camera flight cleanly using our custom binder, propagating specific treeId!
-                    bindHTMLClick(labelEl, coreMesh.position, 400, hub.id);
+                    const zoomDistance = isFloating ? 250 : 400;
+                    bindHTMLClick(
+                        labelEl,
+                        coreMesh.position,
+                        zoomDistance,
+                        hub.name,
+                    );
 
                     labelsContainer.appendChild(labelEl);
 
                     HTML_LABELS.push({
                         element: labelEl,
+                        clickTarget: labelEl,
                         position: new THREE.Vector3(hub.x, hub.y, hub.z),
-                        type: "hub",
+                        type: isFloating ? "category" : "hub",
+                        treeId: hub.id,
+                        name: hub.name,
+                    });
+
+                    globalNodeMap.set(hub.name, {
+                        position: new THREE.Vector3(hub.x, hub.y, hub.z),
+                        color: new THREE.Color(hub.color),
                         treeId: hub.id,
                     });
                 });
@@ -781,6 +1240,7 @@ import { ClientRouter } from "astro:transitions";
                         );
                         ambientNodesMesh.geometry.dispose();
                         ambientNodesMesh.material.dispose();
+                        ambientNodesMesh = null;
                     }
                     if (ambientLineMesh) {
                         scene.remove(ambientLineMesh);
@@ -790,13 +1250,22 @@ import { ClientRouter } from "astro:transitions";
                         );
                         ambientLineMesh.geometry.dispose();
                         ambientLineMesh.material.dispose();
+                        ambientLineMesh = null;
                     }
-                    if (pointGeoRef) pointGeoRef.dispose();
-                    if (lineGeoRef) lineGeoRef.dispose();
+                    if (pointGeoRef) {
+                        pointGeoRef.dispose();
+                        pointGeoRef = null;
+                    }
+                    if (lineGeoRef) {
+                        lineGeoRef.dispose();
+                        lineGeoRef = null;
+                    }
 
                     // Live-read the exact mathematical slider values from the specific overlay
                     const nodeCount = parseInt(sliderDensity.value);
                     const THRESHOLD = parseInt(sliderConnections.value);
+
+                    if (nodeCount === 0) return;
 
                     const positions = new Float32Array(nodeCount * 3);
 
@@ -889,29 +1358,31 @@ import { ClientRouter } from "astro:transitions";
                         }
                     }
 
-                    lineGeoRef = new THREE.BufferGeometry();
-                    lineGeoRef.setAttribute(
-                        "position",
-                        new THREE.Float32BufferAttribute(linePositions, 3),
-                    );
-                    lineGeoRef.setAttribute(
-                        "color",
-                        new THREE.Float32BufferAttribute(lineColors, 3),
-                    );
+                    if (linePositions.length > 0) {
+                        lineGeoRef = new THREE.BufferGeometry();
+                        lineGeoRef.setAttribute(
+                            "position",
+                            new THREE.Float32BufferAttribute(linePositions, 3),
+                        );
+                        lineGeoRef.setAttribute(
+                            "color",
+                            new THREE.Float32BufferAttribute(lineColors, 3),
+                        );
 
-                    const lineMat = new THREE.LineBasicMaterial({
-                        vertexColors: true,
-                        transparent: true,
-                        opacity: 0.25,
-                        blending: THREE.AdditiveBlending,
-                    });
-                    ambientLineMesh = new THREE.LineSegments(
-                        lineGeoRef,
-                        lineMat,
-                    );
-                    ambientLineMesh.userData.isAmbient = true;
-                    scene.add(ambientLineMesh);
-                    clickableMeshes.push(ambientLineMesh);
+                        const lineMat = new THREE.LineBasicMaterial({
+                            vertexColors: true,
+                            transparent: true,
+                            opacity: 0.25,
+                            blending: THREE.AdditiveBlending,
+                        });
+                        ambientLineMesh = new THREE.LineSegments(
+                            lineGeoRef,
+                            lineMat,
+                        );
+                        ambientLineMesh.userData.isAmbient = true;
+                        scene.add(ambientLineMesh);
+                        clickableMeshes.push(ambientLineMesh);
+                    }
                 }
 
                 // Initialize natively
@@ -932,6 +1403,30 @@ import { ClientRouter } from "astro:transitions";
                     e.stopPropagation(),
                 );
 
+                const focusCloseBtn =
+                    document.getElementById("focus-close-btn");
+                if (focusCloseBtn) {
+                    focusCloseBtn.addEventListener("pointerdown", (e) =>
+                        e.stopPropagation(),
+                    );
+                    focusCloseBtn.addEventListener("pointerup", (e) =>
+                        e.stopPropagation(),
+                    );
+                    focusCloseBtn.addEventListener("pointermove", (e) =>
+                        e.stopPropagation(),
+                    );
+                    focusCloseBtn.addEventListener("click", (e) => {
+                        e.preventDefault();
+                        activeFocusNodeName = null;
+                        document
+                            .querySelectorAll(".layer-4-note")
+                            .forEach((el) => (el.style.opacity = "0"));
+                        focusCloseBtn.style.opacity = "0";
+                        focusCloseBtn.style.pointerEvents = "none";
+                        advanceTutorial(4);
+                    });
+                }
+
                 const exitBtn = document.getElementById("exit-btn");
                 exitBtn.addEventListener("pointerdown", (e) =>
                     e.stopPropagation(),
@@ -949,6 +1444,9 @@ import { ClientRouter } from "astro:transitions";
                     const overlay = document.getElementById(
                         "brain-entrance-overlay",
                     );
+                    const labelsContainer =
+                        document.getElementById("labels-container");
+                    if (labelsContainer) labelsContainer.style.display = "none"; // Instantly hide labels to prevent DOM lag!
 
                     // Fly out slowly into the deep void (20000) over 3.5s so it NEVER stops before navigation!
                     flyTo(new THREE.Vector3(0, 0, 0), 20000, "CORE", 3500);
@@ -963,6 +1461,7 @@ import { ClientRouter } from "astro:transitions";
                         sessionStorage.setItem("from_brain", "true"); // Required to trigger the reverse 'o' zoom on the home page!
                         const link = document.createElement("a");
                         link.href = "/";
+                        link.setAttribute("data-astro-reload", "");
                         document.body.appendChild(link);
                         link.click();
                     }, 1500);
@@ -1016,6 +1515,11 @@ import { ClientRouter } from "astro:transitions";
 
                 // Inject the precise Hobbies/Children tightly grouped into 3-Tier Networks
                 window.USER_HUBS.forEach((hub) => {
+                    if (
+                        hub.isFloating &&
+                        (!hub.categories || hub.categories.length === 0)
+                    )
+                        return;
                     const hubCenter = new THREE.Vector3(hub.x, hub.y, hub.z);
 
                     // TIER 2: The Core Categories (e.g. Movies, Tabletop)
@@ -1066,135 +1570,208 @@ import { ClientRouter } from "astro:transitions";
                     hub.categories.forEach((cat, catIndex) => {
                         let catPos;
                         let c2D;
-                        // Execute a brute-force randomized scattered trial up to 200 times purely to find a non-overlapping chaotic vector!
-                        for (let attempt = 0; attempt < 200; attempt++) {
-                            const rXYZ = new THREE.Vector3(
-                                (Math.random() - 0.5) * 2,
-                                (Math.random() - 0.5) * 2,
-                                (Math.random() - 0.5) * 2,
-                            ).normalize();
-                            const dist = 40 + Math.random() * 30; // Drastically tightened max boundary down relative to Layer 1 Core to satisfy user constraint
-                            const candidate = hubCenter
-                                .clone()
-                                .add(rXYZ.multiplyScalar(dist));
+                        if (cat.invisibleCategory) {
+                            catPos = hubCenter.clone();
+                            c2D = toScreen(catPos);
+                        } else {
+                            // Execute a brute-force randomized scattered trial up to 200 times purely to find a non-overlapping chaotic vector!
+                            for (let attempt = 0; attempt < 200; attempt++) {
+                                const rXYZ = new THREE.Vector3(
+                                    (Math.random() - 0.5) * 2,
+                                    (Math.random() - 0.5) * 2,
+                                    (Math.random() - 0.5) * 2,
+                                ).normalize();
+                                const dist = 40 + Math.random() * 30; // Drastically tightened max boundary down relative to Layer 1 Core to satisfy user constraint
+                                const candidate = hubCenter
+                                    .clone()
+                                    .add(rXYZ.multiplyScalar(dist));
 
-                            const cand2D = toScreen(candidate);
-                            const source2D = toScreen(hubCenter);
-                            let overlap = false;
+                                const cand2D = toScreen(candidate);
+                                const source2D = toScreen(hubCenter);
+                                let overlap = false;
 
-                            for (let s of occupied) {
-                                if (s.type === "node") {
-                                    // Tighter bounding requirements to permit denser, shorter clusters
-                                    if (
-                                        Math.hypot(
-                                            cand2D.x - s.obj.x,
-                                            cand2D.y - s.obj.y,
-                                        ) <
-                                        s.r + 20
-                                    )
-                                        overlap = true;
-
-                                    const isSourceNode =
-                                        Math.hypot(
-                                            s.obj.x - source2D.x,
-                                            s.obj.y - source2D.y,
-                                        ) < 1;
-                                    const isCandNode =
-                                        Math.hypot(
-                                            s.obj.x - cand2D.x,
-                                            s.obj.y - cand2D.y,
-                                        ) < 1;
-                                    if (!isSourceNode && !isCandNode) {
+                                for (let s of occupied) {
+                                    if (s.type === "node") {
+                                        // Tighter bounding requirements to permit denser, shorter clusters
                                         if (
-                                            distToSegment(
-                                                s.obj,
-                                                source2D,
-                                                cand2D,
+                                            Math.hypot(
+                                                cand2D.x - s.obj.x,
+                                                cand2D.y - s.obj.y,
                                             ) <
-                                            s.r + 5
+                                            s.r + 20
+                                        )
+                                            overlap = true;
+
+                                        const isSourceNode =
+                                            Math.hypot(
+                                                s.obj.x - source2D.x,
+                                                s.obj.y - source2D.y,
+                                            ) < 1;
+                                        const isCandNode =
+                                            Math.hypot(
+                                                s.obj.x - cand2D.x,
+                                                s.obj.y - cand2D.y,
+                                            ) < 1;
+                                        if (!isSourceNode && !isCandNode) {
+                                            if (
+                                                distToSegment(
+                                                    s.obj,
+                                                    source2D,
+                                                    cand2D,
+                                                ) <
+                                                s.r + 5
+                                            )
+                                                overlap = true;
+                                        }
+                                    } else if (s.type === "line") {
+                                        if (
+                                            distToSegment(cand2D, s.p1, s.p2) <
+                                            15
                                         )
                                             overlap = true;
                                     }
-                                } else if (s.type === "line") {
-                                    if (distToSegment(cand2D, s.p1, s.p2) < 15)
-                                        overlap = true;
+                                    if (overlap) break;
                                 }
-                                if (overlap) break;
+                                if (!overlap) {
+                                    catPos = candidate;
+                                    c2D = cand2D;
+                                    break;
+                                }
                             }
-                            if (!overlap) {
-                                catPos = candidate;
-                                c2D = cand2D;
-                                break;
+
+                            // Fallback math failsafe if tree is incredibly dense
+                            if (!catPos) {
+                                const fallbackAngle =
+                                    (catIndex / hub.categories.length) *
+                                    Math.PI *
+                                    2;
+                                catPos = hubCenter
+                                    .clone()
+                                    .add(
+                                        new THREE.Vector3(
+                                            Math.cos(fallbackAngle) * 50,
+                                            150,
+                                            Math.sin(fallbackAngle) * 50,
+                                        ),
+                                    );
+                                c2D = toScreen(catPos);
+                            }
+
+                            // Shrink the enforced bounding area heavily so dense clusters succeed natively
+                            occupied.push({ obj: c2D, type: "node", r: 25 });
+                            occupied.push({
+                                p1: toScreen(hubCenter),
+                                p2: c2D,
+                                type: "line",
+                            });
+                        }
+
+                        // Calculate 60/40 blended color for the category!
+                        let catColor = new THREE.Color(hub.color);
+                        let catCssColor = hub.cssColor;
+
+                        if (
+                            typeof cat === "object" &&
+                            cat.secondaryParents &&
+                            cat.secondaryParents.length > 0
+                        ) {
+                            const pColors = [];
+                            cat.secondaryParents.forEach((pName) => {
+                                if (rawNodeDataMap.has(pName)) {
+                                    pColors.push(
+                                        rawNodeDataMap.get(pName).baseColor,
+                                    );
+                                }
+                            });
+                            if (pColors.length > 0) {
+                                const avgSecColor = averageColorsHSL(pColors);
+                                catColor = blendColorsHSL(
+                                    catColor,
+                                    avgSecColor,
+                                    0.4,
+                                ); // 60% primary, 40% secondary
+                                catCssColor = `rgba(${Math.round(catColor.r * 255)}, ${Math.round(catColor.g * 255)}, ${Math.round(catColor.b * 255)}, 0.8)`;
                             }
                         }
 
-                        // Fallback math failsafe if tree is incredibly dense
-                        if (!catPos) {
-                            const fallbackAngle =
-                                (catIndex / hub.categories.length) *
-                                Math.PI *
-                                2;
-                            catPos = hubCenter
-                                .clone()
-                                .add(
-                                    new THREE.Vector3(
-                                        Math.cos(fallbackAngle) * 50,
-                                        150,
-                                        Math.sin(fallbackAngle) * 50,
-                                    ),
-                                );
-                            c2D = toScreen(catPos);
+                        // Save category color back to rawNodeDataMap for the waterfall
+                        if (rawNodeDataMap.has(cat.name)) {
+                            rawNodeDataMap.get(cat.name).baseColor =
+                                catColor.clone();
                         }
-
-                        // Shrink the enforced bounding area heavily so dense clusters succeed natively
-                        occupied.push({ obj: c2D, type: "node", r: 25 });
-                        occupied.push({
-                            p1: toScreen(hubCenter),
-                            p2: c2D,
-                            type: "line",
-                        });
 
                         // Generation: Category Mesh (Medium Node)
-                        const cG = new THREE.SphereGeometry(8, 16, 16);
-                        const cM = new THREE.MeshBasicMaterial({
-                            color: hub.color,
-                            transparent: true,
-                        });
-                        const catMeshRender = new THREE.Mesh(cG, cM);
-                        catMeshRender.position.copy(catPos);
-                        catMeshRender.userData.treeId = hub.id;
-                        scene.add(catMeshRender);
-                        clickableMeshes.push(catMeshRender);
+                        if (!cat.invisibleCategory) {
+                            const cG = new THREE.SphereGeometry(8, 16, 16);
+                            const cM = new THREE.MeshBasicMaterial({
+                                color: catColor,
+                                transparent: true,
+                            });
+                            const catMeshRender = new THREE.Mesh(cG, cM);
+                            catMeshRender.position.copy(catPos);
+                            catMeshRender.userData.treeId = hub.id;
+                            catMeshRender.userData.name = cat.name;
+                            catMeshRender.userData.baseColor = catColor.clone();
+                            scene.add(catMeshRender);
 
-                        // Generation: Thick Hierarchical Link directly to Parent Hub
-                        createThickLine(
-                            hubCenter,
-                            catPos,
-                            hub.color,
-                            1.8,
-                            0.8,
-                            hub.id,
-                        );
+                            // Generation: Hidden Enlarged Cursor Hitbox - Solving tiny 3D pointer accuracy natively!
+                            const hitGeo = new THREE.SphereGeometry(15, 8, 8);
+                            const hitMat = new THREE.MeshBasicMaterial({
+                                visible: false,
+                            });
+                            const hitMesh = new THREE.Mesh(hitGeo, hitMat);
+                            hitMesh.position.copy(catPos);
+                            hitMesh.userData.hitMesh = true;
+                            hitMesh.userData.visibleMesh = catMeshRender;
+                            hitMesh.userData.name = cat.name;
+                            hitMesh.userData.treeId = hub.id;
 
-                        // Bind HTML label for the CATEGORY node
-                        const catEl = document.createElement("div");
-                        catEl.className =
-                            "absolute top-0 left-0 font-mono text-5xl font-bold tracking-widest text-white uppercase select-none pointer-events-auto cursor-pointer z-40 origin-center";
-                        catEl.innerText = cat.name;
-                        catEl.style.textShadow = `0px 2px 4px #000, 0px 0px 10px #000, 0px 0px 20px #000, 0px 0px 30px #000, 0px 0px 40px ${hub.cssColor}`;
+                            scene.add(hitMesh);
+                            clickableMeshes.push(hitMesh);
+                            clickableMeshes.push(catMeshRender);
 
-                        bindHTMLClick(catEl, catPos, 250, hub.id);
-                        labelsContainer.appendChild(catEl);
+                            // Generation: Thick Hierarchical Link directly to Parent Hub
+                            createThickLine(
+                                hubCenter,
+                                catPos,
+                                new THREE.Color(hub.color),
+                                1.8,
+                                0.8,
+                                hub.id,
+                                hub.name,
+                                cat.name,
+                            );
 
-                        HTML_LABELS.push({
-                            element: catEl,
+                            // Bind HTML label for the CATEGORY node
+                            const catEl = document.createElement("div");
+                            catEl.className =
+                                "absolute top-0 left-0 font-mono text-5xl font-bold tracking-widest text-white uppercase select-none pointer-events-auto cursor-pointer z-40 origin-center";
+                            catEl.innerText = cat.name;
+                            catEl.style.textShadow = `0px 2px 4px #000, 0px 0px 10px #000, 0px 0px 20px #000, 0px 0px 30px #000, 0px 0px 40px ${catCssColor}`;
+
+                            bindHTMLClick(catEl, catPos, 250, cat.name);
+                            labelsContainer.appendChild(catEl);
+
+                            HTML_LABELS.push({
+                                element: catEl,
+                                clickTarget: catEl,
+                                position: catPos,
+                                type: "category",
+                                treeId: hub.id,
+                                name: cat.name,
+                            });
+                        }
+
+                        globalNodeMap.set(cat.name, {
                             position: catPos,
-                            type: "category",
+                            color: catColor,
                             treeId: hub.id,
                         });
 
                         // TIER 3: The Leaf Items (e.g. Tenet, Poker)
                         cat.items.forEach((item, index) => {
+                            const itemName =
+                                typeof item === "string" ? item : item.name;
                             let itemPos;
                             let i2D;
                             for (let attempt = 0; attempt < 300; attempt++) {
@@ -1203,7 +1780,9 @@ import { ClientRouter } from "astro:transitions";
                                     (Math.random() - 0.5) * 2,
                                     (Math.random() - 0.5) * 2,
                                 ).normalize();
-                                const dist = 35 + Math.random() * 45; // Dropping max depth out by 40 units recursively wraps the items deeply around Category nodes so they don't break the active screen borders
+                                const dist = cat.invisibleCategory
+                                    ? 42 + Math.random() * 18
+                                    : 35 + Math.random() * 45; // Dropping max depth out by 40 units recursively wraps the items deeply around Category nodes so they don't break the active screen borders
                                 const candidate = catPos
                                     .clone()
                                     .add(rXYZ.multiplyScalar(dist));
@@ -1211,7 +1790,14 @@ import { ClientRouter } from "astro:transitions";
                                 const cand2D = toScreen(candidate);
                                 let overlap = false;
 
-                                for (let s of occupied) {
+                                for (
+                                    let idx = 0;
+                                    idx < occupied.length;
+                                    idx++
+                                ) {
+                                    if (cat.invisibleCategory && idx === 0)
+                                        continue;
+                                    const s = occupied[idx];
                                     if (s.type === "node") {
                                         if (
                                             Math.hypot(
@@ -1261,13 +1847,21 @@ import { ClientRouter } from "astro:transitions";
                             if (!itemPos) {
                                 const fallbackAngle =
                                     (index / cat.items.length) * Math.PI * 2;
+                                const fallbackDist = cat.invisibleCategory
+                                    ? 20
+                                    : 30;
+                                const fallbackY = cat.invisibleCategory
+                                    ? -20
+                                    : -50;
                                 itemPos = catPos
                                     .clone()
                                     .add(
                                         new THREE.Vector3(
-                                            Math.cos(fallbackAngle) * 30,
-                                            -50,
-                                            Math.sin(fallbackAngle) * 30,
+                                            Math.cos(fallbackAngle) *
+                                                fallbackDist,
+                                            fallbackY,
+                                            Math.sin(fallbackAngle) *
+                                                fallbackDist,
                                         ),
                                     );
                                 i2D = toScreen(itemPos);
@@ -1276,38 +1870,105 @@ import { ClientRouter } from "astro:transitions";
                             occupied.push({ obj: i2D, type: "node", r: 15 });
                             occupied.push({ p1: c2D, p2: i2D, type: "line" });
 
+                            // Calculate 60/40 blended color for the item!
+                            let itemColor = new THREE.Color(catColor);
+                            let cssColor = catCssColor; // Used for text shadow natively
+
+                            if (
+                                typeof item === "object" &&
+                                item.secondaryParents &&
+                                item.secondaryParents.length > 0
+                            ) {
+                                const pColors = [];
+                                item.secondaryParents.forEach((pName) => {
+                                    if (rawNodeDataMap.has(pName)) {
+                                        pColors.push(
+                                            rawNodeDataMap.get(pName).baseColor,
+                                        );
+                                    }
+                                });
+                                if (pColors.length > 0) {
+                                    const avgSecColor =
+                                        averageColorsHSL(pColors);
+                                    itemColor = blendColorsHSL(
+                                        itemColor,
+                                        avgSecColor,
+                                        0.4,
+                                    ); // 60% primary, 40% secondary
+                                    // Map back to css rgba for the dynamic text shadow
+                                    cssColor = `rgba(${Math.round(itemColor.r * 255)}, ${Math.round(itemColor.g * 255)}, ${Math.round(itemColor.b * 255)}, 0.8)`;
+                                }
+                            }
+
+                            // Save item color back to rawNodeDataMap for the waterfall
+                            if (rawNodeDataMap.has(itemName)) {
+                                rawNodeDataMap.get(itemName).baseColor =
+                                    itemColor.clone();
+                            }
+
                             // Generation: Leaf Mesh (Tiny Data Node) - Now inheriting true regional Color
                             const iG = new THREE.SphereGeometry(3, 8, 8);
                             const iM = new THREE.MeshBasicMaterial({
-                                color: hub.color,
+                                color: itemColor,
                                 transparent: true,
                             });
                             const leafMeshRender = new THREE.Mesh(iG, iM);
                             leafMeshRender.position.copy(itemPos);
                             leafMeshRender.userData.treeId = hub.id;
+
+                            leafMeshRender.userData.name = itemName;
+                            leafMeshRender.userData.baseColor =
+                                itemColor.clone();
                             scene.add(leafMeshRender);
+
+                            // Generation: Hidden Enlarged Cursor Hitbox - Solving tiny 3D pointer accuracy natively!
+                            const hitGeo = new THREE.SphereGeometry(10, 8, 8);
+                            const hitMat = new THREE.MeshBasicMaterial({
+                                visible: false,
+                            });
+                            const hitMesh = new THREE.Mesh(hitGeo, hitMat);
+                            hitMesh.position.copy(itemPos);
+                            hitMesh.userData.hitMesh = true;
+                            hitMesh.userData.visibleMesh = leafMeshRender;
+                            hitMesh.userData.name = itemName;
+                            hitMesh.userData.treeId = hub.id;
+
+                            scene.add(hitMesh);
+                            clickableMeshes.push(hitMesh);
                             clickableMeshes.push(leafMeshRender);
 
-                            // Generation: Thick Hierarchical Link directly to Parent Category
-                            createThickLine(
-                                catPos,
-                                itemPos,
-                                hub.color,
-                                1.0,
-                                0.6,
-                                hub.id,
-                            );
+                            // Generation: Thick Hierarchical Link directly to Parent (Hub if category is invisible, otherwise Category)
+                            if (cat.invisibleCategory) {
+                                createThickLine(
+                                    hubCenter,
+                                    itemPos,
+                                    catColor,
+                                    1.0,
+                                    0.6,
+                                    hub.id,
+                                    hub.name,
+                                    itemName,
+                                );
+                            } else {
+                                createThickLine(
+                                    catPos,
+                                    itemPos,
+                                    catColor,
+                                    1.0,
+                                    0.6,
+                                    hub.id,
+                                    cat.name,
+                                    itemName,
+                                );
+                            }
 
                             // Bind HTML label for the exact Data Item
                             const itemEl = document.createElement("div");
+                            itemEl.style.willChange = "transform, opacity";
                             // Completely stripped pointer-events from the massive invisible parent container to block invisible 2D overlapping!
                             itemEl.className =
                                 "absolute top-0 left-0 flex flex-col items-center justify-center font-sans tracking-wide select-none pointer-events-none z-30 origin-center";
-                            itemEl.style.textShadow =
-                                "0px 2px 4px #000, 0px 0px 8px #000, 0px 0px 16px #000, 0px 0px 24px #000, 0px 0px 32px #000";
-
-                            const itemName =
-                                typeof item === "string" ? item : item.name;
+                            itemEl.style.textShadow = `0px 2px 4px #000, 0px 0px 8px #000, 0px 0px 16px #000, 0px 0px 24px #000, 0px 0px 32px ${cssColor}`;
 
                             // Main DOM Text Map
                             const primaryNameEl = document.createElement("div");
@@ -1324,7 +1985,7 @@ import { ClientRouter } from "astro:transitions";
                                 noteEl.className =
                                     "layer-4-note text-lg font-semibold text-white bg-zinc-600/70 backdrop-blur-md border border-white/20 rounded-md px-3 py-1 shadow-2xl leading-tight text-center transition-opacity duration-300 pointer-events-none mt-1 mb-1";
                                 noteEl.style.opacity = "0";
-                                noteEl.dataset.treeId = hub.id;
+                                noteEl.dataset.name = itemName;
                                 noteEl.innerText = item.note;
 
                                 // Topographical Mapping Fix: Avoid overlapping the literal physical line!
@@ -1338,45 +1999,169 @@ import { ClientRouter } from "astro:transitions";
                             }
 
                             // Bind interaction specifically to the Exact UI String, bypassing invisible bounding planes!
-                            bindHTMLClick(primaryNameEl, itemPos, 150, hub.id);
+                            bindHTMLClick(
+                                primaryNameEl,
+                                itemPos,
+                                150,
+                                itemName,
+                            );
                             labelsContainer.appendChild(itemEl);
 
                             HTML_LABELS.push({
                                 element: itemEl,
+                                clickTarget: primaryNameEl,
                                 position: itemPos,
                                 type: "leaf",
+                                treeId: hub.id,
+                                name: itemName,
+                            });
+
+                            globalNodeMap.set(itemName, {
+                                position: itemPos,
+                                color: itemColor,
                                 treeId: hub.id,
                             });
                         });
                     });
                 });
 
+                // --- NEW SECONDARY CONNECTIONS PASS ---
+                // Draw thin bridge lines across the brain after all positions are mapped
+                window.USER_HUBS.forEach((hub) => {
+                    hub.categories.forEach((cat) => {
+                        // Check Category itself for secondary parents
+                        if (
+                            typeof cat === "object" &&
+                            cat.secondaryParents &&
+                            cat.secondaryParents.length > 0
+                        ) {
+                            const catName = cat.name;
+                            const childData = globalNodeMap.get(catName);
+                            if (childData) {
+                                cat.secondaryParents.forEach((pName) => {
+                                    const parentData = globalNodeMap.get(pName);
+                                    if (parentData) {
+                                        createThickLine(
+                                            parentData.position,
+                                            childData.position,
+                                            parentData.color,
+                                            1.2, // slightly thicker for Tier 2 bridges vs Tier 3
+                                            0.5,
+                                            childData.treeId,
+                                            pName,
+                                            catName,
+                                        );
+                                    }
+                                });
+                            }
+                        }
+
+                        // Check Items for secondary parents
+                        cat.items.forEach((item) => {
+                            if (
+                                typeof item === "object" &&
+                                item.secondaryParents &&
+                                item.secondaryParents.length > 0
+                            ) {
+                                const itemName =
+                                    typeof item === "string" ? item : item.name;
+                                const childData = globalNodeMap.get(itemName);
+                                if (childData) {
+                                    item.secondaryParents.forEach((pName) => {
+                                        const parentData =
+                                            globalNodeMap.get(pName);
+                                        if (parentData) {
+                                            // Render thinner cross-connection lines (thickness 0.4 vs main 1.0)
+                                            // The line will belong to the child's primary treeId so it fades correctly during Focus mode
+                                            createThickLine(
+                                                parentData.position,
+                                                childData.position,
+                                                parentData.color,
+                                                0.8,
+                                                0.4,
+                                                childData.treeId,
+                                                pName,
+                                                itemName,
+                                            );
+                                        }
+                                    });
+                                }
+                            }
+                        });
+                    });
+                });
+                // --------------------------------------
+
                 // ----------------------------------------------------
                 // RENDER LOOP & LOGICC
                 // ----------------------------------------------------
                 const vProj = new THREE.Vector3();
+                let frameCount = 0;
+                let flightStartedFrame = 0;
+                let lastFrameTime = performance.now();
+                const pageLoadTime = performance.now();
+
+                const tempCamDir = new THREE.Vector3();
+                const tempPlaneOrigin = new THREE.Vector3();
+                const prevCamPos = new THREE.Vector3();
+                let wasCameraMovingLastFrame = false;
 
                 function animate() {
                     requestAnimationFrame(animate);
+
+                    const now = performance.now();
+                    const deltaSinceLastFrame = now - lastFrameTime;
+                    lastFrameTime = now;
+
+                    frameCount++;
+
+                    const camMoved =
+                        prevCamPos.distanceToSquared(camera.position) > 0.00001;
+                    prevCamPos.copy(camera.position);
+
+                    // FPS & Render Time metrics for performance HUD
+                    const rt = Math.round(deltaSinceLastFrame * 10) / 10;
+                    if (frameCount % 10 === 0 && showPerfHUD) {
+                        const fps = Math.round(1000 / deltaSinceLastFrame);
+                        const fpsEl = document.getElementById("hud-fps");
+                        const rtEl = document.getElementById("hud-rt");
+                        const rtgEl = document.getElementById("hud-rtg");
+                        if (fpsEl) fpsEl.innerText = isNaN(fps) ? "0" : fps;
+                        if (rtEl) rtEl.innerText = rt;
+                        if (rtgEl) rtgEl.innerText = raycastTargets.length;
+                    }
+
+                    if (
+                        window.startCinematicEntrance === null &&
+                        flightStartedFrame === 0
+                    ) {
+                        flightStartedFrame = frameCount;
+                    }
+
+                    if (
+                        window.startCinematicEntrance === null &&
+                        flightStartedFrame === 0
+                    ) {
+                        flightStartedFrame = frameCount;
+                    }
 
                     // ----------------------------------------------------
                     // TUNNEL CLIPPING ENGINE: Calculate Foreground "Empty Space"
                     // ----------------------------------------------------
                     if (
-                        activeFocusTreeId !== null &&
-                        activeFocusTreeId !== "CORE"
+                        activeFocusNodeName !== null &&
+                        activeFocusNodeName !== "CORE"
                     ) {
-                        const camDir = new THREE.Vector3();
-                        camera.getWorldDirection(camDir); // Pushes natively OUT into the screen
+                        camera.getWorldDirection(tempCamDir); // Pushes natively OUT into the screen
                         // Plane pushed DEEP into the node structure (50 units BEHIND the target vector node on the Z axis)
                         // Since the focused tree doesn't have clipping planes assigned mathematically, it physically ignores this and stays alive perfectly,
                         // while ALL ambient structures (background lines, outer brain walls) that exist in front of this slice vanish forever!
-                        const planeOrigin = targetControlsPos
-                            .clone()
-                            .add(camDir.clone().multiplyScalar(50));
+                        tempPlaneOrigin
+                            .copy(targetControlsPos)
+                            .addScaledVector(tempCamDir, 50);
                         focusClipPlane.setFromNormalAndCoplanarPoint(
-                            camDir,
-                            planeOrigin,
+                            tempCamDir,
+                            tempPlaneOrigin,
                         );
                     }
 
@@ -1431,14 +2216,37 @@ import { ClientRouter } from "astro:transitions";
                     // Auto-rotation disabled for now by request.
 
                     // Iterate through every active label to sync HTML coordinates with WebGL 3D projections!
-                    HTML_LABELS.forEach((data) => {
-                        // FOCUS MODE ENGINE: Calculate absolute Opacity based on Tree Focus State
+                    HTML_LABELS.forEach((data, index) => {
+                        // FOCUS MODE ENGINE: Calculate absolute Opacity based on localized graph neighborhood
                         // If Core is explicitly focused (meaning we zoomed out cleanly), skip the ghost execution entirely!
                         const isGhosted =
-                            activeFocusTreeId !== null &&
-                            activeFocusTreeId !== "CORE" &&
-                            data.treeId !== activeFocusTreeId;
+                            activeFocusNodeName !== null &&
+                            activeFocusNodeName !== "CORE" &&
+                            !window.activeVisibleNodes.has(data.name);
                         const nativeOpacity = isGhosted ? 0.05 : 1.0;
+
+                        // Disable pointer events on ghosted labels to prevent them from intercepting clicks!
+                        const targetPointerEvents = isGhosted ? "none" : "auto";
+                        const clickEl = data.clickTarget || data.element;
+                        if (data.lastPointerEvents !== targetPointerEvents) {
+                            clickEl.style.pointerEvents = targetPointerEvents;
+                            data.lastPointerEvents = targetPointerEvents;
+                        }
+
+                        // Round-robin execution culling for ghosted labels to save CPU layout/render time!
+                        // These are shifted to 1/5th update rate (round robin). Since opacity is 0.05, the tiny lag is unnoticeable.
+                        if (isGhosted) {
+                            if ((frameCount + index) % 5 !== 0) {
+                                // Guarantee opacity is set to 0.05 (once) and keep display block
+                                if (data.lastOpacity !== "0.05") {
+                                    data.element.style.opacity = "0.05";
+                                    data.lastOpacity = "0.05";
+                                    data.element.style.display = "block";
+                                    data.lastDisplay = "block";
+                                }
+                                return;
+                            }
+                        }
 
                         // Natively project the raw 3D Vector to the perspective camera
                         vProj.copy(data.position);
@@ -1447,7 +2255,10 @@ import { ClientRouter } from "astro:transitions";
 
                         // Project handles hidden elements naturally via z bounds natively if we enforce it:
                         if (vProj.z > 1 || vProj.z < -1) {
-                            data.element.style.display = "none"; // Behind camera lens
+                            if (data.lastDisplay !== "none") {
+                                data.element.style.display = "none";
+                                data.lastDisplay = "none";
+                            }
                             return;
                         }
 
@@ -1458,42 +2269,158 @@ import { ClientRouter } from "astro:transitions";
 
                         // Execute HTML overlay opacity math
                         if (distToCamera > fadeBounds) {
-                            data.element.style.transform = `translate(-50%, -50%) scale(0)`;
-                            data.element.style.opacity = "0";
+                            const transformStr =
+                                "translate(-50%, -50%) scale(0)";
+                            if (data.lastTransform !== transformStr) {
+                                data.element.style.transform = transformStr;
+                                data.lastTransform = transformStr;
+                            }
+                            if (data.lastOpacity !== "0") {
+                                data.element.style.opacity = "0";
+                                data.lastOpacity = "0";
+                            }
+                            if (data.lastDisplay !== "none") {
+                                data.element.style.display = "none";
+                                data.lastDisplay = "none";
+                            }
                         } else {
-                            data.element.style.display = "block";
-                            data.element.style.opacity =
-                                nativeOpacity.toString();
+                            if (data.lastDisplay !== "block") {
+                                data.element.style.display = "block";
+                                data.lastDisplay = "block";
+                            }
+
+                            const opacityStr = nativeOpacity.toString();
+                            if (data.lastOpacity !== opacityStr) {
+                                data.element.style.opacity = opacityStr;
+                                data.lastOpacity = opacityStr;
+                            }
 
                             // Native HTML canvas translation centering math
-                            const x = (vProj.x * 0.5 + 0.5) * window.innerWidth;
+                            const x =
+                                Math.round(
+                                    (vProj.x * 0.5 + 0.5) *
+                                        window.innerWidth *
+                                        10,
+                                ) / 10;
                             const y =
-                                (vProj.y * -0.5 + 0.5) * window.innerHeight;
+                                Math.round(
+                                    (vProj.y * -0.5 + 0.5) *
+                                        window.innerHeight *
+                                        10,
+                                ) / 10;
 
                             // Scale effect (closer camera = bigger text)
-                            const scaleEffect = Math.max(
-                                0.2,
-                                (fadeBounds - distToCamera) / fadeBounds,
-                            );
+                            const scaleEffect =
+                                Math.round(
+                                    Math.max(
+                                        0.2,
+                                        (fadeBounds - distToCamera) /
+                                            fadeBounds,
+                                    ) * 100,
+                                ) / 100;
 
                             // Strictly mapping translate(-50%, -50%) to inherently align the text origin-center across the Mesh
-                            data.element.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%) scale(${scaleEffect})`;
+                            const transformStr = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%) scale(${scaleEffect})`;
+                            if (data.lastTransform !== transformStr) {
+                                data.element.style.transform = transformStr;
+                                data.lastTransform = transformStr;
+                            }
                         }
                     });
 
+                    // Raycast for hover state!
+                    // Lazy Raycasting Check: Skip raycast calculations entirely if user is flying, dragging, or camera is rotating due to damping/momentum!
+                    const isUserDragging = pointerDownTime !== 0;
+                    const isCameraMoving =
+                        camMoved || isFlying || isUserDragging;
+
+                    const cameraJustStopped =
+                        !isCameraMoving && wasCameraMovingLastFrame;
+                    wasCameraMovingLastFrame = isCameraMoving;
+
+                    if (isCameraMoving) {
+                        hoveredObj = null;
+                        setBodyCursor(isUserDragging ? "grabbing" : "default");
+                        hoverRing.visible = false;
+                    } else if (mouseMoved || cameraJustStopped) {
+                        raycaster.setFromCamera(hoverMouse, camera);
+                        const hoverIntersects = raycaster
+                            .intersectObjects(raycastTargets)
+                            .filter((hit) => isValidTarget(hit.object));
+
+                        if (hoverIntersects.length > 0) {
+                            hoveredObj = hoverIntersects[0].object;
+                            if (
+                                hoveredObj.userData.name ||
+                                hoveredObj.userData.endpoints
+                            ) {
+                                setBodyCursor("pointer");
+                            } else {
+                                setBodyCursor("default");
+                            }
+
+                            // Activate Node Halo Ring natively
+                            if (hoveredObj.userData.name) {
+                                hoverRing.visible = true;
+                                const targetMeshRef =
+                                    hoveredObj.userData.visibleMesh ||
+                                    hoveredObj;
+                                hoverRing.position.copy(targetMeshRef.position);
+                                // Set ring size perfectly to boundary of the sphere geometry
+                                const r =
+                                    targetMeshRef.geometry.parameters.radius ||
+                                    3;
+                                hoverRing.scale.setScalar(r);
+                                hoverRing.lookAt(camera.position);
+                            } else {
+                                hoverRing.visible = false;
+                            }
+                        } else {
+                            hoveredObj = null;
+                            setBodyCursor("default");
+                            hoverRing.visible = false;
+                        }
+                    }
+
+                    mouseMoved = false;
+
                     // Opacity Engine for literal 3D Meshes (Nodes, Biological Ambient Structures, and Thick Core Lines!)
                     clickableMeshes.forEach((mesh) => {
+                        if (mesh.userData.hitMesh) return; // Skip invisible hitboxes in rendering math!
+
                         // If the user zoomed out cleanly to the core (entire brain view), NOTHING should be ghosted!
                         let isGhostedMesh =
-                            activeFocusTreeId !== null &&
-                            activeFocusTreeId !== "CORE";
+                            activeFocusNodeName !== null &&
+                            activeFocusNodeName !== "CORE";
 
-                        // If something specific is focused, only ghost it if it explicitly does NOT belong to that family tree!
-                        // For Ambient Biological layers (which have no treeId), they ghost inherently if *any* family tree is active!
-                        if (isGhostedMesh && mesh.userData.treeId) {
-                            isGhostedMesh =
-                                mesh.userData.treeId !== activeFocusTreeId;
+                        // If something specific is focused, only ghost it if it explicitly does NOT belong to the active neighborhood!
+                        if (isGhostedMesh) {
+                            if (mesh.userData.name) {
+                                isGhostedMesh = !window.activeVisibleNodes.has(
+                                    mesh.userData.name,
+                                );
+                            } else if (mesh.userData.endpoints) {
+                                isGhostedMesh = !(
+                                    window.activeVisibleNodes.has(
+                                        mesh.userData.endpoints[0],
+                                    ) &&
+                                    window.activeVisibleNodes.has(
+                                        mesh.userData.endpoints[1],
+                                    )
+                                );
+                            } else if (mesh.userData.isAmbient) {
+                                // For Ambient Biological layers, they ghost inherently if *any* local node is active!
+                                isGhostedMesh = true;
+                            } else {
+                                // Fallback (e.g. unknown node), ghost it
+                                isGhostedMesh = true;
+                            }
                         }
+
+                        const isHovered =
+                            hoveredObj === mesh ||
+                            (hoveredObj &&
+                                hoveredObj.userData.visibleMesh === mesh);
 
                         // We map original ambient opacities manually since they were specifically faint
                         // Base opacity is 0.5 for ambient nodes/dots, 0.25 for webbing lines, 1.0 for solid models
@@ -1501,37 +2428,80 @@ import { ClientRouter } from "astro:transitions";
                         if (mesh.userData.isAmbient) {
                             baseTargetOpacity =
                                 mesh instanceof THREE.Points ? 0.5 : 0.25;
+                        } else if (mesh.userData.endpoints) {
+                            baseTargetOpacity =
+                                mesh.userData.baseOpacity || 0.6;
                         }
 
-                        mesh.material.opacity = isGhostedMesh
-                            ? 0.05
-                            : baseTargetOpacity;
+                        const targetOpacity =
+                            isHovered &&
+                            !isGhostedMesh &&
+                            mesh.userData.endpoints
+                                ? 1.0
+                                : isGhostedMesh
+                                  ? 0.05
+                                  : baseTargetOpacity;
+
+                        // Check if opacity changed to avoid redundant uniform uploads
+                        if (mesh.userData.lastOpacity !== targetOpacity) {
+                            mesh.material.opacity = targetOpacity;
+                            mesh.userData.lastOpacity = targetOpacity;
+                        }
+
+                        // Check if color changed to avoid redundant uniform uploads
+                        const isColorHovered = !!(
+                            isHovered &&
+                            !isGhostedMesh &&
+                            mesh.userData.endpoints
+                        );
+                        if (mesh.userData.lastColorHovered !== isColorHovered) {
+                            if (isColorHovered) {
+                                mesh.material.color
+                                    .copy(mesh.userData.baseColor)
+                                    .lerp(new THREE.Color(0xffffff), 0.6);
+                            } else {
+                                if (mesh.userData.baseColor) {
+                                    mesh.material.color.copy(
+                                        mesh.userData.baseColor,
+                                    );
+                                }
+                            }
+                            mesh.userData.lastColorHovered = isColorHovered;
+                        }
 
                         // If this is a biological array blocking the camera and we are focused on a tree, literally slice it transparent!
-                        mesh.material.clippingPlanes =
+                        const wantsClipping = !!(
                             isGhostedMesh && mesh.userData.isAmbient
+                        );
+                        if (mesh.userData.lastClipping !== wantsClipping) {
+                            mesh.material.clippingPlanes = wantsClipping
                                 ? [focusClipPlane]
                                 : [];
+                            mesh.userData.lastClipping = wantsClipping;
+                        }
                     });
 
                     // Faint down the Outer GLTF Biological Shell and slice it!
                     if (window.brainModelRef) {
                         const isGhostedShell =
-                            activeFocusTreeId !== null &&
-                            activeFocusTreeId !== "CORE";
-                        window.brainModelRef.traverse((child) => {
-                            if (child.isMesh) {
-                                const nativeTarget = child.material.wireframe
-                                    ? 0.03
-                                    : 0.06;
-                                child.material.opacity = isGhostedShell
-                                    ? 0.01
-                                    : nativeTarget;
-                                child.material.clippingPlanes = isGhostedShell
-                                    ? [focusClipPlane]
-                                    : [];
-                            }
-                        });
+                            activeFocusNodeName !== null &&
+                            activeFocusNodeName !== "CORE";
+                        if (window.lastGhostedShellState !== isGhostedShell) {
+                            window.brainModelRef.traverse((child) => {
+                                if (child.isMesh) {
+                                    const nativeTarget = child.material
+                                        .wireframe
+                                        ? 0.03
+                                        : 0.06;
+                                    child.material.opacity = isGhostedShell
+                                        ? 0.01
+                                        : nativeTarget;
+                                    child.material.clippingPlanes =
+                                        isGhostedShell ? [focusClipPlane] : [];
+                                }
+                            });
+                            window.lastGhostedShellState = isGhostedShell;
+                        }
                     }
 
                     renderer.render(scene, camera);
@@ -1545,10 +2515,11 @@ import { ClientRouter } from "astro:transitions";
                 });
 
                 // Start WebGL
+                rebuildRaycastTargets(); // Initial Partitioning Build!
                 animate();
 
-                // Cinematic Entrance
-                setTimeout(() => {
+                // Cinematic Entrance (Triggered by GLTFLoader!)
+                window.startCinematicEntrance = function () {
                     const overlay = document.getElementById(
                         "brain-entrance-overlay",
                     );
@@ -1557,7 +2528,44 @@ import { ClientRouter } from "astro:transitions";
                     // Fly in slowly from the deep void (10000) to the standard resting distance (1500)
                     // Duration of 2700ms guarantees it outlasts the 1.0s overlay fade!
                     flyTo(new THREE.Vector3(0, 0, 0), 1500, "CORE", 2700);
-                }, 100);
+                };
+
+                // Fallback Timeout: If GLTF utterly fails or network hangs for 5 seconds, start anyway so user isn't permanently trapped!
+                setTimeout(() => {
+                    if (window.startCinematicEntrance) {
+                        console.warn(
+                            "GLTFLoader took too long, fallback triggering entrance.",
+                        );
+                        window.startCinematicEntrance();
+                        window.startCinematicEntrance = null;
+                    }
+                }, 5000);
+                // ----------------------------------------------------
+                // PERFORMANCE HUD MONITOR INITIALIZATION
+                // ----------------------------------------------------
+                let showPerfHUD = false;
+                const hudContainer = document.createElement("div");
+                hudContainer.id = "perf-hud";
+                hudContainer.className =
+                    "fixed bottom-6 right-6 z-[99] hidden font-mono text-xs text-emerald-400 bg-zinc-950/90 backdrop-blur-md border border-emerald-500/30 rounded-md px-3 py-2.5 leading-relaxed shadow-2xl pointer-events-none";
+                hudContainer.innerHTML = `
+                    <div style="font-weight: bold; border-bottom: 1px solid rgba(16,185,129,0.3); margin-bottom: 6px; padding-bottom: 4px;">PERFORMANCE MONITOR</div>
+                    <div>FPS: <span id="hud-fps" style="font-weight: bold; color: #fff;">0</span></div>
+                    <div>Frame time: <span id="hud-rt" style="font-weight: bold; color: #fff;">0</span> ms</div>
+                    <div>Raycast targets: <span id="hud-rtg" style="font-weight: bold; color: #fff;">0</span></div>
+                `;
+                document.body.appendChild(hudContainer);
+
+                window.addEventListener("keydown", (e) => {
+                    if (e.key.toLowerCase() === "p") {
+                        showPerfHUD = !showPerfHUD;
+                        if (showPerfHUD) {
+                            hudContainer.classList.remove("hidden");
+                        } else {
+                            hudContainer.classList.add("hidden");
+                        }
+                    }
+                });
             } catch (error) {
                 // FATAL ERROR CATCHER FOR DEBUGGING
                 const errDiv = document.createElement("div");

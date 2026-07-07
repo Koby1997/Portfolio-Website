@@ -4,9 +4,10 @@
 This repository houses a highly-interactive, application-grade Personal Portfolio Website designed to present a dynamic, cinematic experience beyond standard static webpages. 
 
 ### The Core Journey
-The user journey is architected to seamlessly bridge between deeply stylized modules rather than utilizing standard disjointed page loads. 
+The user journey is architected to seamlessly bridge between deeply stylized modules rather than utilizing standard disjointed page loads.
 - **The Unified Home/Timeline (`index.astro`)**: The navigational root. It functions as a single-page horizontally scrolling application that merges the initial "Home" gateway with the chronological "Timeline" layout. It explicitly features *no traditional static header or footer bounds*. It handles complex, organic animated transitions (like cinematic zoom-and-fly) pushing outward into the dedicated module pages.
 - **The Brain Module (`brain.astro`)**: An experiential 3D WebGL Neural Network visually mapping the user's hobbies, mindsets, and interests. Accessed via a cinematic zoom transition from the Home page.
+  - *Performance Rule*: Navigating to and from heavy WebGL pages like the Brain MUST explicitly bypass Astro View Transitions (using `data-astro-reload`). Allowing Astro to take rasterized screenshots of live WebGL canvases causes catastrophic Garbage Collection lag spikes (50-100ms) and destroys framerates.
 - **The Resume Module (`resume.astro`)**: A dedicated professional readout designed explicitly to showcase dual-states (Plain/Traditional vs Fun/Interactive).
 
 ---
@@ -30,6 +31,7 @@ The user journey is architected to seamlessly bridge between deeply stylized mod
 - **Render Engine Optimizations**: 
   1. The Dev Configurator Panel natively calls rigorous `.dispose()` mechanisms exclusively against old `BufferGeometry` and `Materials` arrays, dumping memory out of the heap prior to generating intensely vast web connections (thereby averting rapid WebGL Context loss).
   2. Features a continuous volumetric X-ray clipping system (`focusClipPlane`) natively bound to the camera target vector. It mathematically severs any dense particle-webbing structures hovering visually in front of the active node hierarchy, drastically clearing visual noise.
+  3. **DOM Layout Thrashing Prevention**: During cinematic camera flights (e.g., zooming backwards into the void), calculating `translate3d` screen-space projections for hundreds of HTML labels at 60 FPS causes severe frame drops. We aggressively apply `display: none` to the entire `labels-container` before any fast, non-interactive camera sweeps begin to guarantee GPU stability.
 
 ### B. The Timeline Module (Unified inside `index.astro`)
 This logic stack dictates capturing visual history sequentially, triggered seamlessly via a massive horizontal auto-scroll from the Home gateway.
