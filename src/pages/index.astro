@@ -533,7 +533,46 @@ const getColorConfig = (category) => {
             let resizeTimer;
             window.addEventListener('resize', () => {
                 clearTimeout(resizeTimer);
-                resizeTimer = setTimeout(initCanvas, 300);
+                resizeTimer = setTimeout(() => {
+                    initCanvas();
+                    const homeScreenEl = document.getElementById('unified-home-screen');
+                    const realStartEl = document.getElementById('real-timeline-start');
+                    if (scrollContainer && homeScreenEl && realStartEl) {
+                        // Recalculate scrollLimitMin based on active zone
+                        if (resumeActive) {
+                            scrollLimitMin = 0;
+                        } else if (timelineActive) {
+                            scrollLimitMin = realStartEl.offsetLeft;
+                        } else {
+                            scrollLimitMin = homeScreenEl.offsetLeft;
+                        }
+                        
+                        if (resumeActive) {
+                            // Snap to the Resume page
+                            scrollContainer.scrollLeft = 0;
+                            currentScroll = 0;
+                            targetScroll = 0;
+                        } else if (!timelineActive) {
+                            // Snap to the Home page
+                            scrollContainer.scrollLeft = homeScreenEl.offsetLeft;
+                            currentScroll = homeScreenEl.offsetLeft;
+                            targetScroll = homeScreenEl.offsetLeft;
+                        } else {
+                            // Scale timeline position
+                            const maxScroll = scrollContainer.scrollWidth - scrollContainer.clientWidth;
+                            const timelineRange = maxScroll - scrollLimitMin;
+                            const newScrollLeft = scrollLimitMin + (timelineScrollRatio * timelineRange);
+                            
+                            scrollContainer.scrollLeft = newScrollLeft;
+                            currentScroll = newScrollLeft;
+                            targetScroll = newScrollLeft;
+                        }
+                        
+                        if (parallaxBg) {
+                            parallaxBg.style.transform = `translateX(${-scrollContainer.scrollLeft * 0.3}px)`;
+                        }
+                    }
+                }, 150);
             });
         }
         // ----------------------------------------------------
@@ -545,6 +584,8 @@ const getColorConfig = (category) => {
         let currentScroll = scrollContainer ? scrollContainer.scrollLeft : 0;
         let targetScroll = scrollContainer ? scrollContainer.scrollLeft : 0;
         let scrollLimitMin = 0;
+        let timelineScrollRatio = 0;
+        let resumeActive = false;
 
         if (scrollContainer) {
 
@@ -896,6 +937,16 @@ const getColorConfig = (category) => {
                      currentScroll = scrollContainer.scrollLeft;
                      targetScroll = currentScroll;
                 }
+                
+                // Track relative scroll progress ratio inside the timeline to prevent shift on resize
+                const maxScroll = scrollContainer.scrollWidth - scrollContainer.clientWidth;
+                const timelineRange = maxScroll - scrollLimitMin;
+                if (timelineActive && timelineRange > 0) {
+                     timelineScrollRatio = Math.max(0, Math.min(1, (scrollContainer.scrollLeft - scrollLimitMin) / timelineRange));
+                } else {
+                     timelineScrollRatio = 0;
+                }
+
                 if (parallaxBg) {
                      parallaxBg.style.transform = `translateX(${-scrollContainer.scrollLeft * 0.3}px)`;
                 }
@@ -1241,6 +1292,7 @@ const getColorConfig = (category) => {
                     // scrollContainer.style.pointerEvents = 'none'; // Prevent Layout Thrashing
                     isAnimating = true;
                     scrollLimitMin = 0; // Unlock scrolling to the left
+                    resumeActive = true;
                     
                     // Removed legacy opacity fade so the unified canvas stays visible!
                     const duration = 2400; 
@@ -1308,6 +1360,7 @@ const getColorConfig = (category) => {
                             targetScroll = endScroll;
                             scrollContainer.style.pointerEvents = 'auto';
                             isAnimating = false;
+                            resumeActive = false;
                         }
                     };
                     requestAnimationFrame(swipeBackHome);
