@@ -1,12 +1,4 @@
 Brain page:
-    Add all the Categories and layers to the brain
-        When finished make sure that Layer 1's are spaced out and stay in the brain
-    Make the Zoom/rotate transition from the home page
-    Reverse that transition on exit
-    Put instructions when zooming and before first click
-        click and drag to rotate
-        scroll to zoom
-        Click on nodes
 
 
 Timeline:
@@ -24,15 +16,11 @@ Specific Project pages:
 
 
 Home page:
-    Transition to Brain
-    Transition to Resume
-    Final Final Final, get rid of header
+
 
 
 Resume page:
-    Github and Linkedin links
-    Toggle for Plain vs fun?
-    Download pdf button
+    Linkedin links? Probably not. This gives more info anyways
     
 
 

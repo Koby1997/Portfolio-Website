@@ -194,7 +194,18 @@ const videos = galleryFiles.filter(f => /\.(mp4|webm|mov)$/i.test(f));
     </div>
 
 <script>
+    const playAllVideos = () => {
+        document.querySelectorAll('video').forEach(video => {
+            video.play().catch(() => {
+                video.load();
+                video.play().catch(() => {});
+            });
+        });
+    };
+
     document.addEventListener('astro:page-load', () => {
+        playAllVideos();
+
         const overlay = document.getElementById('lightbox-overlay');
         const contentContainer = document.getElementById('lightbox-content');
         const closeBtn = document.getElementById('lightbox-close');
@@ -256,5 +267,6 @@ const videos = galleryFiles.filter(f => /\.(mp4|webm|mov)$/i.test(f));
             });
         });
     });
+    document.addEventListener('astro:after-swap', playAllVideos);
 </script>
 </Layout>
