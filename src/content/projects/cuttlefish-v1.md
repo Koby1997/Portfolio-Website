@@ -14,12 +14,27 @@ demoMode: true
 <section class="w-full pt-32 bg-zinc-950">
 <div class="max-w-[90rem] mx-auto px-4 md:px-12 mb-32">
 
-<!-- Project Overview -->
-<div class="max-w-3xl mb-32 border-l-2 border-blue-500 pl-8">
+<!-- Overview & Specs -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-start mb-32">
+<div class="md:col-span-8 flex flex-col justify-center border-l-2 border-blue-500 pl-8">
 <h2 class="text-xs font-mono tracking-[0.4em] text-blue-400 mb-6 uppercase">Overview</h2>
 <p class="text-zinc-300 text-2xl leading-relaxed font-light">
 This project uses an Arduino Uno and a Sparkfun Spectrum Shield to make programmable LED lights react to music in real-time. Created during the 36-hour UF SwampHack 2020, we utilized fast-fourier transform analysis to isolate bass, mids, and treble frequencies, ultimately winning 2nd Place overall.
 </p>
+</div>
+<div class="md:col-span-4 border-l border-zinc-800/80 pl-8 flex flex-col justify-center">
+<h2 class="text-xs font-mono tracking-[0.4em] text-blue-400 mb-6 uppercase">Tech Specs</h2>
+<ul class="flex flex-col gap-6">
+<li>
+<span class="text-white font-bold block text-lg mb-1">Hardware</span>
+<span class="text-zinc-400 text-sm leading-relaxed">Arduino Uno, Spectrum Shield</span>
+</li>
+<li>
+<span class="text-white font-bold block text-lg mb-1">Software</span>
+<span class="text-zinc-400 text-sm leading-relaxed">C++, Fast-Fourier Transform</span>
+</li>
+</ul>
+</div>
 </div>
 
 <!-- Narrative 1: Text Left, Media Right -->
