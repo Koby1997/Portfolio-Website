@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@source "../content/projects/**/*.md";
 
 html, body {
     -ms-overflow-style: none; /* IE and Edge */
