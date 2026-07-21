@@ -43,8 +43,13 @@ if (project.data.mediaFolder) {
     }
 }
 
+let displayImage = project.data.heroImage || project.data.coverImage;
+
 if (project.data.coverImage) {
     galleryFiles = galleryFiles.filter(f => f !== project.data.coverImage);
+}
+if (project.data.heroImage) {
+    galleryFiles = galleryFiles.filter(f => f !== project.data.heroImage);
 }
 
 if (project.body) {
@@ -58,6 +63,9 @@ const videos = galleryFiles.filter(f => /\.(mp4|webm|mov)$/i.test(f));
 <Layout title={`${project.data.title} | Koby L.`} hideNavAndFooter={true}>
   <div class="w-full bg-zinc-950 text-white min-h-[100dvh]">
     
+    <!-- Tailwind JIT Safelist explicitly for injected markdown grids -->
+    <div class="hidden md:col-span-3 md:col-span-4 md:col-span-6 md:col-span-8 md:col-span-12 gap-16 gap-12"></div>
+    
     <!-- Floating Back Button -->
     <button onclick="window.history.back()" class="group fixed top-8 left-8 flex items-center justify-center w-12 h-12 bg-black/50 backdrop-blur-md border border-white/10 rounded-full hover:bg-black/80 hover:-translate-x-1 transition-all shadow-xl z-50 cursor-pointer">
         <span class="text-zinc-300 group-hover:text-white">&larr;</span>
@@ -68,31 +76,31 @@ const videos = galleryFiles.filter(f => /\.(mp4|webm|mov)$/i.test(f));
         transition:name={`project-box-${project.id}`}
         class="w-full h-[60vh] md:h-[80vh] relative overflow-hidden bg-zinc-900"
     >
-        {project.data.coverImage ? (
+        {displayImage ? (
             project.data.heroFit === 'contain' ? (
                 <>
-                    {/\.(mp4|webm|mov)$/i.test(project.data.coverImage) ? (
+                    {/\.(mp4|webm|mov)$/i.test(displayImage) ? (
                         <>
-                            <video src={project.data.coverImage} autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover z-0 opacity-40 blur-3xl scale-110"></video>
-                            <video src={project.data.coverImage} autoplay loop muted playsinline class="w-full h-full object-contain z-10 relative drop-shadow-2xl"></video>
+                            <video src={displayImage} autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover z-0 opacity-40 blur-3xl scale-110"></video>
+                            <video src={displayImage} autoplay loop muted playsinline class="w-full h-full object-contain z-10 relative drop-shadow-2xl"></video>
                         </>
                     ) : (
                         <>
-                            <img src={project.data.coverImage} class="absolute inset-0 w-full h-full object-cover z-0 opacity-40 blur-3xl scale-110" />
-                            <img src={project.data.coverImage} class="w-full h-full object-contain z-10 relative drop-shadow-2xl" />
+                            <img src={displayImage} class="absolute inset-0 w-full h-full object-cover z-0 opacity-40 blur-3xl scale-110" />
+                            <img src={displayImage} class="w-full h-full object-contain z-10 relative drop-shadow-2xl" />
                         </>
                     )}
                 </>
             ) : (
-                /\.(mp4|webm|mov)$/i.test(project.data.coverImage) ? (
+                /\.(mp4|webm|mov)$/i.test(displayImage) ? (
                     <video 
-                        src={project.data.coverImage} 
+                        src={displayImage} 
                         autoplay loop muted playsinline 
                         class="w-full h-full object-cover z-0 opacity-100" 
                     ></video>
                 ) : (
                     <img 
-                        src={project.data.coverImage} 
+                        src={displayImage} 
                         class="w-full h-full object-cover z-0 opacity-100" 
                     />
                 )
