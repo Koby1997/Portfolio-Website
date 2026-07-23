@@ -576,13 +576,23 @@ const getColorConfig = (category) => {
             });
         }
         // ----------------------------------------------------
-        
         let isAnimating = false;
         let isRewindingHome = false;
         let timelineActive = false;
         let timelineSkipRequested = false;
-        let currentScroll = scrollContainer ? scrollContainer.scrollLeft : 0;
-        let targetScroll = scrollContainer ? scrollContainer.scrollLeft : 0;
+        
+        // ASSIGNMENT CLAMP BYPASS
+        // Always try to pull our mathematical target coordinate from the session backup FIRST before trusting the raw DOM.
+        // During view transitions, scrollWidth constraints frequently clamp raw DOM properties to 0 before paint.
+        const cachedSafeScrollStr = sessionStorage.getItem('timeline_scroll');
+        const defaultRawScroll = scrollContainer ? scrollContainer.scrollLeft : 0;
+        const initialGuaranteedScroll = cachedSafeScrollStr ? parseFloat(cachedSafeScrollStr) : defaultRawScroll;
+        
+        // Force the raw DOM just in case it clamped earlier
+        if (scrollContainer && cachedSafeScrollStr) scrollContainer.scrollLeft = initialGuaranteedScroll;
+        
+        let currentScroll = initialGuaranteedScroll;
+        let targetScroll = initialGuaranteedScroll;
         let scrollLimitMin = 0;
         let timelineScrollRatio = 0;
         let resumeActive = false;
