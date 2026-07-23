@@ -95,7 +95,7 @@ Who doesn't love a slingshot? Everyone enjoyed this game so much that I made it 
 The funniest game hands down goes to Lost Gummy Bears. Each athlete received a large bowl of chocolate pudding filled with gummy bears and Skittles.
 </p>
 <p class="text-zinc-400 text-lg leading-relaxed">
-Without using their hands, the athlete had to remove all of the gummy bears from the pudding and place them into a separate cup. The athletes were not told how many gummy bears were hidden inside each bowl.
+Without using their hands, the athletes had to remove all of the gummy bears from their pudding and place them into a separate cup. The athletes were not told how many gummy bears were hidden inside each bowl.
 </p>
 <p class="text-zinc-400 text-lg leading-relaxed">
 The game was timed, and an athlete could announce completion at any point. I would then count the objects in the athlete's cup. 
@@ -129,7 +129,7 @@ Fifteen seconds were added to the athlete's final time for every Skittle collect
 The final game was also the messiest event of the day. Athletes competed in teams of two. One athlete started with a marshmallow gun, while the athlete's partner stood 10 feet away holding a jar of peanut butter.
 </p>
 <p class="text-zinc-400 text-lg leading-relaxed mb-6">
-The rules were simple: each team had one minute to stick as many marshmallows as possible onto the athlete holding the peanut butter. Athletes were not allowed to catch marshmallows and place them onto themselves.
+The rules were simple: each team had one minute to stick as many marshmallows as possible onto the athlete holding the peanut butter. Athletes were not allowed to catch marshmallows and place them onto themselves, but they could do whatever they want with the penut butter.....
 </p>
 <p class="text-zinc-400 text-lg leading-relaxed">
 Once the minute ended, the successfully attached marshmallows were counted. The athletes then switched roles and competed for another minute.

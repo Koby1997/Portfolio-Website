@@ -45,7 +45,7 @@ All of that to say, we still had a blast! Similarly to the previous year, there 
 I sorta thought of this game last minute, and man oh man, it turned out to be one of my favorites. Who knew being in an open field blindfolded would still make people scared to run into things? 
 </p>
 <p class="text-zinc-400 text-lg leading-relaxed">
-The game is simple. Teams of two. One person starts with a softball, they are blindfolded, and spun around in circles. When the timer starts, they must get their ball into a hula hoop on the other side of the field, but they cannot move while touching the ball. Their partner has to stay out of bounds on the side and direct them. Once the ball is placed in the hula hoop, teammates switch roles and repeat it back toward the start. Fastest time won! 
+The game is simple. Teams of two. One person starts with a softball, they are blindfolded, and spun around in circles. When the timer starts, they must get their ball into a hula hoop on the other side of the field, but they cannot move while touching the ball. Their partner has to stay out of bounds on the side and direct them. Once the ball is placed in the hula hoop, teammates switch roles and repeat it back toward the start. Points were given based on time taken to complete.
 </p>
 </div>
 </div>
@@ -66,7 +66,7 @@ The game is simple. Teams of two. One person starts with a softball, they are bl
 The Slingshot game was different this year. The game was teams of two. One person gets 5 shots to shoot a rubber ducky to their partner across the field. The further the partner is, the more points they get. The partner catching has to catch it in a bowl of water.
 </p>
 <p class="text-zinc-400 text-lg leading-relaxed">
-Now here was the twist. The points didn't matter, I secretly measured how much water was still in the bowl after they had shot their 5 shots. The team with the most water left won!
+Now here was the twist. The points didn't matter, I secretly measured how much water was still in the bowl after they had shot their 5 shots. Teams were placed based on how much water they retained.
 </p>
 </div>
 </div>
@@ -104,10 +104,10 @@ When they were done I would mark the time, and check their sorting. Any incorrec
 <div class="w-16 h-1 bg-cyan-500 mb-6"></div>
 <h3 class="text-4xl font-bold text-white mb-4">Ball Pit Memory</h3>
 <p class="text-zinc-400 text-lg leading-relaxed mb-6">
-By far the best game of this year. At one end of the field there is a bucket with many things in it. First, it was filled with cold water, then on the bottom there is a laminated card with a grid of colors. This grid is covered by beans: black beans, pinto beans, and kidney beans. And then floating on top are cut up pool noodles.
+By far the best game of this year. At one end of the field there is a storage bin with many things in it. First, it was filled with cold water, then on the bottom there is a laminated card with a grid of colors. This grid is covered by beans: black beans, pinto beans, and kidney beans. And then floating on top are cut up pool noodles.
 </p>
 <p class="text-zinc-400 text-lg leading-relaxed">
-At the other end of the field was a 4x4 grid of holes (the wind would knock the balls over so we used tape to hold them down) and colored balls. The Athlete would need to run to the bucket, and only using a special hat I made, move the beans to show the laminated paper. They would need to memorize the colors and run back to fill the 4x4 grid with balls of the correct color. The fastest time won!
+At the other end of the field was a 4x4 grid of holes (the wind would knock the balls over so we used tape to hold them down) and colored balls. The Athlete would need to run to the bin, and only using a special hat I made, move the beans to show the laminated paper. They would need to memorize the colors and run back to fill the 4x4 grid with balls of the correct color. Athletes were placed based on how quickly they could correctly fill the grid.
 </p>
 </div>
 </div>
