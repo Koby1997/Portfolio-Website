@@ -89,7 +89,7 @@ Now seeing how good just that "M" looked, I knew I could make it work. The plan 
 I decided I would make frames for the letters out of wood and then cover them in cardboard. I am not made of money, so I could not just go to Home Depot and buy all of the resources needed.
 </p>
 <p class="text-zinc-400 text-lg leading-relaxed">
-For weeks I was able to find Facebook Marketplace posts of people getting rid of wood for free. My friends' work was also getting rid of a ton of cardboard boxes.
+For weeks I was able to find Facebook Marketplace posts of people getting rid of wood for free. My friend's work was also getting rid of a ton of cardboard boxes.
 </p>
 </div>
 <img src="/assets/projects/proposal/FreeWood.jpg" class="w-full h-auto rounded-2xl shadow-2xl border border-zinc-800 object-cover max-h-[500px]" />
@@ -262,7 +262,7 @@ Today is the day! While Erin and Reba were off doing their girls day, I woke up 
 I began building the letters with the help of friends. The last bit to take care of was to make sure the area where the letters were was blocked off by cars Erin didn't know.
 </p>
 <p class="text-zinc-400 text-lg leading-relaxed">
-The plan was for the fake photoshoot to be where the letter were because that is honestly the only spot that makes sense because it has space. We would make an excuse to keep going up the mountain because "other people are already there".
+The plan was for the fake photoshoot to be where the letters were because that is honestly the only spot that makes sense because it has space. We would make an excuse to keep going up the mountain because "other people are already there".
 </p>
 </div>
 <div class="md:col-span-6 grid grid-cols-2 gap-4">
