@@ -62,7 +62,7 @@ The hardest part of this project was figuring out how to take the power from ped
 <video src="/assets/projects/tube/v3/Prop.mp4" autoplay loop muted playsinline class="max-w-[560px] w-full h-auto rounded-2xl shadow-2xl border border-zinc-800"></video>
 </div>
 <div class="md:col-span-6 flex flex-col gap-6 order-1 md:order-2 text-left md:text-right md:items-end">
-<div class="w-16 h-1 bg-blue-500"></div>
+<div class="w-16 h-1 bg-cyan-500"></div>
 <h3 class="text-4xl font-bold text-white">Propeller</h3>
 <p class="text-zinc-400 text-lg leading-relaxed">
 The bevel gear would spin a PVC driveshaft that reached the back of the boat, where the propeller was attached.
@@ -73,7 +73,7 @@ The bevel gear would spin a PVC driveshaft that reached the back of the boat, wh
 <!-- Narrative 3: Text Left, Media Right -->
 <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center mb-32">
 <div class="md:col-span-6 flex flex-col gap-6">
-<div class="w-16 h-1 bg-emerald-500"></div>
+<div class="w-16 h-1 bg-cyan-500"></div>
 <h3 class="text-4xl font-bold text-white">It Floats!</h3>
 <p class="text-zinc-400 text-lg leading-relaxed">
 A lot of people were skeptical that this would even float, so that alone was a win in my book. Unfortunately, the driveshaft did end up having problems and broke early in the day. However, I was still able to float with my drinks and snacks while staying shaded all day.

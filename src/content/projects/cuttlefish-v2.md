@@ -23,11 +23,11 @@ A random idea of using sandpaper to scuff up a clear pipe and insert the LEDs le
 </p>
 </div>
 <div class="md:col-span-4 border-l border-zinc-800/80 pl-8 flex flex-col justify-center">
-<h2 class="text-xs font-mono tracking-[0.4em] text-blue-400 mb-6 uppercase">Tech Specs</h2>
+<h2 class="text-xs font-mono tracking-[0.4em] text-blue-400 mb-6 uppercase">Key Upgrades</h2>
 <ul class="flex flex-col gap-6">
 <li>
 <span class="text-white font-bold block text-lg mb-1">Diffusion</span>
-<span class="text-zinc-400 text-sm leading-relaxed">Sandpaper & White Pool Noodles</span>
+<span class="text-zinc-400 text-sm leading-relaxed">Literally just white pool noodles</span>
 </li>
 <li>
 <span class="text-white font-bold block text-lg mb-1">Software</span>
@@ -51,19 +51,23 @@ After trying different materials, I landed on white pool noodles as the best opt
 </div>
 </div>
 
-<!-- Narrative 2: Media Left, Text Right -->
-<div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center mb-32">
-<div class="md:col-span-7 order-2 md:order-1 grid grid-cols-2 gap-4">
-<img src="/assets/projects/cuttlefish/v2/GapProblem.jpg" class="w-full h-auto rounded-xl border border-zinc-805 shadow-md object-cover aspect-[4/3]" />
-<img src="/assets/projects/cuttlefish/v2/TestWire.jpg" class="w-full h-auto rounded-xl border border-zinc-805 shadow-md object-cover aspect-[4/3]" />
-<video src="/assets/projects/cuttlefish/v2/Timelapse.mp4" autoplay loop muted playsinline class="col-span-2 w-full h-auto rounded-xl border border-zinc-805 shadow-md"></video>
+<!-- Narrative 2: Sticky Media Left, Nested Media + Text Right -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-start mb-32">
+<div class="md:col-span-6 flex justify-center items-start order-2 md:order-1">
+<video src="/assets/projects/cuttlefish/v2/Timelapse.mp4" autoplay loop muted playsinline class="max-w-[480px] w-full h-auto rounded-3xl shadow-2xl border border-zinc-800 sticky top-32"></video>
 </div>
-<div class="md:col-span-5 flex flex-col gap-6 order-1 md:order-2 text-left md:text-right md:items-end">
-<div class="w-16 h-1 bg-cyan-500"></div>
-<h3 class="text-4xl font-bold text-white">The Double Helix</h3>
+<div class="md:col-span-6 flex flex-col gap-8 order-1 md:order-2 text-left">
+<div>
+<div class="w-16 h-1 bg-blue-500 mb-6"></div>
+<h3 class="text-4xl font-bold text-white mb-6">The Double Helix</h3>
 <p class="text-zinc-400 text-lg leading-relaxed">
 I had the bold idea of making a double helix and wanted to make it perfect. I tried copper wire to hold the shape, and I tried making a ladder shape to twist out of PVC and rubber tubing. Turns out the best way was to just hang by hand. It isn't perfect but it turned out really good!
 </p>
+</div>
+<div class="grid grid-cols-2 gap-6">
+<img src="/assets/projects/cuttlefish/v2/GapProblem.jpg" class="w-full h-auto rounded-xl border border-zinc-800 shadow-xl object-cover" />
+<img src="/assets/projects/cuttlefish/v2/TestWire.jpg" class="w-full h-auto rounded-xl border border-zinc-800 shadow-xl object-cover" />
+</div>
 </div>
 </div>
 
@@ -75,9 +79,11 @@ I had the bold idea of making a double helix and wanted to make it perfect. I tr
 <h3 class="text-3xl font-bold text-white mb-12">Additional Media</h3>
 <div class="columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8">
 <img src="/assets/projects/cuttlefish/v2/CoolAngle.jpg" class="w-full h-auto rounded-xl border border-zinc-800 shadow-xl break-inside-avoid hover:scale-[1.02] transition-transform duration-500" />
-<video src="/assets/projects/cuttlefish/v2/ShortDemo.mp4" autoplay loop muted playsinline class="w-full h-auto rounded-xl border border-zinc-800 shadow-xl break-inside-avoid hover:scale-[1.02] transition-transform duration-500"></video>
 <video src="/assets/projects/cuttlefish/v2/BassStartsNewColor.mp4" autoplay loop muted playsinline class="w-full h-auto rounded-xl border border-zinc-800 shadow-xl break-inside-avoid hover:scale-[1.02] transition-transform duration-500"></video>
 <img src="/assets/projects/cuttlefish/v2/DirectlyBehind.JPG" class="w-full h-auto rounded-xl border border-zinc-800 shadow-xl break-inside-avoid hover:scale-[1.02] transition-transform duration-500" />
+<video src="/assets/projects/cuttlefish/v2/7Colors.mp4" autoplay loop muted playsinline class="w-full h-auto rounded-xl border border-zinc-800 shadow-xl break-inside-avoid hover:scale-[1.02] transition-transform duration-500"></video>
+<img src="/assets/projects/cuttlefish/v2/DNA.jpg" class="w-full h-auto rounded-xl border border-zinc-800 shadow-xl break-inside-avoid hover:scale-[1.02] transition-transform duration-500" />
+<video src="/assets/projects/cuttlefish/v2/Rainbow.mp4" autoplay loop muted playsinline class="w-full h-auto rounded-xl border border-zinc-800 shadow-xl break-inside-avoid hover:scale-[1.02] transition-transform duration-500"></video>
 </div>
 </div>
 

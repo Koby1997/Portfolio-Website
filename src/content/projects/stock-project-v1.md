@@ -21,7 +21,7 @@ This project literally started because I had a stock trading theory that I could
 </p>
 </div>
 <div class="md:col-span-4 border-l border-zinc-800/80 pl-8 flex flex-col justify-center">
-<h2 class="text-xs font-mono tracking-[0.4em] text-emerald-400 mb-6 uppercase">Key Features</h2>
+<h2 class="text-xs font-mono tracking-[0.4em] text-emerald-400 mb-6 uppercase">Key Details</h2>
 <ul class="flex flex-col gap-6">
 <li>
 <span class="text-white font-bold block text-lg mb-1">Data Ingestion</span>
@@ -49,14 +49,14 @@ This was one of the first feelings of success. This was the foundation of the da
 </p>
 </div>
 <div class="md:col-span-6 flex justify-center">
-<img src="/assets/projects/stock-project/v1/Analysis.jpg" class="max-w-[560px] w-full h-auto rounded-2xl shadow-2xl border border-zinc-800 object-cover" />
+<img src="/assets/projects/stock-project/v1/Database.jpg" class="max-w-[560px] w-full h-auto rounded-2xl shadow-2xl border border-zinc-800 object-cover" />
 </div>
 </div>
 
 <!-- Narrative 2: Media Left, Text Right -->
 <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center mb-32">
 <div class="md:col-span-6 order-2 md:order-1 flex justify-center">
-<img src="/assets/projects/stock-project/v1/Database.jpg" class="max-w-[560px] w-full h-auto rounded-2xl shadow-2xl border border-zinc-800 object-cover" />
+<img src="/assets/projects/stock-project/v1/Analysis.jpg" class="max-w-[560px] w-full h-auto rounded-2xl shadow-2xl border border-zinc-800 object-cover" />
 </div>
 <div class="md:col-span-6 flex flex-col gap-6 order-1 md:order-2 text-left">
 <div class="w-16 h-1 bg-emerald-500"></div>

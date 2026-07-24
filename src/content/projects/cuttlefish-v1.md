@@ -23,7 +23,7 @@ This project uses an Arduino Uno and a Sparkfun Spectrum Shield to make programm
 </p>
 </div>
 <div class="md:col-span-4 border-l border-zinc-800/80 pl-8 flex flex-col justify-center">
-<h2 class="text-xs font-mono tracking-[0.4em] text-blue-400 mb-6 uppercase">Tech Specs</h2>
+<h2 class="text-xs font-mono tracking-[0.4em] text-blue-400 mb-6 uppercase">Key Details</h2>
 <ul class="flex flex-col gap-6">
 <li>
 <span class="text-white font-bold block text-lg mb-1">Hardware</span>

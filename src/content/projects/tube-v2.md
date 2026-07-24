@@ -96,7 +96,7 @@ Boom! Goal achieved of making my tube better than the previous year.
 </h3>
 </div>
 <div class="w-full md:w-48 h-32 md:h-28 rounded-xl overflow-hidden border border-zinc-800 shadow-lg relative">
-<img src="/assets/projects/tube/v3/Hero.jpg" class="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-all duration-500 scale-105 group-hover:scale-100" />
+<img src="/assets/projects/tube/v3/OnTheWater.jpg" class="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-all duration-500 scale-105 group-hover:scale-100" />
 </div>
 </a>
 </div>

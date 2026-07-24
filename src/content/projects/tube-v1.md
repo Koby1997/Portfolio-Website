@@ -23,7 +23,7 @@ In 2022, my friends and I decided to go to the Pueblo Reservoir for the 4th of J
 </p>
 </div>
 <div class="md:col-span-4 border-l border-zinc-800/80 pl-8 flex flex-col justify-center">
-<h2 class="text-xs font-mono tracking-[0.4em] text-cyan-400 mb-6 uppercase">Specs</h2>
+<h2 class="text-xs font-mono tracking-[0.4em] text-cyan-400 mb-6 uppercase">Key Details</h2>
 <ul class="flex flex-col gap-6">
 <li>
 <span class="text-white font-bold block text-lg mb-1">Simple Shade</span>

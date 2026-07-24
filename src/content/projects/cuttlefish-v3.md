@@ -13,7 +13,7 @@ demoMode: true
 
 <!-- Overview & Specs -->
 <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-start mb-32">
-<div class="md:col-span-8 flex flex-col justify-center border-l-2 border-emerald-500 pl-8">
+<div class="md:col-span-6 flex flex-col justify-center border-l-2 border-emerald-500 pl-8">
 <h2 class="text-xs font-mono tracking-[0.4em] text-emerald-400 mb-6 uppercase">Overview</h2>
 <p class="text-zinc-300 text-2xl leading-relaxed font-light">
 The Cuttlefish lights were always a personal project started from a college hackathon. Many people thought they were cool, but they were just not user friendly for someone who didn't know how to code. I was completly fine with how janky the code was because I knew how it worked and didn't need to make it better.
@@ -21,7 +21,7 @@ The Cuttlefish lights were always a personal project started from a college hack
 This changed when I was told that someone wanted to gift these to their daughter. I decided I should make a user friendly app to go along with the lights.
 </p>
 </div>
-<div class="md:col-span-4 border-l border-zinc-800/80 pl-8 flex flex-col justify-center">
+<div class="md:col-span-3 border-l border-zinc-800/80 pl-8 flex flex-col justify-center">
 <h2 class="text-xs font-mono tracking-[0.4em] text-emerald-400 mb-6 uppercase">Key Upgrades</h2>
 <ul class="flex flex-col gap-6">
 <li>
@@ -35,6 +35,27 @@ This changed when I was told that someone wanted to gift these to their daughter
 <li>
 <span class="text-white font-bold block text-lg mb-1">Behavior reworks</span>
 <span class="text-zinc-400 text-sm leading-relaxed">Improved algorithms and updated customizability</span>
+</li>
+</ul>
+</div>
+<!-- Column 3: Tech Stack -->
+<div class="md:col-span-3 border-l border-zinc-800/80 pl-8 flex flex-col justify-center">
+<h2 class="text-xs font-mono tracking-[0.4em] text-emerald-400 mb-6 uppercase">Architecture Stack</h2>
+<ul class="flex flex-col gap-6">
+<li>
+<span class="text-white font-bold block text-lg">React 18 & Vite</span>
+</li>
+<li>
+<span class="text-white font-bold block text-lg">Electron</span>
+</li>
+<li>
+<span class="text-white font-bold block text-lg">Web Serial API</span>
+</li>
+<li>
+<span class="text-white font-bold block text-lg">C++ (Arduino)</span>
+</li>
+<li>
+<span class="text-white font-bold block text-lg">Tailwind CSS</span>
 </li>
 </ul>
 </div>

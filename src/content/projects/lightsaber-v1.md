@@ -14,12 +14,27 @@ demoMode: true
 <section class="w-full pt-32 bg-zinc-950">
 <div class="max-w-[90rem] mx-auto px-4 md:px-12 mb-32">
 
-<!-- Project Overview -->
-<div class="max-w-3xl mb-32 border-l-2 border-blue-500 pl-8">
+<!-- Overview & Specs -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-start mb-32">
+<div class="md:col-span-8 flex flex-col justify-center border-l-2 border-blue-500 pl-8">
 <h2 class="text-xs font-mono tracking-[0.4em] text-blue-400 mb-6 uppercase">Overview</h2>
 <p class="text-zinc-300 text-2xl leading-relaxed font-light">
 With no prior experience with this level of hardware engineering (and before Galaxy's Edge had opened at Disney...), I thought building a realistic lightsaber would be a fun challenge and a great gift for a friend.
 </p>
+</div>
+<div class="md:col-span-4 border-l border-zinc-800/80 pl-8 flex flex-col justify-center">
+<h2 class="text-xs font-mono tracking-[0.4em] text-blue-400 mb-6 uppercase">Key Details</h2>
+<ul class="flex flex-col gap-6">
+<li>
+<span class="text-white font-bold block text-lg mb-1">Chassis</span>
+<span class="text-zinc-400 text-sm leading-relaxed">3D printed modular hilt</span>
+</li>
+<li>
+<span class="text-white font-bold block text-lg mb-1">Controller</span>
+<span class="text-zinc-400 text-sm leading-relaxed">Nano Biscotte V4.0 soundboard</span>
+</li>
+</ul>
+</div>
 </div>
 
 <!-- Narrative 1: Text Left, Media Right -->
@@ -43,7 +58,7 @@ The hilt is fully 3D printed and can actually unscrew in multiple places. This m
 <div class="md:col-span-6 order-2 md:order-1">
 <video src="/assets/projects/lightsaber/v1/LightsaberTimelapse.mp4" autoplay loop muted playsinline class="w-full h-auto rounded-2xl shadow-2xl border border-zinc-800"></video>
 </div>
-<div class="md:col-span-6 flex flex-col gap-6 order-1 md:order-2 text-left md:text-right md:items-end">
+<div class="md:col-span-6 flex flex-col gap-6 order-1 md:order-2 text-left">
 <div class="w-16 h-1 bg-blue-500"></div>
 <h3 class="text-4xl font-bold text-white">The Build</h3>
 <p class="text-zinc-400 text-lg leading-relaxed">

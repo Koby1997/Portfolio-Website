@@ -16,7 +16,7 @@ demoMode: true
 <div class="md:col-span-8 flex flex-col justify-center border-l-2 border-blue-500 pl-8">
 <h2 class="text-xs font-mono tracking-[0.4em] text-blue-400 mb-6 uppercase">Overview</h2>
 <p class="text-zinc-300 text-2xl leading-relaxed font-light">
-Returning to the workshop, I decided it was time to build a second lightsaber. For Version 2, the primary goal was to dramatically improve the internal electronics stack to support much more vivid colors and dynamic sound fonts, while giving the exterior hilt design a sleeker, darker metallic finish.
+I met another huge Star Wars fan and became close friends with him. I remembered the Lightsaber I made in college and thought he would really like one too. I started to find all of my notes and parts from the original project and found it to be outdated already. Some parts weren't even sold anymore. The only option was to improve and upgrade!
 </p>
 </div>
 <div class="md:col-span-4 border-l border-zinc-800/80 pl-8 flex flex-col justify-center">
@@ -58,7 +58,7 @@ The paint job was not rushed this time so I gave a black base coat to help hide 
 <img src="/assets/projects/lightsaber/v2/PartsBlackPaint.jpg" class="max-w-[560px] w-full h-auto rounded-2xl shadow-2xl border border-zinc-800 object-cover" />
 </div>
 <div class="md:col-span-6 flex flex-col gap-6 order-1 md:order-2 text-left md:text-right md:items-end">
-<div class="w-16 h-1 bg-cyan-500"></div>
+<div class="w-16 h-1 bg-blue-500"></div>
 <h3 class="text-4xl font-bold text-white">The Paint Job</h3>
 <p class="text-zinc-400 text-lg leading-relaxed">
 After masking off the critical accent rings, the hilt was treated with a high-endurance black coating to give it that stealth, Sith-like aesthetic.
@@ -69,7 +69,7 @@ After masking off the critical accent rings, the hilt was treated with a high-en
 <!-- Narrative 3: Text Left, Media Right -->
 <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center mb-32">
 <div class="md:col-span-6 flex flex-col gap-6">
-<div class="w-16 h-1 bg-emerald-500"></div>
+<div class="w-16 h-1 bg-blue-500"></div>
 <h3 class="text-4xl font-bold text-white">Alive & Ignited</h3>
 <p class="text-zinc-400 text-lg leading-relaxed">
 The first lightsaber was preset with 3 different 'profiles' that each had their own color, sound, and pulse intensity. I ended up making multiple micro-SD cards with different combinations so my friend could swap between those premade profiles. With this upgraded board, you can now change each individually without having to take apart the lightsaber. You can just turn on setting mode and then use the lightsaber itself like a dial to turn and change whatever setting you want!

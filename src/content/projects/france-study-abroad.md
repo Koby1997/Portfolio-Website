@@ -1,5 +1,5 @@
 ---
-title: "Study Abroad (France)"
+title: "Study Abroad"
 description: "A great experience and one of the best times of my life."
 categories: ["Milestone"]
 pubDate: 2017-08-01
@@ -14,17 +14,19 @@ demoMode: true
 <section class="w-full pt-32 bg-zinc-950">
 <div class="max-w-[90rem] mx-auto px-4 md:px-12 mb-32">
 
-<!-- Project Overview -->
-<div class="max-w-3xl mb-32 border-l-2 border-purple-500 pl-8">
-<h2 class="text-xs font-mono tracking-[0.4em] text-purple-400 mb-6 uppercase">Overview</h2>
-<p class="text-zinc-300 text-2xl leading-relaxed font-light">
+<!-- Overview / Intro Note -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center mb-32">
+<div class="md:col-span-12 flex flex-col items-center justify-center text-center gap-6">
+<div class="w-16 h-1 bg-purple-500"></div>
+<p class="text-zinc-300 text-2xl leading-relaxed max-w-4xl font-light">
 Studying abroad in France during the Fall 2017 semester was a defining period of personal growth. At this point in my life I had never even been out of the country! I lived in Antibes and went to Skema Business School. I made the most of my time and traveled all across Europe.
 </p>
+</div>
 </div>
 
 <!-- Narrative 1: Text Left, Media Right -->
 <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center mb-32">
-<div class="md:col-span-5 flex flex-col gap-6">
+<div class="md:col-span-5 flex flex-col gap-6 text-left">
 <div class="w-16 h-1 bg-purple-500"></div>
 <h3 class="text-4xl font-bold text-white">Worldly Mindset</h3>
 <p class="text-zinc-400 text-lg leading-relaxed">
@@ -41,7 +43,7 @@ Gaining a worldly mindset by meeting so many different people from different cul
 <div class="md:col-span-7 order-2 md:order-1">
 <img src="/assets/projects/france-study-abroad/Zugspitze.jpg" class="w-full h-auto rounded-2xl shadow-2xl border border-zinc-800" />
 </div>
-<div class="md:col-span-5 flex flex-col gap-6 order-1 md:order-2 text-left md:text-right md:items-end">
+<div class="md:col-span-5 flex flex-col gap-6 order-1 md:order-2 text-left">
 <div class="w-16 h-1 bg-purple-500"></div>
 <h3 class="text-4xl font-bold text-white">First Snow</h3>
 <p class="text-zinc-400 text-lg leading-relaxed">
@@ -52,7 +54,7 @@ For my birthday, I decided to reach the highest point in Germany, and it was my 
 
 <!-- Narrative 3: Text Left, Media Right -->
 <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center mb-32">
-<div class="md:col-span-5 flex flex-col gap-6">
+<div class="md:col-span-5 flex flex-col gap-6 text-left">
 <div class="w-16 h-1 bg-purple-500"></div>
 <h3 class="text-4xl font-bold text-white">Family Rendezvous</h3>
 <p class="text-zinc-400 text-lg leading-relaxed">
