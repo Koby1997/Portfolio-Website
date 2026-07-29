@@ -13,7 +13,7 @@ Block 2
 - Title: The Demo
 - Layout: Text Right, Media Left
 - Media: LiveDemo.jpg
-- Text: A picture of us demoing the lights to everyone after being told we won 2nd place. This project uses an Arduino Uno and a Sparkfun Spectrum Shield.
+- Text: A picture of us demoing the lights to everyone after being told we won 3rd place. This project uses an Arduino Uno and a Sparkfun Spectrum Shield.
 
 ADDITIONAL MEDIA:
 Just put all other pictures and videos in this folder into the Masonry Grid at the bottom. Make sure to include the hero video (Cuttlefishv1hero.mp4) here as well!

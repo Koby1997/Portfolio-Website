@@ -1,6 +1,6 @@
 ---
 title: "Cuttlefish Lights V1"
-description: "Created at SwampHacks VI (Won 2nd place). Initial hardware build and basic behaviors."
+description: "Created at SwampHacks VI (Won 3rd place). Initial hardware build and basic behaviors."
 categories: ["Hardware", "Software"]
 pubDate: 2020-02-01
 coverImage: "/assets/projects/cuttlefish/v1/Cuttlefishv1hero.mp4"
