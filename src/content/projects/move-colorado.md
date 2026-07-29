@@ -25,10 +25,10 @@ I packed my car with everything I owned and drove cross country to Colorado afte
 <!-- Image Row 1: The Move In -->
 <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center mb-12">
 <div class="md:col-span-6 flex justify-center">
-<img src="/assets/projects/move-colorado/CObed.jpg" class="w-full h-auto max-h-[600px] rounded-2xl shadow-2xl overflow-hidden object-cover" />
+<img src="/assets/projects/move-colorado/CObed.jpg" class="w-auto h-auto max-h-[600px] max-w-full rounded-2xl shadow-2xl overflow-hidden object-contain bg-zinc-900/10" />
 </div>
 <div class="md:col-span-6 flex justify-center">
-<img src="/assets/projects/move-colorado/COroom.jpg" class="w-full h-auto max-h-[600px] rounded-2xl shadow-2xl overflow-hidden object-cover" />
+<img src="/assets/projects/move-colorado/COroom.jpg" class="w-auto h-auto max-h-[600px] max-w-full rounded-2xl shadow-2xl overflow-hidden object-contain bg-zinc-900/10" />
 </div>
 </div>
 
@@ -45,10 +45,10 @@ It was all up from there as I made so many great friends and memories. Below are
 <!-- Image Row 2: First Snow -->
 <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center mb-12">
 <div class="md:col-span-6 flex justify-center">
-<video src="/assets/projects/move-colorado/FirstSnow.mp4" autoplay loop muted playsinline class="lazy-media w-full h-auto max-h-[600px] rounded-2xl shadow-2xl overflow-hidden object-cover"></video>
+<video src="/assets/projects/move-colorado/FirstSnow.mp4" autoplay loop muted playsinline class="lazy-media w-auto h-auto max-h-[600px] max-w-full rounded-2xl shadow-2xl overflow-hidden object-contain bg-zinc-900/10"></video>
 </div>
 <div class="md:col-span-6 flex justify-center">
-<img src="/assets/projects/move-colorado/LyssDarian.gif" class="w-full h-auto max-h-[600px] rounded-2xl shadow-2xl overflow-hidden object-cover" />
+<img src="/assets/projects/move-colorado/LyssDarian.gif" class="w-auto h-auto max-h-[600px] max-w-full rounded-2xl shadow-2xl overflow-hidden object-contain bg-zinc-900/10" />
 </div>
 </div>
 
@@ -56,20 +56,20 @@ It was all up from there as I made so many great friends and memories. Below are
 <!-- Image Row 3: Family Together -->
 <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center mb-12">
 <div class="md:col-span-6 flex justify-center">
-<img src="/assets/projects/move-colorado/FamilyPhotoAll.jpg" class="w-full h-auto max-h-[600px] rounded-2xl shadow-2xl overflow-hidden object-cover" />
+<img src="/assets/projects/move-colorado/FamilyPhotoAll.jpg" class="w-auto h-auto max-h-[600px] max-w-full rounded-2xl shadow-2xl overflow-hidden object-contain bg-zinc-900/10" />
 </div>
 <div class="md:col-span-6 flex justify-center">
-<img src="/assets/projects/move-colorado/FamilyPhotoGuys.jpg" class="w-full h-auto max-h-[600px] rounded-2xl shadow-2xl overflow-hidden object-cover" />
+<img src="/assets/projects/move-colorado/FamilyPhotoGuys.jpg" class="w-auto h-auto max-h-[600px] max-w-full rounded-2xl shadow-2xl overflow-hidden object-contain bg-zinc-900/10" />
 </div>
 </div>
 
 <!-- Image Row 4: Snowboarding Setup -->
 <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center mb-12">
 <div class="md:col-span-6 flex justify-center">
-<img src="/assets/projects/move-colorado/SnowboardSit.jpg" class="w-full h-auto max-h-[600px] rounded-2xl shadow-2xl overflow-hidden object-cover" />
+<img src="/assets/projects/move-colorado/SnowboardSit.jpg" class="w-auto h-auto max-h-[600px] max-w-full rounded-2xl shadow-2xl overflow-hidden object-contain bg-zinc-900/10" />
 </div>
 <div class="md:col-span-6 flex justify-center">
-<img src="/assets/projects/move-colorado/SnowboardStand.JPG" class="w-full h-auto max-h-[600px] rounded-2xl shadow-2xl overflow-hidden object-cover" />
+<img src="/assets/projects/move-colorado/SnowboardStand.JPG" class="w-auto h-auto max-h-[600px] max-w-full rounded-2xl shadow-2xl overflow-hidden object-contain bg-zinc-900/10" />
 </div>
 </div>
 
@@ -77,10 +77,10 @@ It was all up from there as I made so many great friends and memories. Below are
 <!-- Image Row 5: Climbing Logic -->
 <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center mb-12">
 <div class="md:col-span-6 flex justify-center">
-<video src="/assets/projects/move-colorado/MultiPitch.mp4" autoplay loop muted playsinline class="lazy-media w-full h-auto max-h-[600px] rounded-2xl shadow-2xl overflow-hidden object-cover"></video>
+<video src="/assets/projects/move-colorado/MultiPitch.mp4" autoplay loop muted playsinline class="lazy-media w-auto h-auto max-h-[600px] max-w-full rounded-2xl shadow-2xl overflow-hidden object-contain bg-zinc-900/10"></video>
 </div>
 <div class="md:col-span-6 flex justify-center">
-<img src="/assets/projects/move-colorado/RockClimbing.jpg" class="w-full h-auto max-h-[600px] rounded-2xl shadow-2xl overflow-hidden object-cover" />
+<img src="/assets/projects/move-colorado/RockClimbing.jpg" class="w-auto h-auto max-h-[600px] max-w-full rounded-2xl shadow-2xl overflow-hidden object-contain bg-zinc-900/10" />
 </div>
 </div>
 
@@ -92,17 +92,17 @@ It was all up from there as I made so many great friends and memories. Below are
 </div>
 </div>
 <div class="md:col-span-6 flex justify-center">
-<img src="/assets/projects/move-colorado/Softball.JPG" class="w-full h-auto max-h-[600px] rounded-2xl shadow-2xl overflow-hidden object-cover" />
+<img src="/assets/projects/move-colorado/Softball.JPG" class="w-auto h-auto max-h-[600px] max-w-full rounded-2xl shadow-2xl overflow-hidden object-contain bg-zinc-900/10" />
 </div>
 </div>
 
 <!-- Image Row 7: More Sports -->
 <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center mb-12">
 <div class="md:col-span-6 flex justify-center">
-<img src="/assets/projects/move-colorado/DadPikesPeak.jpg" class="w-full h-auto max-h-[600px] rounded-2xl shadow-2xl overflow-hidden object-cover" />
+<img src="/assets/projects/move-colorado/DadPikesPeak.jpg" class="w-auto h-auto max-h-[600px] max-w-full rounded-2xl shadow-2xl overflow-hidden object-contain bg-zinc-900/10" />
 </div>
 <div class="md:col-span-6 flex justify-center">
-<video src="/assets/projects/move-colorado/ToughMudder.mp4" autoplay loop muted playsinline class="lazy-media w-full h-auto max-h-[600px] rounded-2xl shadow-2xl overflow-hidden object-cover"></video>
+<video src="/assets/projects/move-colorado/ToughMudder.mp4" autoplay loop muted playsinline class="lazy-media w-auto h-auto max-h-[600px] max-w-full rounded-2xl shadow-2xl overflow-hidden object-contain bg-zinc-900/10"></video>
 </div>
 </div>
 
@@ -110,20 +110,20 @@ It was all up from there as I made so many great friends and memories. Below are
 <!-- Image Row 8: Pikes Peak & Red Rocks -->
 <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center mb-12">
 <div class="md:col-span-6 flex justify-center">
-<img src="/assets/projects/move-colorado/VolleyballServe.JPG" class="w-full h-auto max-h-[600px] rounded-2xl shadow-2xl overflow-hidden object-cover" />
+<img src="/assets/projects/move-colorado/VolleyballServe.JPG" class="w-auto h-auto max-h-[600px] max-w-full rounded-2xl shadow-2xl overflow-hidden object-contain bg-zinc-900/10" />
 </div>
 <div class="md:col-span-6 flex justify-center">
-<img src="/assets/projects/move-colorado/RedRocksTop.jpg" class="w-full h-auto max-h-[600px] rounded-2xl shadow-2xl overflow-hidden object-cover" />
+<img src="/assets/projects/move-colorado/RedRocksTop.jpg" class="w-auto h-auto max-h-[600px] max-w-full rounded-2xl shadow-2xl overflow-hidden object-contain bg-zinc-900/10" />
 </div>
 </div>
 
 <!-- Image Row 9: Night Hike & Sand Dunes -->
 <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center mb-12">
 <div class="md:col-span-6 flex justify-center">
-<img src="/assets/projects/move-colorado/NightHike.JPG" class="w-full h-auto max-h-[600px] rounded-2xl shadow-2xl overflow-hidden object-cover" />
+<img src="/assets/projects/move-colorado/NightHike.JPG" class="w-auto h-auto max-h-[600px] max-w-full rounded-2xl shadow-2xl overflow-hidden object-contain bg-zinc-900/10" />
 </div>
 <div class="md:col-span-6 flex justify-center">
-<video src="/assets/projects/move-colorado/SandDuneBros.mp4" autoplay loop muted playsinline class="lazy-media w-full h-auto max-h-[600px] rounded-2xl shadow-2xl overflow-hidden object-cover"></video>
+<video src="/assets/projects/move-colorado/SandDuneBros.mp4" autoplay loop muted playsinline class="lazy-media w-auto h-auto max-h-[600px] max-w-full rounded-2xl shadow-2xl overflow-hidden object-contain bg-zinc-900/10"></video>
 </div>
 </div>
 

@@ -57,7 +57,7 @@ One Home Depot trip later, I had all the pvc and connectors I needed
 <img src="/assets/projects/tube/v2/LivingRoom.jpg" class="max-w-[480px] w-full h-auto rounded-2xl shadow-2xl overflow-hidden " />
 </div>
 <div class="md:col-span-6 flex flex-col gap-6 order-1 md:order-2 text-left md:text-right md:items-end">
-<div class="w-16 h-1 bg-blue-500"></div>
+<div class="w-16 h-1 bg-cyan-500"></div>
 <h3 class="text-4xl font-bold text-white">Living Room Build</h3>
 <p class="text-zinc-400 text-lg leading-relaxed">
 I cut the pvc pipes to size and did a test build in my living room just to make sure the idea would work. I also cut up a broken dining room chair we had to give me some paddles allowing me to move the tube.
@@ -68,7 +68,7 @@ I cut the pvc pipes to size and did a test build in my living room just to make 
 <!-- Narrative 3: Text Left, Media Right -->
 <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center mb-32">
 <div class="md:col-span-6 flex flex-col gap-6">
-<div class="w-16 h-1 bg-indigo-500"></div>
+<div class="w-16 h-1 bg-cyan-500"></div>
 <h3 class="text-4xl font-bold text-white">Floating On The Water</h3>
 <p class="text-zinc-400 text-lg leading-relaxed">
 Boom! Goal achieved of making my tube better than the previous year.

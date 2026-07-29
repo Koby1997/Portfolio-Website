@@ -48,7 +48,7 @@ There weren't that many videos/pictures taken this year, but the idea was all th
 What flies further and more accurately than a spitball? A tennis ball! Now there is a target to hit, but that is not all. 
 </p>
 <p class="text-zinc-400 text-lg leading-relaxed mb-6">
-In this team game, athletes must put on XXXXL sweatpants and a t-shirt that are soaked in cold water, and shoot tennis balls at a target. Teammates must field missed balls and throw them back to an area only the shooter can be in. There are only 3 balls per team, so make each shot count!
+In this team game, athletes must put on XXXL sweatpants and a t-shirt that are soaked in cold water, and shoot tennis balls at a target. Teammates must field missed balls and throw them back to an area only the shooter can be in. There are only 3 balls per team, so make each shot count!
 </p>
 <p class="text-zinc-400 text-lg leading-relaxed">
 Watching the shooter have to retrieve tennis balls in such oversized wet clothing was so much funnier than I would have imagined.

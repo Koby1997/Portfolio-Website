@@ -1,6 +1,6 @@
 ---
 title: "StockViz V2"
-description: "Improved backend data, a brilliant frontend, and a new trading Optimizer."
+description: "Improved backend data, a rebuilt frontend, and a new trading Optimizer."
 categories: ["Software"]
 pubDate: 2026-01-01
 coverImage: "/assets/projects/stock-project/v2/ShortDemoForHero.mp4"
