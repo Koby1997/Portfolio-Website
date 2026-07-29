@@ -16,7 +16,7 @@ demoMode: true
 <div class="md:col-span-8 flex flex-col justify-center border-l-2 border-blue-500 pl-8">
 <h2 class="text-xs font-mono tracking-[0.4em] text-blue-400 mb-6 uppercase">Overview</h2>
 <p class="text-zinc-300 text-2xl leading-relaxed font-light">
-I met another huge Star Wars fan and became close friends with him. I remembered the Lightsaber I made in college and thought he would really like one too. I started to find all of my notes and parts from the original project and found it to be outdated already. Some parts weren't even sold anymore. The only option was to improve and upgrade!
+I met another huge Star Wars fan and became close friends with him. I remembered the Lightsaber I made in college and thought he would really like one too. I started to find all of my notes and parts from the original project and found it to be outdated. Some parts weren't even sold anymore. The only option was to improve and upgrade!
 </p>
 </div>
 <div class="md:col-span-4 border-l border-zinc-800/80 pl-8 flex flex-col justify-center">
@@ -47,21 +47,27 @@ I met another huge Star Wars fan and became close friends with him. I remembered
 The paint job was not rushed this time so I gave a black base coat to help hide print lines and really give those indents some depth. This also helped with the weathered look for any black that showed through the silver paint.
 </p>
 </div>
-<div class="md:col-span-6 flex justify-center">
-<img src="/assets/projects/lightsaber/v2/PartsNoPaint.jpg" class="max-w-[560px] w-full h-auto rounded-2xl shadow-2xl border border-zinc-800 object-cover" />
+<div class="md:col-span-6">
+<div class="grid grid-cols-2 gap-4">
+<img src="/assets/projects/lightsaber/v2/PartsNoPaint.jpg" class="w-full h-auto rounded-2xl shadow-xl overflow-hidden object-cover opacity-90 hover:opacity-100 transition-opacity" />
+<img src="/assets/projects/lightsaber/v2/PartsBlackPaint.jpg" class="w-full h-auto rounded-2xl shadow-xl overflow-hidden object-cover opacity-90 hover:opacity-100 transition-opacity" />
+</div>
 </div>
 </div>
 
 <!-- Narrative 2: Media Left, Text Right -->
 <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center mb-32">
-<div class="md:col-span-6 order-2 md:order-1 flex justify-center">
-<img src="/assets/projects/lightsaber/v2/PartsBlackPaint.jpg" class="max-w-[560px] w-full h-auto rounded-2xl shadow-2xl border border-zinc-800 object-cover" />
+<div class="md:col-span-6 order-2 md:order-1">
+<div class="grid grid-cols-2 gap-4">
+<img src="/assets/projects/lightsaber/v2/OneBlade.jpg" class="w-full h-auto rounded-2xl shadow-xl overflow-hidden object-cover opacity-90 hover:opacity-100 transition-opacity" />
+<img src="/assets/projects/lightsaber/v2/Dual.jpg" class="w-full h-auto rounded-2xl shadow-xl overflow-hidden object-cover opacity-90 hover:opacity-100 transition-opacity" />
 </div>
-<div class="md:col-span-6 flex flex-col gap-6 order-1 md:order-2 text-left md:text-right md:items-end">
+</div>
+<div class="md:col-span-6 flex flex-col gap-6 order-1 md:order-2 text-left">
 <div class="w-16 h-1 bg-blue-500"></div>
-<h3 class="text-4xl font-bold text-white">The Paint Job</h3>
+<h3 class="text-4xl font-bold text-white">The Assembly</h3>
 <p class="text-zinc-400 text-lg leading-relaxed">
-After masking off the critical accent rings, the hilt was treated with a high-endurance black coating to give it that stealth, Sith-like aesthetic.
+For the Star Wars fans out there, this was Maul's Lightsaber from The Clone Wars TV show. I made one half look worn and old, while the newer half was shiny and new. It can be wielded as an agile single blade or locked together as a menacing double-sided staff!
 </p>
 </div>
 </div>
@@ -76,7 +82,7 @@ The first lightsaber was preset with 3 different 'profiles' that each had their 
 </p>
 </div>
 <div class="md:col-span-6 flex justify-center">
-<video src="/assets/projects/lightsaber/v2/LightsaberV2ColorChange.mp4" autoplay loop muted playsinline class="max-w-[560px] w-full h-auto rounded-2xl shadow-2xl border border-zinc-800"></video>
+<video src="/assets/projects/lightsaber/v2/LightsaberChangeSettings.mp4" autoplay loop muted playsinline class="max-w-[360px] w-full h-auto rounded-2xl shadow-2xl overflow-hidden "></video>
 </div>
 </div>
 
@@ -85,10 +91,10 @@ The first lightsaber was preset with 3 different 'profiles' that each had their 
 <!-- Project Media Footer & Sneak Peek Container -->
 <div class="w-full bg-black pt-24 pb-32 border-t border-zinc-900">
 <div class="max-w-[90rem] mx-auto px-4 md:px-12">
-<h3 class="text-3xl font-bold text-white mb-12">Building the Core</h3>
+<h3 class="text-3xl font-bold text-white mb-12">Additional Media</h3>
 <div class="columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8">
-<video src="/assets/projects/lightsaber/v2/Timelapselightsaberv2.mp4" autoplay loop muted playsinline class="w-full h-auto rounded-xl border border-zinc-800 shadow-xl break-inside-avoid hover:scale-[1.02] transition-transform duration-500"></video>
-<video src="/assets/projects/lightsaber/v2/HeroVid.mp4" autoplay loop muted playsinline class="w-full h-auto rounded-xl border border-zinc-800 shadow-xl break-inside-avoid hover:scale-[1.02] transition-transform duration-500"></video>
+<video src="/assets/projects/lightsaber/v2/Timelapselightsaberv2.mp4" autoplay loop muted playsinline class="w-full h-auto rounded-xl shadow-xl overflow-hidden break-inside-avoid hover:scale-[1.02] transition-transform duration-500"></video>
+<video src="/assets/projects/lightsaber/v2/Hero2.mp4" autoplay loop muted playsinline class="w-full h-auto rounded-xl shadow-xl overflow-hidden break-inside-avoid hover:scale-[1.02] transition-transform duration-500"></video>
 </div>
 </div>
 </div>

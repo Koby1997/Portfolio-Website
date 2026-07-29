@@ -42,18 +42,18 @@ In 2022, my friends and I decided to go to the Pueblo Reservoir for the 4th of J
 The morning of, I stopped by Home Depot to pick up a few things for an idea I had. 10 minutes of tinkering in the parking lot and boom, my tube was shaded.
 </p>
 <div class="max-w-[560px] w-full mt-6">
-<img src="/assets/projects/tube/v1/Building.jpg" class="rounded-xl border border-zinc-800 shadow-md w-full h-auto object-cover aspect-video" />
+<img src="/assets/projects/tube/v1/Building.jpg" class="rounded-xl overflow-hidden shadow-md w-full h-auto object-cover aspect-video" />
 </div>
 </div>
 <div class="md:col-span-6 flex justify-center">
-<video src="/assets/projects/tube/v1/ShowFromBack.mp4" autoplay loop muted playsinline class="max-w-[360px] w-full h-auto rounded-2xl shadow-2xl border border-zinc-800"></video>
+<video src="/assets/projects/tube/v1/ShowFromBack.mp4" autoplay loop muted playsinline class="max-w-[360px] w-full h-auto rounded-2xl shadow-2xl overflow-hidden "></video>
 </div>
 </div>
 
 <!-- Narrative 2: Media Left, Text Right -->
 <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center mb-32">
 <div class="md:col-span-6 order-2 md:order-1 flex justify-center">
-<video src="/assets/projects/tube/v1/On%20the%20Water.mp4" autoplay loop muted playsinline class="max-w-[360px] w-full h-auto rounded-2xl shadow-2xl border border-zinc-800"></video>
+<video src="/assets/projects/tube/v1/On%20the%20Water.mp4" autoplay loop muted playsinline class="max-w-[360px] w-full h-auto rounded-2xl shadow-2xl overflow-hidden "></video>
 </div>
 <div class="md:col-span-6 flex flex-col gap-6 order-1 md:order-2 text-left md:text-right md:items-end">
 <div class="w-16 h-1 bg-blue-500"></div>

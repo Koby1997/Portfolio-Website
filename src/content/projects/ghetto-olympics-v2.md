@@ -57,10 +57,10 @@ Some games had athletes competing individually, while others placed athletes on 
 Athletes earned points based on their placement in each game. At the end of the day, all points were tallied to determine which athletes would take home our homemade trophies.
 </p>
 </div>
-<video src="/assets/projects/ghetto-olympics/v2/TrophyShort.mp4" autoplay loop muted playsinline class="w-full h-auto rounded-3xl shadow-2xl border border-zinc-800 object-cover max-h-[500px]"></video>
+<video src="/assets/projects/ghetto-olympics/v2/TrophyShort.mp4" autoplay loop muted playsinline class="w-full h-auto rounded-3xl shadow-2xl overflow-hidden object-cover max-h-[500px]"></video>
 </div>
 <div class="md:col-span-6 flex justify-center items-start h-full">
-<img src="/assets/projects/ghetto-olympics/v2/Trophies.JPG" class="w-full h-auto rounded-3xl shadow-2xl border border-zinc-800 object-cover" />
+<img src="/assets/projects/ghetto-olympics/v2/Trophies.JPG" class="w-full h-auto rounded-3xl shadow-2xl overflow-hidden object-cover" />
 </div>
 </div>
 
@@ -68,7 +68,7 @@ Athletes earned points based on their placement in each game. At the end of the 
 <!-- Narrative 2: Media Left, Text Right -->
 <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center mb-32">
 <div class="md:col-span-7 order-2 md:order-1 flex justify-center">
-<video src="/assets/projects/ghetto-olympics/v2/BucketShot.mp4" autoplay loop muted playsinline class="w-full h-auto max-h-[600px] rounded-2xl shadow-2xl border border-zinc-800 object-cover"></video>
+<video src="/assets/projects/ghetto-olympics/v2/BucketShot.mp4" autoplay loop muted playsinline class="w-full h-auto max-h-[600px] rounded-2xl shadow-2xl overflow-hidden object-cover"></video>
 </div>
 <div class="md:col-span-5 flex flex-col gap-6 order-1 md:order-2 text-left">
 <div class="w-16 h-1 bg-cyan-500"></div>
@@ -106,11 +106,11 @@ Fifteen seconds were added to the athlete's final time for every Skittle collect
 </div>
 <div class="md:col-span-7 grid grid-cols-1 gap-4">
 <div class="w-full aspect-video">
-<video src="/assets/projects/ghetto-olympics/v2/Pudding.mp4" autoplay loop muted playsinline class="w-full h-full rounded-2xl shadow-2xl border border-zinc-800 object-cover"></video>
+<video src="/assets/projects/ghetto-olympics/v2/Pudding.mp4" autoplay loop muted playsinline class="w-full h-full rounded-2xl shadow-2xl overflow-hidden object-cover"></video>
 </div>
 <div class="grid grid-cols-2 gap-4">
-<img src="/assets/projects/ghetto-olympics/v2/QuinnPudding.jpg" class="w-full h-[300px] rounded-2xl shadow-2xl border border-zinc-800 object-cover" />
-<img src="/assets/projects/ghetto-olympics/v2/DarianPudding.jpg" class="w-full h-[300px] rounded-2xl shadow-2xl border border-zinc-800 object-cover" />
+<img src="/assets/projects/ghetto-olympics/v2/QuinnPudding.jpg" class="w-full h-[300px] rounded-2xl shadow-2xl overflow-hidden object-cover" />
+<img src="/assets/projects/ghetto-olympics/v2/DarianPudding.jpg" class="w-full h-[300px] rounded-2xl shadow-2xl overflow-hidden object-cover" />
 </div>
 </div>
 </div>
@@ -119,7 +119,7 @@ Fifteen seconds were added to the athlete's final time for every Skittle collect
 <!-- Narrative 4: Media Left, Text Right -->
 <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-start mb-32">
 <div class="md:col-span-6 flex justify-center items-start order-2 md:order-1 h-full">
-<img src="/assets/projects/ghetto-olympics/v2/PenutButter.jpeg" class="max-w-[500px] w-full h-auto rounded-3xl shadow-2xl border border-zinc-800 object-cover" />
+<img src="/assets/projects/ghetto-olympics/v2/PenutButter.jpeg" class="max-w-[500px] w-full h-auto rounded-3xl shadow-2xl overflow-hidden object-cover" />
 </div>
 <div class="md:col-span-6 flex flex-col gap-8 order-1 md:order-2 text-left">
 <div>
@@ -135,7 +135,7 @@ The rules were simple: each team had one minute to stick as many marshmallows as
 Once the minute ended, the successfully attached marshmallows were counted. The athletes then switched roles and competed for another minute.
 </p>
 </div>
-<video src="/assets/projects/ghetto-olympics/v2/MarshmallowShooter.mp4" autoplay loop muted playsinline class="w-full h-auto rounded-3xl shadow-2xl border border-zinc-800 object-cover max-h-[500px]"></video>
+<video src="/assets/projects/ghetto-olympics/v2/MarshmallowShooter.mp4" autoplay loop muted playsinline class="w-full h-auto rounded-3xl shadow-2xl overflow-hidden object-cover max-h-[500px]"></video>
 </div>
 </div>
 
@@ -148,10 +148,10 @@ Once the minute ended, the successfully attached marshmallows were counted. The 
 <p class="text-zinc-400 text-lg max-w-2xl">The original surprise array of competitive games that kicked off the Ghetto Olympics.</p>
 </div>
 <div class="md:col-span-12 columns-1 md:columns-2 lg:columns-4 gap-8 space-y-8">
-<img src="/assets/projects/ghetto-olympics/v2/Year1/Pose.JPG" class="w-full h-auto rounded-xl shadow-2xl border border-zinc-800 break-inside-avoid hover:scale-[1.02] transition-transform duration-500" />
-<img src="/assets/projects/ghetto-olympics/v2/Year1/Push.JPG" class="w-full h-auto rounded-xl shadow-2xl border border-zinc-800 break-inside-avoid hover:scale-[1.02] transition-transform duration-500" />
-<img src="/assets/projects/ghetto-olympics/v2/Year1/AfterPush.JPG" class="w-full h-auto rounded-xl shadow-2xl border border-zinc-800 break-inside-avoid hover:scale-[1.02] transition-transform duration-500" />
-<video src="/assets/projects/ghetto-olympics/v2/Year1/PlungerRace.mp4" autoplay loop muted playsinline class="w-full h-auto rounded-xl shadow-2xl border border-zinc-800 break-inside-avoid hover:scale-[1.02] transition-transform duration-500"></video>
+<img src="/assets/projects/ghetto-olympics/v2/Year1/Pose.JPG" class="w-full h-auto rounded-xl shadow-2xl overflow-hidden break-inside-avoid hover:scale-[1.02] transition-transform duration-500" />
+<img src="/assets/projects/ghetto-olympics/v2/Year1/Push.JPG" class="w-full h-auto rounded-xl shadow-2xl overflow-hidden break-inside-avoid hover:scale-[1.02] transition-transform duration-500" />
+<img src="/assets/projects/ghetto-olympics/v2/Year1/AfterPush.JPG" class="w-full h-auto rounded-xl shadow-2xl overflow-hidden break-inside-avoid hover:scale-[1.02] transition-transform duration-500" />
+<video src="/assets/projects/ghetto-olympics/v2/Year1/PlungerRace.mp4" autoplay loop muted playsinline class="w-full h-auto rounded-xl shadow-2xl overflow-hidden break-inside-avoid hover:scale-[1.02] transition-transform duration-500"></video>
 </div>
 </div>
 
@@ -163,11 +163,11 @@ Once the minute ended, the successfully attached marshmallows were counted. The 
 <div class="max-w-[90rem] mx-auto px-4 md:px-12">
 <h3 class="text-3xl font-bold text-white mb-12">Additional Media</h3>
 <div class="columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8">
-<img src="/assets/projects/ghetto-olympics/v2/Tower.jpg" class="w-full h-auto rounded-xl border border-zinc-800 shadow-xl break-inside-avoid hover:scale-[1.02] transition-transform duration-500" />
-<video src="/assets/projects/ghetto-olympics/v2/Reveal.mp4" autoplay loop muted playsinline class="w-full h-auto rounded-xl border border-zinc-800 shadow-xl break-inside-avoid hover:scale-[1.02] transition-transform duration-500"></video>
-<video src="/assets/projects/ghetto-olympics/v2/TotemThingy.mp4" autoplay loop muted playsinline class="w-full h-auto rounded-xl border border-zinc-800 shadow-xl break-inside-avoid hover:scale-[1.02] transition-transform duration-500"></video>
-<video src="/assets/projects/ghetto-olympics/v2/QuinnMohawk.mp4" autoplay loop muted playsinline class="w-full h-auto rounded-xl border border-zinc-800 shadow-xl break-inside-avoid hover:scale-[1.02] transition-transform duration-500"></video>
-<img src="/assets/projects/ghetto-olympics/v2/Squad.jpeg" class="w-full h-auto rounded-xl border border-zinc-800 shadow-xl break-inside-avoid hover:scale-[1.02] transition-transform duration-500" />
+<img src="/assets/projects/ghetto-olympics/v2/Tower.jpg" class="w-full h-auto rounded-xl overflow-hidden shadow-xl break-inside-avoid hover:scale-[1.02] transition-transform duration-500" />
+<video src="/assets/projects/ghetto-olympics/v2/Reveal.mp4" autoplay loop muted playsinline class="w-full h-auto rounded-xl overflow-hidden shadow-xl break-inside-avoid hover:scale-[1.02] transition-transform duration-500"></video>
+<video src="/assets/projects/ghetto-olympics/v2/TotemThingy.mp4" autoplay loop muted playsinline class="w-full h-auto rounded-xl overflow-hidden shadow-xl break-inside-avoid hover:scale-[1.02] transition-transform duration-500"></video>
+<video src="/assets/projects/ghetto-olympics/v2/QuinnMohawk.mp4" autoplay loop muted playsinline class="w-full h-auto rounded-xl overflow-hidden shadow-xl break-inside-avoid hover:scale-[1.02] transition-transform duration-500"></video>
+<img src="/assets/projects/ghetto-olympics/v2/Squad.jpeg" class="w-full h-auto rounded-xl overflow-hidden shadow-xl break-inside-avoid hover:scale-[1.02] transition-transform duration-500" />
 </div>
 </div>
 

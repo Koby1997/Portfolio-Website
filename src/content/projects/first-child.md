@@ -25,20 +25,20 @@ If there was one thing I always wanted more than anything in life, it was to be 
 <!-- Image Row 1: The Expectation -->
 <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center mb-12">
 <div class="md:col-span-6 flex justify-center">
-<img src="/assets/projects/first-child/Picnic.JPG" class="w-full h-auto rounded-2xl shadow-2xl border border-zinc-800 object-cover" />
+<img src="/assets/projects/first-child/Picnic.JPG" class="w-full h-auto rounded-2xl shadow-2xl overflow-hidden object-cover" />
 </div>
 <div class="md:col-span-6 flex justify-center">
-<img src="/assets/projects/first-child/Tree.JPG" class="w-full h-auto rounded-2xl shadow-2xl border border-zinc-800 object-cover" />
+<img src="/assets/projects/first-child/Tree.JPG" class="w-full h-auto rounded-2xl shadow-2xl overflow-hidden object-cover" />
 </div>
 </div>
 
 <!-- Image Row 2: The Reveal -->
 <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center mb-12">
 <div class="md:col-span-6 flex justify-center">
-<video src="/assets/projects/first-child/Reveal.mp4" autoplay loop muted playsinline class="lazy-media w-full aspect-[3/4] rounded-2xl shadow-2xl border border-zinc-800 object-cover"></video>
+<video src="/assets/projects/first-child/Reveal.mp4" autoplay loop muted playsinline class="lazy-media w-full aspect-[3/4] rounded-2xl shadow-2xl overflow-hidden object-cover"></video>
 </div>
 <div class="md:col-span-6 flex justify-center">
-<img src="/assets/projects/first-child/Girl.jpg" class="w-full aspect-[3/4] rounded-2xl shadow-2xl border border-zinc-800 object-cover" />
+<img src="/assets/projects/first-child/Girl.jpg" class="w-full aspect-[3/4] rounded-2xl shadow-2xl overflow-hidden object-cover" />
 </div>
 </div>
 

@@ -53,15 +53,15 @@ From previous years, I knew that level powerful shots were easier than lobbed sh
 </div>
 </div>
 <div class="md:col-span-6 flex flex-col justify-center gap-4 h-full">
-<img src="/assets/projects/ghetto-olympics/v5/Slingshot.jpg" class="w-full h-auto max-h-[400px] rounded-3xl shadow-2xl border border-zinc-800 object-cover" />
-<video src="/assets/projects/ghetto-olympics/v5/TargetHit.mp4" autoplay loop muted playsinline class="w-full h-auto max-h-[400px] rounded-3xl shadow-2xl border border-zinc-800 object-cover"></video>
+<img src="/assets/projects/ghetto-olympics/v5/Slingshot.jpg" class="w-full h-auto max-h-[400px] rounded-3xl shadow-2xl overflow-hidden object-cover" />
+<video src="/assets/projects/ghetto-olympics/v5/TargetHit.mp4" autoplay loop muted playsinline class="w-full h-auto max-h-[400px] rounded-3xl shadow-2xl overflow-hidden object-cover"></video>
 </div>
 </div>
 
 <!-- Narrative 2: Media Left, Text Right -->
 <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-start mb-32">
 <div class="md:col-span-6 flex justify-center items-start order-2 md:order-1 h-full">
-<video src="/assets/projects/ghetto-olympics/v5/CupGame.mp4" autoplay loop muted playsinline class="max-w-[400px] w-full h-auto rounded-3xl shadow-2xl border border-zinc-800 object-cover"></video>
+<video src="/assets/projects/ghetto-olympics/v5/CupGame.mp4" autoplay loop muted playsinline class="max-w-[400px] w-full h-auto rounded-3xl shadow-2xl overflow-hidden object-cover"></video>
 </div>
 <div class="md:col-span-6 flex flex-col gap-6 order-1 md:order-2 text-left">
 <div>
@@ -74,7 +74,7 @@ My favorite game from this year. Athletes are split into two teams and placed on
 This game was so exciting and came down to the last cup going back and forth for quite some time. It was also hilarious because whatever shots missed the cup most likely hit the opponents across from them. I gave everyone eye protection which was a great call because there were many orbeez flying around.
 </p>
 </div>
-<video src="/assets/projects/ghetto-olympics/v5/Orbeeztesting.mp4" autoplay loop muted playsinline class="w-full h-auto rounded-3xl shadow-2xl border border-zinc-800 object-cover max-h-[500px]"></video>
+<video src="/assets/projects/ghetto-olympics/v5/Orbeeztesting.mp4" autoplay loop muted playsinline class="w-full h-auto rounded-3xl shadow-2xl overflow-hidden object-cover max-h-[500px]"></video>
 </div>
 </div>
 
@@ -91,10 +91,10 @@ This game was built upon last year's favorite game 'Ball Pit Memory'. This time,
 Athletes could only meet and talk in the middle where they would place balls on a grid to ask me if they had found the correct symbols. This was a game of memory, but also communication. You had to make sure you were describing the symbols correctly or you could lose a lot of time. The fastest team won.
 </p>
 </div>
-<video src="/assets/projects/ghetto-olympics/v5/HeadDunk.mp4" autoplay loop muted playsinline class="w-full h-auto rounded-3xl shadow-2xl border border-zinc-800 object-cover max-h-[500px]"></video>
+<video src="/assets/projects/ghetto-olympics/v5/HeadDunk.mp4" autoplay loop muted playsinline class="w-full h-auto rounded-3xl shadow-2xl overflow-hidden object-cover max-h-[500px]"></video>
 </div>
 <div class="md:col-span-6 flex justify-center items-start h-full">
-<img src="/assets/projects/ghetto-olympics/v5/GridAandB.jpg" class="max-w-[400px] w-full h-auto rounded-3xl shadow-2xl border border-zinc-800 object-cover" />
+<img src="/assets/projects/ghetto-olympics/v5/GridAandB.jpg" class="max-w-[400px] w-full h-auto rounded-3xl shadow-2xl overflow-hidden object-cover" />
 </div>
 </div>
 
@@ -105,13 +105,13 @@ Athletes could only meet and talk in the middle where they would place balls on 
 <div class="max-w-[90rem] mx-auto px-4 md:px-12">
 <h3 class="text-3xl font-bold text-white mb-12">Additional Media</h3>
 <div class="columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8 max-w-6xl mx-auto">
-<img src="/assets/projects/ghetto-olympics/v5/DestinyHat.jpg" class="w-full h-auto rounded-xl border border-zinc-800 shadow-xl break-inside-avoid hover:scale-[1.02] transition-transform duration-500" />
-<img src="/assets/projects/ghetto-olympics/v5/Grid.jpg" class="w-full h-auto rounded-xl border border-zinc-800 shadow-xl break-inside-avoid hover:scale-[1.02] transition-transform duration-500" />
-<img src="/assets/projects/ghetto-olympics/v5/Group.jpg" class="w-full h-auto rounded-xl border border-zinc-800 shadow-xl break-inside-avoid hover:scale-[1.02] transition-transform duration-500" />
-<img src="/assets/projects/ghetto-olympics/v5/MollyHat.jpg" class="w-full h-auto rounded-xl border border-zinc-800 shadow-xl break-inside-avoid hover:scale-[1.02] transition-transform duration-500" />
-<img src="/assets/projects/ghetto-olympics/v5/Rings.jpg" class="w-full h-auto rounded-xl border border-zinc-800 shadow-xl break-inside-avoid hover:scale-[1.02] transition-transform duration-500" />
-<video src="/assets/projects/ghetto-olympics/v5/LukeShooting.mp4" autoplay loop muted playsinline class="w-full h-auto rounded-xl border border-zinc-800 shadow-xl break-inside-avoid hover:scale-[1.02] transition-transform duration-500"></video>
-<img src="/assets/projects/ghetto-olympics/v5/Winners.jpg" class="w-full h-auto rounded-xl border border-zinc-800 shadow-xl break-inside-avoid hover:scale-[1.02] transition-transform duration-500" />
+<img src="/assets/projects/ghetto-olympics/v5/DestinyHat.jpg" class="w-full h-auto rounded-xl overflow-hidden shadow-xl break-inside-avoid hover:scale-[1.02] transition-transform duration-500" />
+<img src="/assets/projects/ghetto-olympics/v5/Grid.jpg" class="w-full h-auto rounded-xl overflow-hidden shadow-xl break-inside-avoid hover:scale-[1.02] transition-transform duration-500" />
+<img src="/assets/projects/ghetto-olympics/v5/Group.jpg" class="w-full h-auto rounded-xl overflow-hidden shadow-xl break-inside-avoid hover:scale-[1.02] transition-transform duration-500" />
+<img src="/assets/projects/ghetto-olympics/v5/MollyHat.jpg" class="w-full h-auto rounded-xl overflow-hidden shadow-xl break-inside-avoid hover:scale-[1.02] transition-transform duration-500" />
+<img src="/assets/projects/ghetto-olympics/v5/Rings.jpg" class="w-full h-auto rounded-xl overflow-hidden shadow-xl break-inside-avoid hover:scale-[1.02] transition-transform duration-500" />
+<video src="/assets/projects/ghetto-olympics/v5/LukeShooting.mp4" autoplay loop muted playsinline class="w-full h-auto rounded-xl overflow-hidden shadow-xl break-inside-avoid hover:scale-[1.02] transition-transform duration-500"></video>
+<img src="/assets/projects/ghetto-olympics/v5/Winners.jpg" class="w-full h-auto rounded-xl overflow-hidden shadow-xl break-inside-avoid hover:scale-[1.02] transition-transform duration-500" />
 </div>
 </div>
 </div>

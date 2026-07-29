@@ -49,14 +49,14 @@ This was one of the first feelings of success. This was the foundation of the da
 </p>
 </div>
 <div class="md:col-span-6 flex justify-center">
-<img src="/assets/projects/stock-project/v1/Database.jpg" class="max-w-[560px] w-full h-auto rounded-2xl shadow-2xl border border-zinc-800 object-cover" />
+<img src="/assets/projects/stock-project/v1/Database.jpg" class="max-w-[560px] w-full h-auto rounded-2xl shadow-2xl overflow-hidden object-cover" />
 </div>
 </div>
 
 <!-- Narrative 2: Media Left, Text Right -->
 <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center mb-32">
 <div class="md:col-span-6 order-2 md:order-1 flex justify-center">
-<img src="/assets/projects/stock-project/v1/Analysis.jpg" class="max-w-[560px] w-full h-auto rounded-2xl shadow-2xl border border-zinc-800 object-cover" />
+<img src="/assets/projects/stock-project/v1/Analysis.jpg" class="max-w-[560px] w-full h-auto rounded-2xl shadow-2xl overflow-hidden object-cover" />
 </div>
 <div class="md:col-span-6 flex flex-col gap-6 order-1 md:order-2 text-left">
 <div class="w-16 h-1 bg-emerald-500"></div>
@@ -75,10 +75,10 @@ Doing hundreds of thousands of calculations per stock (if not, millions) did cau
 <p class="text-zinc-400 text-lg leading-relaxed">
 After navigating through MongoDB Compass over and over, I felt like it would be great to easily see the data in a more readable format. I built a simple frontend which helped a ton when it came to analyzing the data and fine-tuning my algorithm. 
 </p>
-<img src="/assets/projects/stock-project/v1/StockChartOG.jpg" class="w-full h-auto rounded-2xl shadow-2xl border border-zinc-800 object-cover mt-4" />
+<img src="/assets/projects/stock-project/v1/StockChartOG.jpg" class="w-full h-auto rounded-2xl shadow-2xl overflow-hidden object-cover mt-4" />
 </div>
 <div class="md:col-span-6 flex justify-center">
-<img src="/assets/projects/stock-project/v1/FrontEnd.jpg" class="max-w-[560px] w-full h-auto rounded-2xl shadow-2xl border border-zinc-800 object-cover" />
+<img src="/assets/projects/stock-project/v1/FrontEnd.jpg" class="max-w-[560px] w-full h-auto rounded-2xl shadow-2xl overflow-hidden object-cover" />
 </div>
 </div>
 

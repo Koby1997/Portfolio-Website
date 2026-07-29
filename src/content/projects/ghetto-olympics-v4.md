@@ -50,14 +50,14 @@ The game is simple. Teams of two. One person starts with a softball, they are bl
 </div>
 </div>
 <div class="md:col-span-6 flex justify-center h-full">
-<video src="/assets/projects/ghetto-olympics/v4/Blindfolded.mp4" autoplay loop muted playsinline class="w-full h-auto max-h-[600px] rounded-3xl shadow-2xl border border-zinc-800 object-cover"></video>
+<video src="/assets/projects/ghetto-olympics/v4/Blindfolded.mp4" autoplay loop muted playsinline class="w-full h-auto max-h-[600px] rounded-3xl shadow-2xl overflow-hidden object-cover"></video>
 </div>
 </div>
 
 <!-- Narrative 2: Media Left, Text Right -->
 <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center mb-32">
 <div class="md:col-span-6 flex flex-col justify-center gap-4 order-2 md:order-1 h-full">
-<img src="/assets/projects/ghetto-olympics/v4/Slingshot.jpeg" class="w-full h-auto max-h-[600px] rounded-2xl shadow-2xl border border-zinc-800 object-cover" />
+<img src="/assets/projects/ghetto-olympics/v4/Slingshot.jpeg" class="w-full h-auto max-h-[600px] rounded-2xl shadow-2xl overflow-hidden object-cover" />
 </div>
 <div class="md:col-span-6 flex flex-col gap-6 order-1 md:order-2 text-left">
 <div class="w-16 h-1 bg-cyan-500"></div>
@@ -88,16 +88,16 @@ When they were done I would mark the time, and check their sorting. Any incorrec
 </div>
 </div>
 <div class="md:col-span-6 grid grid-cols-2 gap-4">
-<img src="/assets/projects/ghetto-olympics/v4/QuinnFunny.jpg" class="w-full h-[500px] rounded-2xl shadow-2xl border border-zinc-800 object-cover" />
-<video src="/assets/projects/ghetto-olympics/v4/DinoBuckets.mp4" autoplay loop muted playsinline class="w-full h-[500px] rounded-2xl shadow-2xl border border-zinc-800 object-cover"></video>
+<img src="/assets/projects/ghetto-olympics/v4/QuinnFunny.jpg" class="w-full h-[500px] rounded-2xl shadow-2xl overflow-hidden object-cover" />
+<video src="/assets/projects/ghetto-olympics/v4/DinoBuckets.mp4" autoplay loop muted playsinline class="w-full h-[500px] rounded-2xl shadow-2xl overflow-hidden object-cover"></video>
 </div>
 </div>
 
 <!-- Narrative 4: Media Left, Text Right -->
 <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center mb-32">
 <div class="md:col-span-6 grid grid-cols-2 gap-4 order-2 md:order-1 h-full">
-<img src="/assets/projects/ghetto-olympics/v4/Grid.jpg" class="w-full h-[500px] rounded-2xl shadow-2xl border border-zinc-800 object-cover" />
-<video src="/assets/projects/ghetto-olympics/v4/BallPittMemory.mp4" autoplay loop muted playsinline class="w-full h-[500px] rounded-2xl shadow-2xl border border-zinc-800 object-cover"></video>
+<img src="/assets/projects/ghetto-olympics/v4/Grid.jpg" class="w-full h-[500px] rounded-2xl shadow-2xl overflow-hidden object-cover" />
+<video src="/assets/projects/ghetto-olympics/v4/BallPittMemory.mp4" autoplay loop muted playsinline class="w-full h-[500px] rounded-2xl shadow-2xl overflow-hidden object-cover"></video>
 </div>
 <div class="md:col-span-6 flex flex-col gap-8 order-1 md:order-2 text-left">
 <div>
@@ -120,9 +120,9 @@ At the other end of the field was a 4x4 grid of holes (the wind would knock the 
 <div class="max-w-[90rem] mx-auto px-4 md:px-12">
 <h3 class="text-3xl font-bold text-white mb-12">Additional Media</h3>
 <div class="columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8 max-w-6xl mx-auto">
-<img src="/assets/projects/ghetto-olympics/v4/GoofyEyes.jpeg" class="w-full h-auto rounded-xl border border-zinc-800 shadow-xl break-inside-avoid hover:scale-[1.02] transition-transform duration-500" />
-<img src="/assets/projects/ghetto-olympics/v4/Winners.jpeg" class="w-full h-auto rounded-xl border border-zinc-800 shadow-xl break-inside-avoid hover:scale-[1.02] transition-transform duration-500" />
-<img src="/assets/projects/ghetto-olympics/v4/HeadDunk.jpg" class="w-full h-auto rounded-xl border border-zinc-800 shadow-xl break-inside-avoid hover:scale-[1.02] transition-transform duration-500" />
+<img src="/assets/projects/ghetto-olympics/v4/GoofyEyes.jpeg" class="w-full h-auto rounded-xl overflow-hidden shadow-xl break-inside-avoid hover:scale-[1.02] transition-transform duration-500" />
+<img src="/assets/projects/ghetto-olympics/v4/Winners.jpeg" class="w-full h-auto rounded-xl overflow-hidden shadow-xl break-inside-avoid hover:scale-[1.02] transition-transform duration-500" />
+<img src="/assets/projects/ghetto-olympics/v4/HeadDunk.jpg" class="w-full h-auto rounded-xl overflow-hidden shadow-xl break-inside-avoid hover:scale-[1.02] transition-transform duration-500" />
 </div>
 
 <!-- SNEAK PEEK CTA -->

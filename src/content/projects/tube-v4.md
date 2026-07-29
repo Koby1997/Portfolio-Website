@@ -41,7 +41,7 @@ Knowing fully well that I had to up my game this year, I decided that I don't wa
 <!-- Narrative 1: Media Left, Text Right -->
 <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center mb-32">
 <div class="md:col-span-6 order-2 md:order-1 flex justify-center">
-<img src="/assets/projects/tube/v4/BuildingFrame.jpg" class="max-w-[560px] w-full h-auto rounded-2xl shadow-2xl border border-zinc-800 object-cover" />
+<img src="/assets/projects/tube/v4/BuildingFrame.jpg" class="max-w-[560px] w-full h-auto rounded-2xl shadow-2xl overflow-hidden object-cover" />
 </div>
 <div class="md:col-span-6 flex flex-col gap-6 order-1 md:order-2 text-left">
 <div class="w-16 h-1 bg-cyan-500"></div>
@@ -63,14 +63,14 @@ This year I only slightly broke that rule and tested the motors in my bathtub. I
 </p>
 </div>
 <div class="md:col-span-6 flex justify-center">
-<img src="/assets/projects/tube/v4/BathtubTesting.jpg" class="max-w-[560px] w-full h-auto rounded-2xl shadow-2xl border border-zinc-800 object-cover" />
+<img src="/assets/projects/tube/v4/BathtubTesting.jpg" class="max-w-[560px] w-full h-auto rounded-2xl shadow-2xl overflow-hidden object-cover" />
 </div>
 </div>
 
 <!-- Narrative 3: Media Left, Text Right -->
 <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center mb-32">
 <div class="md:col-span-6 order-2 md:order-1 flex justify-center">
-<img src="/assets/projects/tube/v4/InGarage.jpg" class="max-w-[560px] w-full h-auto rounded-2xl shadow-2xl border border-zinc-800 object-cover" />
+<img src="/assets/projects/tube/v4/InGarage.jpg" class="max-w-[560px] w-full h-auto rounded-2xl shadow-2xl overflow-hidden object-cover" />
 </div>
 <div class="md:col-span-6 flex flex-col gap-6 order-1 md:order-2 text-left">
 <div class="w-16 h-1 bg-emerald-500"></div>
@@ -93,12 +93,7 @@ The motors worked just enough to actually push the tube which was perfect. I was
 </p>
 </div>
 <div class="md:col-span-6 flex justify-center">
-<div class="overflow-hidden rounded-2xl shadow-2xl border border-dashed border-zinc-700 aspect-[5/4] w-full max-w-[560px] flex flex-col items-center justify-center bg-zinc-900/40 text-zinc-500 gap-3">
-<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
-  <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375 0 11-.75 0 .375 0 01.75 0z" />
-</svg>
-<span class="text-xs font-mono tracking-widest uppercase text-zinc-600">Media Placeholder</span>
-</div>
+<img src="/assets/projects/tube/v4/RealisticRender.jpg" class="max-w-[560px] w-full h-auto rounded-2xl shadow-2xl overflow-hidden object-cover" />
 </div>
 </div>
 
@@ -109,10 +104,10 @@ The motors worked just enough to actually push the tube which was perfect. I was
 <div class="max-w-[90rem] mx-auto px-4 md:px-12">
 <h3 class="text-3xl font-bold text-white mb-12">Additional Media</h3>
 <div class="columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8">
-<video src="/assets/projects/tube/v4/BatteryTest.mp4" autoplay loop muted playsinline class="w-full h-auto rounded-xl border border-zinc-800 shadow-xl break-inside-avoid hover:scale-[1.02] transition-transform duration-500"></video>
-<img src="/assets/projects/tube/v4/CircuitMap.jpg" class="w-full h-auto rounded-xl border border-zinc-800 shadow-xl break-inside-avoid hover:scale-[1.02] transition-transform duration-500" />
-<video src="/assets/projects/tube/v4/PartsTest.mp4" autoplay loop muted playsinline class="w-full h-auto rounded-xl border border-zinc-800 shadow-xl break-inside-avoid hover:scale-[1.02] transition-transform duration-500"></video>
-<video src="/assets/projects/tube/v4/FullOverview.mp4" autoplay loop muted playsinline class="w-full h-auto rounded-xl border border-zinc-800 shadow-xl break-inside-avoid hover:scale-[1.02] transition-transform duration-500"></video>
+<video src="/assets/projects/tube/v4/BatteryTest.mp4" autoplay loop muted playsinline class="w-full h-auto rounded-xl overflow-hidden shadow-xl break-inside-avoid hover:scale-[1.02] transition-transform duration-500"></video>
+<img src="/assets/projects/tube/v4/CircuitMap.jpg" class="w-full h-auto rounded-xl overflow-hidden shadow-xl break-inside-avoid hover:scale-[1.02] transition-transform duration-500" />
+<video src="/assets/projects/tube/v4/PartsTest.mp4" autoplay loop muted playsinline class="w-full h-auto rounded-xl overflow-hidden shadow-xl break-inside-avoid hover:scale-[1.02] transition-transform duration-500"></video>
+<video src="/assets/projects/tube/v4/FullOverview.mp4" autoplay loop muted playsinline class="w-full h-auto rounded-xl overflow-hidden shadow-xl break-inside-avoid hover:scale-[1.02] transition-transform duration-500"></video>
 </div>
 </div>
 </div>

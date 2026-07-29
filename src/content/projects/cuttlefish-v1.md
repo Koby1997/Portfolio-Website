@@ -47,14 +47,14 @@ This is literally a video of me at 3 am the last day getting the lights to fully
 </p>
 </div>
 <div class="md:col-span-7">
-<video src="/assets/projects/cuttlefish/v1/FirstTimeWorking.mp4" autoplay loop muted playsinline class="w-full h-auto rounded-2xl shadow-2xl border border-zinc-800"></video>
+<video src="/assets/projects/cuttlefish/v1/FirstTimeWorking.mp4" autoplay loop muted playsinline class="w-full h-auto rounded-2xl shadow-2xl overflow-hidden "></video>
 </div>
 </div>
 
 <!-- Narrative 2: Media Left, Text Right -->
 <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center mb-32">
 <div class="md:col-span-7 order-2 md:order-1">
-<img src="/assets/projects/cuttlefish/v1/LiveDemo.jpg" class="w-full h-auto rounded-2xl shadow-2xl border border-zinc-800" />
+<img src="/assets/projects/cuttlefish/v1/LiveDemo.jpg" class="w-full h-auto rounded-2xl shadow-2xl overflow-hidden " />
 </div>
 <div class="md:col-span-5 flex flex-col gap-6 order-1 md:order-2 text-left md:text-right md:items-end">
 <div class="w-16 h-1 bg-orange-500"></div>
@@ -75,7 +75,7 @@ Multiple "Behaviors" were made for the lights. Half had to do with music reactiv
 </p>
 </div>
 <div class="md:col-span-7">
-<video src="/assets/projects/cuttlefish/v1/SlowTransition.mp4" autoplay loop muted playsinline class="w-full h-auto rounded-2xl shadow-2xl border border-zinc-800"></video>
+<video src="/assets/projects/cuttlefish/v1/SlowTransition.mp4" autoplay loop muted playsinline class="w-full h-auto rounded-2xl shadow-2xl overflow-hidden "></video>
 </div>
 </div>
 
@@ -86,9 +86,9 @@ Multiple "Behaviors" were made for the lights. Half had to do with music reactiv
 <div class="max-w-[90rem] mx-auto px-4 md:px-12">
 <h3 class="text-3xl font-bold text-white mb-12">Additional Media</h3>
 <div class="columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8">
-<video src="/assets/projects/cuttlefish/v1/Cuttlefishv1hero.mp4" autoplay loop muted playsinline class="w-full h-auto rounded-xl border border-zinc-800 shadow-xl break-inside-avoid hover:scale-[1.02] transition-transform duration-500"></video>
-<video src="/assets/projects/cuttlefish/v1/HangingInApartment.mp4" autoplay loop muted playsinline class="w-full h-auto rounded-xl border border-zinc-800 shadow-xl break-inside-avoid hover:scale-[1.02] transition-transform duration-500"></video>
-<img src="/assets/projects/cuttlefish/v1/Judging.jpg" class="w-full h-auto rounded-xl border border-zinc-800 shadow-xl break-inside-avoid hover:scale-[1.02] transition-transform duration-500" />
+<video src="/assets/projects/cuttlefish/v1/Cuttlefishv1hero.mp4" autoplay loop muted playsinline class="w-full h-auto rounded-xl shadow-xl overflow-hidden break-inside-avoid hover:scale-[1.02] transition-transform duration-500"></video>
+<video src="/assets/projects/cuttlefish/v1/HangingInApartment.mp4" autoplay loop muted playsinline class="w-full h-auto rounded-xl shadow-xl overflow-hidden break-inside-avoid hover:scale-[1.02] transition-transform duration-500"></video>
+<img src="/assets/projects/cuttlefish/v1/Judging.jpg" class="w-full h-auto rounded-xl shadow-xl overflow-hidden break-inside-avoid hover:scale-[1.02] transition-transform duration-500" />
 </div>
 </div>
 

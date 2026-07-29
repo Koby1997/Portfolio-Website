@@ -34,14 +34,14 @@ Gaining a worldly mindset by meeting so many different people from different cul
 </p>
 </div>
 <div class="md:col-span-7">
-<img src="/assets/projects/france-study-abroad/Group.JPG" class="w-full h-auto rounded-2xl shadow-2xl border border-zinc-800" />
+<img src="/assets/projects/france-study-abroad/Group.JPG" class="w-full h-auto rounded-2xl shadow-2xl overflow-hidden " />
 </div>
 </div>
 
 <!-- Narrative 2: Media Left, Text Right -->
 <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center mb-32">
 <div class="md:col-span-7 order-2 md:order-1">
-<img src="/assets/projects/france-study-abroad/Zugspitze.jpg" class="w-full h-auto rounded-2xl shadow-2xl border border-zinc-800" />
+<img src="/assets/projects/france-study-abroad/Zugspitze.jpg" class="w-full h-auto rounded-2xl shadow-2xl overflow-hidden " />
 </div>
 <div class="md:col-span-5 flex flex-col gap-6 order-1 md:order-2 text-left">
 <div class="w-16 h-1 bg-purple-500"></div>
@@ -62,7 +62,7 @@ It was a crazy coincidence that my sister was sent to France for work, and I was
 </p>
 </div>
 <div class="md:col-span-7">
-<img src="/assets/projects/france-study-abroad/Carcassonne.JPG" class="w-full h-auto rounded-2xl shadow-2xl border border-zinc-800" />
+<img src="/assets/projects/france-study-abroad/Carcassonne.JPG" class="w-full h-auto rounded-2xl shadow-2xl overflow-hidden " />
 </div>
 </div>
 
@@ -73,9 +73,9 @@ It was a crazy coincidence that my sister was sent to France for work, and I was
 <div class="max-w-[90rem] mx-auto px-4 md:px-12">
 <h3 class="text-3xl font-bold text-white mb-12">Additional Media</h3>
 <div class="columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8">
-<img src="/assets/projects/france-study-abroad/EiffelTower.JPG" class="w-full h-auto rounded-xl border border-zinc-800 shadow-xl break-inside-avoid hover:scale-[1.02] transition-transform duration-500" />
-<img src="/assets/projects/france-study-abroad/NICE.JPG" class="w-full h-auto rounded-xl border border-zinc-800 shadow-xl break-inside-avoid hover:scale-[1.02] transition-transform duration-500" />
-<video src="/assets/projects/france-study-abroad/Colosseum.mp4" autoplay loop muted playsinline class="w-full h-auto rounded-xl border border-zinc-800 shadow-xl break-inside-avoid hover:scale-[1.02] transition-transform duration-500"></video>
+<img src="/assets/projects/france-study-abroad/EiffelTower.JPG" class="w-full h-auto rounded-xl overflow-hidden shadow-xl break-inside-avoid hover:scale-[1.02] transition-transform duration-500" />
+<img src="/assets/projects/france-study-abroad/NICE.JPG" class="w-full h-auto rounded-xl overflow-hidden shadow-xl break-inside-avoid hover:scale-[1.02] transition-transform duration-500" />
+<video src="/assets/projects/france-study-abroad/Colosseum.mp4" autoplay loop muted playsinline class="w-full h-auto rounded-xl overflow-hidden shadow-xl break-inside-avoid hover:scale-[1.02] transition-transform duration-500"></video>
 </div>
 </div>
 </div>

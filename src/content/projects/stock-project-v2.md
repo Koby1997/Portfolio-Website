@@ -73,14 +73,14 @@ That is just the home. There are also two new pages. One that simply ranks the s
 </p>
 </div>
 <div class="md:col-span-6 flex justify-center">
-<img src="/assets/projects/stock-project/v2/HeatMap.jpg" class="w-full h-auto rounded-2xl shadow-2xl border border-zinc-800 object-cover" />
+<img src="/assets/projects/stock-project/v2/HeatMap.jpg" class="w-full h-auto rounded-2xl shadow-2xl overflow-hidden object-cover" />
 </div>
 </div>
 
 <!-- Narrative 2: Media Left (Massive), Text Right (Squished) -->
 <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center mb-32">
 <div class="md:col-span-8 order-2 md:order-1 flex justify-start w-full">
-<img src="/assets/projects/stock-project/v2/TradeOptimizer.jpg" class="w-full h-auto rounded-2xl shadow-2xl border border-zinc-800 object-cover" />
+<img src="/assets/projects/stock-project/v2/TradeOptimizer.jpg" class="w-full h-auto rounded-2xl shadow-2xl overflow-hidden object-cover" />
 </div>
 <div class="md:col-span-4 flex flex-col gap-6 order-1 md:order-2 text-left">
 <div class="w-16 h-1 bg-emerald-500"></div>
@@ -98,8 +98,8 @@ All of the data analysis wouldn't mean much if it didn't culminate to something.
 <div class="max-w-[90rem] mx-auto px-4 md:px-12">
 <h3 class="text-3xl font-bold text-white mb-12">Additional Media</h3>
 <div class="columns-1 md:columns-2 gap-8 space-y-8">
-<video src="/assets/projects/stock-project/v2/ShortDemoForHero.mp4" autoplay loop muted playsinline class="w-full h-auto rounded-xl border border-zinc-800 shadow-xl break-inside-avoid hover:scale-[1.02] transition-transform duration-500"></video>
-<img src="/assets/projects/stock-project/v2/TopStocks.jpg" class="w-full h-auto rounded-xl border border-zinc-800 shadow-xl break-inside-avoid hover:scale-[1.02] transition-transform duration-500" />
+<video src="/assets/projects/stock-project/v2/ShortDemoForHero.mp4" autoplay loop muted playsinline class="w-full h-auto rounded-xl overflow-hidden shadow-xl break-inside-avoid hover:scale-[1.02] transition-transform duration-500"></video>
+<img src="/assets/projects/stock-project/v2/TopStocks.jpg" class="w-full h-auto rounded-xl overflow-hidden shadow-xl break-inside-avoid hover:scale-[1.02] transition-transform duration-500" />
 </div>
 </div>
 </div>

@@ -73,14 +73,14 @@ This app now changes behaviors and settings live without the need to change code
 </p>
 </div>
 <div class="md:col-span-6 flex justify-center">
-<img src="/assets/projects/cuttlefish/v3/CuttlefishCTRL.jpg" class="max-w-[560px] w-full h-auto rounded-2xl shadow-2xl border border-zinc-800 object-cover" />
+<img src="/assets/projects/cuttlefish/v3/CuttlefishCTRL.jpg" class="max-w-[560px] w-full h-auto rounded-2xl shadow-2xl overflow-hidden object-cover" />
 </div>
 </div>
 
 <!-- Narrative 2: Media Left, Text Right -->
 <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center mb-32">
 <div class="md:col-span-6 order-2 md:order-1 flex justify-center">
-<video src="/assets/projects/cuttlefish/v3/CoolView.mp4" autoplay loop muted playsinline class="max-w-[560px] w-full h-auto rounded-2xl shadow-2xl border border-zinc-800"></video>
+<video src="/assets/projects/cuttlefish/v3/CoolView.mp4" autoplay loop muted playsinline class="max-w-[560px] w-full h-auto rounded-2xl shadow-2xl overflow-hidden "></video>
 </div>
 <div class="md:col-span-6 flex flex-col gap-6 order-1 md:order-2">
 <div class="w-16 h-1 bg-blue-500"></div>

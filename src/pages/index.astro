@@ -928,7 +928,12 @@ const getColorConfig = (category) => {
                 if (window.innerWidth >= 768 && !evt.shiftKey) {
                     evt.preventDefault();
                     const maxScroll = scrollContainer.scrollWidth - scrollContainer.clientWidth;
-                    targetScroll += evt.deltaY * 1.5;
+                    
+                    // Aggregate both vertical and horizontal scroll vectors
+                    // This allows native laptop trackpad horizontal swiping along with standard mouse-wheels!
+                    const combinedDelta = evt.deltaY + evt.deltaX;
+                    targetScroll += combinedDelta * 1.5;
+                    
                     targetScroll = Math.max(0, Math.min(targetScroll, maxScroll));
                     
                     if (!isAnimating) {

@@ -24,50 +24,50 @@ No real need for an overview here. Just enjoy some photos from the big day!
 <!-- Image Row 1 -->
 <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center mb-12">
 <div class="md:col-span-6 flex justify-center">
-<img src="/assets/projects/wedding/FirstTouch.JPG" class="w-full h-auto rounded-2xl shadow-2xl border border-zinc-800 object-cover" />
+<img src="/assets/projects/wedding/FirstTouch.JPG" class="w-full h-auto rounded-2xl shadow-2xl overflow-hidden object-cover" />
 </div>
 <div class="md:col-span-6 flex justify-center">
-<img src="/assets/projects/wedding/Kiss.JPG" class="w-full h-auto rounded-2xl shadow-2xl border border-zinc-800 object-cover" />
+<img src="/assets/projects/wedding/Kiss.JPG" class="w-full h-auto rounded-2xl shadow-2xl overflow-hidden object-cover" />
 </div>
 </div>
 
 <!-- Image Row 2 -->
 <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center mb-12">
 <div class="md:col-span-6 flex justify-center">
-<img src="/assets/projects/wedding/Dip.JPG" class="w-full h-auto rounded-2xl shadow-2xl border border-zinc-800 object-cover" />
+<img src="/assets/projects/wedding/Dip.JPG" class="w-full h-auto rounded-2xl shadow-2xl overflow-hidden object-cover" />
 </div>
 <div class="md:col-span-6 flex justify-center">
-<img src="/assets/projects/wedding/BlackAndWhite.JPG" class="w-full h-auto rounded-2xl shadow-2xl border border-zinc-800 object-cover" />
+<img src="/assets/projects/wedding/BlackAndWhite.JPG" class="w-full h-auto rounded-2xl shadow-2xl overflow-hidden object-cover" />
 </div>
 </div>
 
 <!-- Image Row 3 -->
 <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center mb-12">
 <div class="md:col-span-6 flex justify-center">
-<img src="/assets/projects/wedding/ColorWall.JPG" class="w-full h-auto rounded-2xl shadow-2xl border border-zinc-800 object-cover" />
+<img src="/assets/projects/wedding/ColorWall.JPG" class="w-full h-auto rounded-2xl shadow-2xl overflow-hidden object-cover" />
 </div>
 <div class="md:col-span-6 flex justify-center">
-<img src="/assets/projects/wedding/Us2Stare.JPG" class="w-full h-auto rounded-2xl shadow-2xl border border-zinc-800 object-cover" />
+<img src="/assets/projects/wedding/Us2Stare.JPG" class="w-full h-auto rounded-2xl shadow-2xl overflow-hidden object-cover" />
 </div>
 </div>
 
 <!-- Image Row 4 -->
 <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center mb-12">
 <div class="md:col-span-6 flex justify-center">
-<img src="/assets/projects/wedding/Groomsmen.JPG" class="w-full h-auto rounded-2xl shadow-2xl border border-zinc-800 object-cover" />
+<img src="/assets/projects/wedding/Groomsmen.JPG" class="w-full h-auto rounded-2xl shadow-2xl overflow-hidden object-cover" />
 </div>
 <div class="md:col-span-6 flex justify-center">
-<img src="/assets/projects/wedding/Miller Wedding -1231.JPG" class="w-full h-auto rounded-2xl shadow-2xl border border-zinc-800 object-cover" />
+<img src="/assets/projects/wedding/Miller Wedding -1231.JPG" class="w-full h-auto rounded-2xl shadow-2xl overflow-hidden object-cover" />
 </div>
 </div>
 
 <!-- Image Row 5 -->
 <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center mb-32">
 <div class="md:col-span-6 flex justify-center">
-<img src="/assets/projects/wedding/Us2ColorWall.JPG" class="w-full h-auto rounded-2xl shadow-2xl border border-zinc-800 object-cover" />
+<img src="/assets/projects/wedding/Us2ColorWall.JPG" class="w-full h-auto rounded-2xl shadow-2xl overflow-hidden object-cover" />
 </div>
 <div class="md:col-span-6 flex justify-center">
-<img src="/assets/projects/wedding/OverShoulder.JPG" class="w-full h-auto rounded-2xl shadow-2xl border border-zinc-800 object-cover" />
+<img src="/assets/projects/wedding/OverShoulder.JPG" class="w-full h-auto rounded-2xl shadow-2xl overflow-hidden object-cover" />
 </div>
 </div>
 

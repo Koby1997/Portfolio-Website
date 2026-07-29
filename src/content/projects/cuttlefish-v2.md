@@ -47,14 +47,14 @@ After trying different materials, I landed on white pool noodles as the best opt
 </p>
 </div>
 <div class="md:col-span-6 flex justify-center">
-<video src="/assets/projects/cuttlefish/v2/TestDiffusion.mp4" autoplay loop muted playsinline class="max-w-[480px] w-full h-auto rounded-2xl shadow-2xl border border-zinc-800"></video>
+<video src="/assets/projects/cuttlefish/v2/TestDiffusion.mp4" autoplay loop muted playsinline class="max-w-[480px] w-full h-auto rounded-2xl shadow-2xl overflow-hidden "></video>
 </div>
 </div>
 
 <!-- Narrative 2: Sticky Media Left, Nested Media + Text Right -->
 <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-start mb-32">
 <div class="md:col-span-6 flex justify-center items-start order-2 md:order-1">
-<video src="/assets/projects/cuttlefish/v2/Timelapse.mp4" autoplay loop muted playsinline class="max-w-[480px] w-full h-auto rounded-3xl shadow-2xl border border-zinc-800 sticky top-32"></video>
+<video src="/assets/projects/cuttlefish/v2/Timelapse.mp4" autoplay loop muted playsinline class="max-w-[480px] w-full h-auto rounded-3xl shadow-2xl overflow-hidden sticky top-32"></video>
 </div>
 <div class="md:col-span-6 flex flex-col gap-8 order-1 md:order-2 text-left">
 <div>
@@ -65,8 +65,8 @@ I had the bold idea of making a double helix and wanted to make it perfect. I tr
 </p>
 </div>
 <div class="grid grid-cols-2 gap-6">
-<img src="/assets/projects/cuttlefish/v2/GapProblem.jpg" class="w-full h-auto rounded-xl border border-zinc-800 shadow-xl object-cover" />
-<img src="/assets/projects/cuttlefish/v2/TestWire.jpg" class="w-full h-auto rounded-xl border border-zinc-800 shadow-xl object-cover" />
+<img src="/assets/projects/cuttlefish/v2/GapProblem.jpg" class="w-full h-auto rounded-xl overflow-hidden shadow-xl object-cover" />
+<img src="/assets/projects/cuttlefish/v2/TestWire.jpg" class="w-full h-auto rounded-xl overflow-hidden shadow-xl object-cover" />
 </div>
 </div>
 </div>
@@ -78,12 +78,12 @@ I had the bold idea of making a double helix and wanted to make it perfect. I tr
 <div class="max-w-[90rem] mx-auto px-4 md:px-12">
 <h3 class="text-3xl font-bold text-white mb-12">Additional Media</h3>
 <div class="columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8">
-<img src="/assets/projects/cuttlefish/v2/CoolAngle.jpg" class="w-full h-auto rounded-xl border border-zinc-800 shadow-xl break-inside-avoid hover:scale-[1.02] transition-transform duration-500" />
-<video src="/assets/projects/cuttlefish/v2/BassStartsNewColor.mp4" autoplay loop muted playsinline class="w-full h-auto rounded-xl border border-zinc-800 shadow-xl break-inside-avoid hover:scale-[1.02] transition-transform duration-500"></video>
-<img src="/assets/projects/cuttlefish/v2/DirectlyBehind.JPG" class="w-full h-auto rounded-xl border border-zinc-800 shadow-xl break-inside-avoid hover:scale-[1.02] transition-transform duration-500" />
-<video src="/assets/projects/cuttlefish/v2/7Colors.mp4" autoplay loop muted playsinline class="w-full h-auto rounded-xl border border-zinc-800 shadow-xl break-inside-avoid hover:scale-[1.02] transition-transform duration-500"></video>
-<img src="/assets/projects/cuttlefish/v2/DNA.jpg" class="w-full h-auto rounded-xl border border-zinc-800 shadow-xl break-inside-avoid hover:scale-[1.02] transition-transform duration-500" />
-<video src="/assets/projects/cuttlefish/v2/Rainbow.mp4" autoplay loop muted playsinline class="w-full h-auto rounded-xl border border-zinc-800 shadow-xl break-inside-avoid hover:scale-[1.02] transition-transform duration-500"></video>
+<img src="/assets/projects/cuttlefish/v2/CoolAngle.jpg" class="w-full h-auto rounded-xl overflow-hidden shadow-xl break-inside-avoid hover:scale-[1.02] transition-transform duration-500" />
+<video src="/assets/projects/cuttlefish/v2/BassStartsNewColor.mp4" autoplay loop muted playsinline class="w-full h-auto rounded-xl overflow-hidden shadow-xl break-inside-avoid hover:scale-[1.02] transition-transform duration-500"></video>
+<img src="/assets/projects/cuttlefish/v2/DirectlyBehind.JPG" class="w-full h-auto rounded-xl overflow-hidden shadow-xl break-inside-avoid hover:scale-[1.02] transition-transform duration-500" />
+<video src="/assets/projects/cuttlefish/v2/7Colors.mp4" autoplay loop muted playsinline class="w-full h-auto rounded-xl overflow-hidden shadow-xl break-inside-avoid hover:scale-[1.02] transition-transform duration-500"></video>
+<img src="/assets/projects/cuttlefish/v2/DNA.jpg" class="w-full h-auto rounded-xl overflow-hidden shadow-xl break-inside-avoid hover:scale-[1.02] transition-transform duration-500" />
+<video src="/assets/projects/cuttlefish/v2/Rainbow.mp4" autoplay loop muted playsinline class="w-full h-auto rounded-xl overflow-hidden shadow-xl break-inside-avoid hover:scale-[1.02] transition-transform duration-500"></video>
 </div>
 </div>
 

@@ -31,15 +31,15 @@ With some cardboard boxes, tape, and some paint, I was able to make an "M". Now 
 </p>
 </div>
 <div class="md:col-span-6 grid grid-cols-2 gap-4">
-<img src="/assets/projects/proposal/LayingOnTestM.jpg" class="w-full h-auto rounded-2xl shadow-2xl border border-zinc-800 object-cover" />
-<img src="/assets/projects/proposal/WhiteM.jpg" class="w-full h-auto rounded-2xl shadow-2xl border border-zinc-800 object-cover" />
+<img src="/assets/projects/proposal/LayingOnTestM.jpg" class="w-full h-auto rounded-2xl shadow-2xl overflow-hidden object-cover" />
+<img src="/assets/projects/proposal/WhiteM.jpg" class="w-full h-auto rounded-2xl shadow-2xl overflow-hidden object-cover" />
 </div>
 </div>
 
 <!-- Narrative 2: Media Left, Text Right -->
 <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-start mb-32">
 <div class="md:col-span-6 flex justify-center items-start order-2 md:order-1">
-<img src="/assets/projects/proposal/MountainTopDateSetup.JPG" class="w-full max-h-[650px] rounded-3xl shadow-2xl border border-zinc-800 object-cover sticky top-32" />
+<img src="/assets/projects/proposal/MountainTopDateSetup.JPG" class="w-full max-h-[650px] rounded-3xl shadow-2xl overflow-hidden object-cover sticky top-32" />
 </div>
 <div class="md:col-span-6 flex flex-col gap-8 order-1 md:order-2 text-left">
 <div>
@@ -54,7 +54,7 @@ Funny enough, this wasn't the original spot. There was a larger open area that w
 This dinner was the first time I told her that I loved her and it became a special place for us.
 </p>
 </div>
-<img src="/assets/projects/proposal/MountainTopDate.jpg" class="w-full h-auto rounded-2xl shadow-2xl border border-zinc-800 object-cover max-h-[500px]" />
+<img src="/assets/projects/proposal/MountainTopDate.jpg" class="w-full h-auto rounded-2xl shadow-2xl overflow-hidden object-cover max-h-[500px]" />
 </div>
 </div>
 
@@ -70,14 +70,14 @@ For reference in the picture, the "M" is leaning against my Honda CRV which you 
 </p>
 </div>
 <div class="md:col-span-6 flex justify-center">
-<img src="/assets/projects/proposal/TestingM.jpg" class="w-full h-auto rounded-2xl shadow-2xl border border-zinc-800 object-cover object-top max-h-[500px]" />
+<img src="/assets/projects/proposal/TestingM.jpg" class="w-full h-auto rounded-2xl shadow-2xl overflow-hidden object-cover object-top max-h-[500px]" />
 </div>
 </div>
 
 <!-- Narrative 4: Media Left, Text Right -->
 <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-start mb-32">
 <div class="md:col-span-6 flex justify-center items-start order-2 md:order-1">
-<img src="/assets/projects/proposal/CardboardPile.jpg" class="w-full max-h-[650px] rounded-3xl shadow-2xl border border-zinc-800 object-cover sticky top-32" />
+<img src="/assets/projects/proposal/CardboardPile.jpg" class="w-full max-h-[650px] rounded-3xl shadow-2xl overflow-hidden object-cover sticky top-32" />
 </div>
 <div class="md:col-span-6 flex flex-col gap-8 order-1 md:order-2 text-left">
 <div>
@@ -92,7 +92,7 @@ I decided I would make frames for the letters out of wood and then cover them in
 For weeks I was able to find Facebook Marketplace posts of people getting rid of wood for free. My friend's work was also getting rid of a ton of cardboard boxes.
 </p>
 </div>
-<img src="/assets/projects/proposal/FreeWood.jpg" class="w-full h-auto rounded-2xl shadow-2xl border border-zinc-800 object-cover max-h-[500px]" />
+<img src="/assets/projects/proposal/FreeWood.jpg" class="w-full h-auto rounded-2xl shadow-2xl overflow-hidden object-cover max-h-[500px]" />
 </div>
 </div>
 
@@ -108,14 +108,14 @@ I planned out each letter in advance to make as many rectangular pieces as possi
 </p>
 </div>
 <div class="md:col-span-6 flex justify-center">
-<img src="/assets/projects/proposal/LettersBlueprint.jpg" class="w-full h-auto rounded-2xl shadow-2xl border border-zinc-800 object-cover max-h-[500px]" />
+<img src="/assets/projects/proposal/LettersBlueprint.jpg" class="w-full h-auto rounded-2xl shadow-2xl overflow-hidden object-cover max-h-[500px]" />
 </div>
 </div>
 
 <!-- Narrative 6: Media Left, Text Right -->
 <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center mb-32">
 <div class="md:col-span-6 order-2 md:order-1 flex justify-center">
-<img src="/assets/projects/proposal/Driveway.jpg" class="w-full h-auto rounded-2xl shadow-2xl border border-zinc-800 object-cover max-h-[500px]" />
+<img src="/assets/projects/proposal/Driveway.jpg" class="w-full h-auto rounded-2xl shadow-2xl overflow-hidden object-cover max-h-[500px]" />
 </div>
 <div class="md:col-span-6 flex flex-col gap-6 order-1 md:order-2 text-left">
 <div class="w-16 h-1 bg-cyan-500"></div>
@@ -143,15 +143,15 @@ A lot of the wood I got was large planks that needed to be cut down into smaller
 </p>
 </div>
 <div class="md:col-span-6 flex justify-center">
-<img src="/assets/projects/proposal/WoodA.jpg" class="w-full h-auto rounded-2xl shadow-2xl border border-zinc-800 object-cover max-h-[500px]" />
+<img src="/assets/projects/proposal/WoodA.jpg" class="w-full h-auto rounded-2xl shadow-2xl overflow-hidden object-cover max-h-[500px]" />
 </div>
 </div>
 
 <!-- Narrative 8: Media Left, Text Right -->
 <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center mb-32">
 <div class="md:col-span-6 order-2 md:order-1 grid grid-cols-2 gap-4">
-<img src="/assets/projects/proposal/HelpWithCardboard.jpg" class="w-full h-auto rounded-2xl shadow-2xl border border-zinc-800 object-cover" />
-<video src="/assets/projects/proposal/HelpPainting.mp4" autoplay loop muted playsinline class="w-full h-auto rounded-2xl shadow-2xl border border-zinc-800 object-cover"></video>
+<img src="/assets/projects/proposal/HelpWithCardboard.jpg" class="w-full h-auto rounded-2xl shadow-2xl overflow-hidden object-cover" />
+<video src="/assets/projects/proposal/HelpPainting.mp4" autoplay loop muted playsinline class="w-full h-auto rounded-2xl shadow-2xl overflow-hidden object-cover"></video>
 </div>
 <div class="md:col-span-6 flex flex-col gap-6 order-1 md:order-2 text-left">
 <div class="w-16 h-1 bg-cyan-500"></div>
@@ -179,17 +179,17 @@ One thing I haven't mentioned is that I would have to drive past the spot the le
 The plan would be to have my friends stand the letters up once our car was out of sight.
 </p>
 </div>
-<img src="/assets/projects/proposal/ANextToCar.jpg" class="w-full h-auto rounded-2xl shadow-2xl border border-zinc-800 object-cover max-h-[500px]" />
+<img src="/assets/projects/proposal/ANextToCar.jpg" class="w-full h-auto rounded-2xl shadow-2xl overflow-hidden object-cover max-h-[500px]" />
 </div>
 <div class="md:col-span-6 flex justify-center items-start">
-<video src="/assets/projects/proposal/TestingWoodLetters.mp4" autoplay loop muted playsinline class="max-w-[400px] w-full h-auto rounded-3xl shadow-2xl border border-zinc-800 object-cover sticky top-32"></video>
+<video src="/assets/projects/proposal/TestingWoodLetters.mp4" autoplay loop muted playsinline class="max-w-[400px] w-full h-auto rounded-3xl shadow-2xl overflow-hidden object-cover sticky top-32"></video>
 </div>
 </div>
 
 <!-- Narrative 10: Media Left, Text Right -->
 <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center mb-32">
 <div class="md:col-span-6 order-2 md:order-1 flex justify-center items-center">
-<video src="/assets/projects/proposal/Donewithbuidling.mp4" autoplay loop muted playsinline class="max-w-[400px] w-full h-auto rounded-3xl shadow-2xl border border-zinc-800 object-cover"></video>
+<video src="/assets/projects/proposal/Donewithbuidling.mp4" autoplay loop muted playsinline class="max-w-[400px] w-full h-auto rounded-3xl shadow-2xl overflow-hidden object-cover"></video>
 </div>
 <div class="md:col-span-6 flex flex-col gap-8 order-1 md:order-2 justify-center text-left">
 <div>
@@ -219,14 +219,14 @@ Erin knew Reba was coming which made it the perfect distraction for any out of t
 </p>
 </div>
 <div class="md:col-span-6 flex justify-center">
-<img src="/assets/projects/proposal/RebaWave.jpg" class="w-full h-auto rounded-2xl shadow-2xl border border-zinc-800 object-cover max-h-[500px]" />
+<img src="/assets/projects/proposal/RebaWave.jpg" class="w-full h-auto rounded-2xl shadow-2xl overflow-hidden object-cover max-h-[500px]" />
 </div>
 </div>
 
 <!-- Narrative 12: Media Left, Text Right -->
 <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-start mb-32">
 <div class="md:col-span-6 flex justify-center items-start order-2 md:order-1 h-full">
-<video src="/assets/projects/proposal/ErinNails.mp4" autoplay loop muted playsinline class="max-w-[400px] w-full h-auto rounded-3xl shadow-2xl border border-zinc-800 object-cover sticky top-32"></video>
+<video src="/assets/projects/proposal/ErinNails.mp4" autoplay loop muted playsinline class="max-w-[400px] w-full h-auto rounded-3xl shadow-2xl overflow-hidden object-cover sticky top-32"></video>
 </div>
 <div class="md:col-span-6 flex flex-col gap-8 order-1 md:order-2 text-left">
 <div>
@@ -247,7 +247,7 @@ Erin and I "had no plans" for while Reba was in town (Ha!) and said we would lea
 'You want to look nice for the photoshoot so you and her are going to get your nails done? Sounds good!'.
 </p>
 </div>
-<img src="/assets/projects/proposal/RebaRockClimbing.jpg" class="w-full h-auto rounded-2xl shadow-2xl border border-zinc-800 object-cover max-h-[500px]" />
+<img src="/assets/projects/proposal/RebaRockClimbing.jpg" class="w-full h-auto rounded-2xl shadow-2xl overflow-hidden object-cover max-h-[500px]" />
 </div>
 </div>
 
@@ -266,16 +266,16 @@ The plan was for the fake photoshoot to be where the letters were because that i
 </p>
 </div>
 <div class="md:col-span-6 grid grid-cols-2 gap-4">
-<img src="/assets/projects/proposal/AboutToBuild.jpg" class="w-full h-auto rounded-2xl shadow-2xl border border-zinc-800 object-cover" />
-<video src="/assets/projects/proposal/StandingLetterUp.MP4" autoplay loop muted playsinline class="w-full h-auto rounded-2xl shadow-2xl border border-zinc-800 object-cover"></video>
+<img src="/assets/projects/proposal/AboutToBuild.jpg" class="w-full h-auto rounded-2xl shadow-2xl overflow-hidden object-cover" />
+<video src="/assets/projects/proposal/StandingLetterUp.MP4" autoplay loop muted playsinline class="w-full h-auto rounded-2xl shadow-2xl overflow-hidden object-cover"></video>
 </div>
 </div>
 
 <!-- Narrative 14: Media Left, Text Right -->
 <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center mb-32">
 <div class="md:col-span-6 order-2 md:order-1 grid grid-cols-2 gap-4">
-<video src="/assets/projects/proposal/DoneWithSetup.mp4" autoplay loop muted playsinline class="w-full h-auto rounded-2xl shadow-2xl border border-zinc-800 object-cover"></video>
-<img src="/assets/projects/proposal/LettersLayingDown.jpg" class="w-full h-auto rounded-2xl shadow-2xl border border-zinc-800 object-cover" />
+<video src="/assets/projects/proposal/DoneWithSetup.mp4" autoplay loop muted playsinline class="w-full h-auto rounded-2xl shadow-2xl overflow-hidden object-cover"></video>
+<img src="/assets/projects/proposal/LettersLayingDown.jpg" class="w-full h-auto rounded-2xl shadow-2xl overflow-hidden object-cover" />
 </div>
 <div class="md:col-span-6 flex flex-col gap-6 order-1 md:order-2 text-left">
 <div class="w-16 h-1 bg-purple-500"></div>
@@ -303,14 +303,14 @@ All we need to do is make a planned excuse for Reba to get in a different car, f
 </p>
 </div>
 <div class="md:col-span-6 flex justify-center">
-<img src="/assets/projects/proposal/BalancingRock.JPG" class="w-full h-auto rounded-2xl shadow-2xl border border-zinc-800 object-cover max-h-[500px]" />
+<img src="/assets/projects/proposal/BalancingRock.JPG" class="w-full h-auto rounded-2xl shadow-2xl overflow-hidden object-cover max-h-[500px]" />
 </div>
 </div>
 
 <!-- Narrative 16: Media Left, Text Right -->
 <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-start mb-32">
 <div class="md:col-span-6 flex justify-center items-start order-2 md:order-1 h-full">
-<img src="/assets/projects/proposal/OnKnee.jpeg" class="max-w-[400px] w-full h-auto rounded-3xl shadow-2xl border border-zinc-800 object-cover sticky top-32" />
+<img src="/assets/projects/proposal/OnKnee.jpeg" class="max-w-[400px] w-full h-auto rounded-3xl shadow-2xl overflow-hidden object-cover sticky top-32" />
 </div>
 <div class="md:col-span-6 flex flex-col gap-8 order-1 md:order-2 text-left">
 <div>
@@ -319,7 +319,7 @@ All we need to do is make a planned excuse for Reba to get in a different car, f
 Everything went perfectly and she said yes! She absolutely didn't see it coming which was a huge win.
 </p>
 </div>
-<img src="/assets/projects/proposal/OnKneeFar.jpg" class="w-full h-auto rounded-2xl shadow-2xl border border-zinc-800 object-cover max-h-[500px]" />
+<img src="/assets/projects/proposal/OnKneeFar.jpg" class="w-full h-auto rounded-2xl shadow-2xl overflow-hidden object-cover max-h-[500px]" />
 </div>
 </div>
 
@@ -332,10 +332,10 @@ Everything went perfectly and she said yes! She absolutely didn't see it coming 
 After we had a moment, her parents came out of hiding (notice the dirt on her dads jacket in the video from laying down in the brush haha) and made the moment even more special for her.
 </p>
 </div>
-<img src="/assets/projects/proposal/Parents.jpg" class="w-full h-auto rounded-2xl shadow-2xl border border-zinc-800 object-cover max-h-[500px]" />
+<img src="/assets/projects/proposal/Parents.jpg" class="w-full h-auto rounded-2xl shadow-2xl overflow-hidden object-cover max-h-[500px]" />
 </div>
 <div class="md:col-span-6 flex justify-center items-start h-full">
-<video src="/assets/projects/proposal/ParentsSurprise.mp4" autoplay loop muted playsinline class="max-w-[400px] w-full h-auto rounded-3xl shadow-2xl border border-zinc-800 object-cover sticky top-32"></video>
+<video src="/assets/projects/proposal/ParentsSurprise.mp4" autoplay loop muted playsinline class="max-w-[400px] w-full h-auto rounded-3xl shadow-2xl overflow-hidden object-cover sticky top-32"></video>
 </div>
 </div>
 
@@ -346,12 +346,12 @@ After we had a moment, her parents came out of hiding (notice the dirt on her da
 <h3 class="text-3xl font-bold text-white mb-8">Afterwards, we joined our friends back at the letters to celebrate together!</h3>
 </div>
 <div class="md:col-span-12 columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8">
-<img src="/assets/projects/proposal/FullMarryMe.jpg" class="w-full h-auto rounded-xl shadow-2xl border border-zinc-800 break-inside-avoid hover:scale-[1.02] transition-transform duration-500" />
-<img src="/assets/projects/proposal/UsTwoAfter.jpg" class="w-full h-auto rounded-xl shadow-2xl border border-zinc-800 break-inside-avoid hover:scale-[1.02] transition-transform duration-500" />
-<img src="/assets/projects/proposal/WholeSquad.jpg" class="w-full h-auto rounded-xl shadow-2xl border border-zinc-800 break-inside-avoid hover:scale-[1.02] transition-transform duration-500" />
-<img src="/assets/projects/proposal/Hero2.jpg" class="w-full h-auto rounded-xl shadow-2xl border border-zinc-800 break-inside-avoid hover:scale-[1.02] transition-transform duration-500" />
-<img src="/assets/projects/proposal/AfterWithReba.jpg" class="w-full h-auto rounded-xl shadow-2xl border border-zinc-800 break-inside-avoid hover:scale-[1.02] transition-transform duration-500" />
-<img src="/assets/projects/proposal/LettersBright.jpeg" class="w-full h-auto rounded-xl shadow-2xl border border-zinc-800 break-inside-avoid hover:scale-[1.02] transition-transform duration-500" />
+<img src="/assets/projects/proposal/FullMarryMe.jpg" class="w-full h-auto rounded-xl shadow-2xl overflow-hidden break-inside-avoid hover:scale-[1.02] transition-transform duration-500" />
+<img src="/assets/projects/proposal/UsTwoAfter.jpg" class="w-full h-auto rounded-xl shadow-2xl overflow-hidden break-inside-avoid hover:scale-[1.02] transition-transform duration-500" />
+<img src="/assets/projects/proposal/WholeSquad.jpg" class="w-full h-auto rounded-xl shadow-2xl overflow-hidden break-inside-avoid hover:scale-[1.02] transition-transform duration-500" />
+<img src="/assets/projects/proposal/Hero2.jpg" class="w-full h-auto rounded-xl shadow-2xl overflow-hidden break-inside-avoid hover:scale-[1.02] transition-transform duration-500" />
+<img src="/assets/projects/proposal/AfterWithReba.jpg" class="w-full h-auto rounded-xl shadow-2xl overflow-hidden break-inside-avoid hover:scale-[1.02] transition-transform duration-500" />
+<img src="/assets/projects/proposal/LettersBright.jpeg" class="w-full h-auto rounded-xl shadow-2xl overflow-hidden break-inside-avoid hover:scale-[1.02] transition-transform duration-500" />
 </div>
 </div>
 

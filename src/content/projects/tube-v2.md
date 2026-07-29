@@ -47,14 +47,14 @@ One Home Depot trip later, I had all the pvc and connectors I needed
 </p>
 </div>
 <div class="md:col-span-6 flex justify-center">
-<img src="/assets/projects/tube/v2/Parts.jpg" class="max-w-[480px] w-full h-auto rounded-2xl shadow-2xl border border-zinc-800" />
+<img src="/assets/projects/tube/v2/Parts.jpg" class="max-w-[480px] w-full h-auto rounded-2xl shadow-2xl overflow-hidden " />
 </div>
 </div>
 
 <!-- Narrative 2: Media Left, Text Right -->
 <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center mb-32">
 <div class="md:col-span-6 order-2 md:order-1 flex justify-center">
-<img src="/assets/projects/tube/v2/LivingRoom.jpg" class="max-w-[480px] w-full h-auto rounded-2xl shadow-2xl border border-zinc-800" />
+<img src="/assets/projects/tube/v2/LivingRoom.jpg" class="max-w-[480px] w-full h-auto rounded-2xl shadow-2xl overflow-hidden " />
 </div>
 <div class="md:col-span-6 flex flex-col gap-6 order-1 md:order-2 text-left md:text-right md:items-end">
 <div class="w-16 h-1 bg-blue-500"></div>
@@ -75,7 +75,7 @@ Boom! Goal achieved of making my tube better than the previous year.
 </p>
 </div>
 <div class="md:col-span-6 flex justify-center">
-<video src="/assets/projects/tube/v2/Floating.MP4" autoplay loop muted playsinline class="max-w-[480px] w-full h-auto rounded-2xl shadow-2xl border border-zinc-800"></video>
+<video src="/assets/projects/tube/v2/Floating.MP4" autoplay loop muted playsinline class="max-w-[480px] w-full h-auto rounded-2xl shadow-2xl overflow-hidden "></video>
 </div>
 </div>
 
