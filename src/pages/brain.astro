@@ -35,7 +35,7 @@ import { ClientRouter } from "astro:transitions";
         <!-- Onboarding Controls Overlay -->
         <div
             id="onboarding-controls"
-            class="fixed top-12 left-1/2 -translate-x-1/2 pointer-events-none z-[60] transition-opacity duration-1000 opacity-0 hidden md:flex flex-col items-center"
+            class="fixed top-12 left-1/2 -translate-x-1/2 pointer-events-none z-[60] transition-opacity duration-1000 opacity-0 flex flex-col items-center"
         >
             <div
                 class="relative w-[300px] h-[60px] flex justify-center items-center"
@@ -46,7 +46,7 @@ import { ClientRouter } from "astro:transitions";
                     class="absolute flex items-center gap-4 text-white/80 drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)] transition-all duration-700 ease-in-out transform translate-y-4 opacity-100"
                 >
                     <svg
-                        class="w-6 h-6 text-white"
+                        class="w-6 h-6 text-white hidden md:block"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -55,11 +55,27 @@ import { ClientRouter } from "astro:transitions";
                             stroke-linejoin="round"
                             stroke-width="1.5"
                             d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"
-                        ></path></svg
+                        ></path>
+                    </svg>
+                    <svg
+                        class="w-6 h-6 text-white md:hidden block"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="1.5"
+                            d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                    </svg>
+                    <span
+                        class="text-lg md:text-xl font-light tracking-wide whitespace-nowrap hidden md:inline"
+                        >Click and Drag to rotate</span
                     >
                     <span
-                        class="text-xl font-light tracking-wide whitespace-nowrap"
-                        >Click and Drag to rotate</span
+                        class="text-lg md:text-xl font-light tracking-wide whitespace-nowrap inline md:hidden"
+                        >Swipe to rotate</span
                     >
                 </div>
 
@@ -69,7 +85,7 @@ import { ClientRouter } from "astro:transitions";
                     class="absolute flex items-center gap-4 text-white/80 drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)] transition-all duration-700 ease-in-out transform translate-y-4 opacity-0 pointer-events-none"
                 >
                     <svg
-                        class="w-6 h-6 text-white"
+                        class="w-6 h-6 text-white hidden md:block"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -77,11 +93,28 @@ import { ClientRouter } from "astro:transitions";
                             stroke-linecap="round"
                             stroke-linejoin="round"
                             stroke-width="1.5"
-                            d="M8 9l4-4 4 4m0 6l-4 4-4-4"></path></svg
+                            d="M8 9l4-4 4 4m0 6l-4 4-4-4"></path>
+                    </svg>
+                    <svg
+                        class="w-6 h-6 text-white md:hidden block"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="1.5"
+                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"
+                        ></path>
+                    </svg>
+                    <span
+                        class="text-lg md:text-xl font-light tracking-wide whitespace-nowrap hidden md:inline"
+                        >Scroll to zoom</span
                     >
                     <span
-                        class="text-xl font-light tracking-wide whitespace-nowrap"
-                        >Scroll to zoom</span
+                        class="text-lg md:text-xl font-light tracking-wide whitespace-nowrap inline md:hidden"
+                        >Pinch to zoom</span
                     >
                 </div>
 
@@ -91,14 +124,25 @@ import { ClientRouter } from "astro:transitions";
                     class="absolute flex items-center gap-4 text-white/80 drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)] transition-all duration-700 ease-in-out transform translate-y-4 opacity-0 pointer-events-none"
                 >
                     <svg
-                        class="w-6 h-6 text-white"
+                        class="w-6 h-6 text-white hidden md:block"
                         fill="currentColor"
                         viewBox="0 0 24 24"
-                        ><circle cx="12" cy="12" r="6"></circle></svg
+                        ><circle cx="12" cy="12" r="6"></circle>
+                    </svg>
+                    <svg
+                        class="w-6 h-6 text-white md:hidden block"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <circle cx="12" cy="12" r="6"></circle>
+                    </svg>
+                    <span
+                        class="text-lg md:text-xl font-light tracking-wide whitespace-nowrap hidden md:inline"
+                        >Click on nodes to focus</span
                     >
                     <span
-                        class="text-xl font-light tracking-wide whitespace-nowrap"
-                        >Click on nodes to focus</span
+                        class="text-lg md:text-xl font-light tracking-wide whitespace-nowrap inline md:hidden"
+                        >Tap nodes to focus</span
                     >
                 </div>
 
@@ -108,7 +152,7 @@ import { ClientRouter } from "astro:transitions";
                     class="absolute flex items-center gap-4 text-white/80 drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)] transition-all duration-700 ease-in-out transform translate-y-4 opacity-0 pointer-events-none"
                 >
                     <svg
-                        class="w-6 h-6 text-white"
+                        class="w-6 h-6 text-white hidden md:block"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -116,11 +160,27 @@ import { ClientRouter } from "astro:transitions";
                             stroke-linecap="round"
                             stroke-linejoin="round"
                             stroke-width="1.5"
-                            d="M6 18L18 6M6 6l12 12"></path></svg
+                            d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                    <svg
+                        class="w-6 h-6 text-white md:hidden block"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="1.5"
+                            d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                    <span
+                        class="text-lg md:text-xl font-light tracking-wide whitespace-nowrap hidden md:inline"
+                        >Click empty space to reset focus</span
                     >
                     <span
-                        class="text-xl font-light tracking-wide whitespace-nowrap"
-                        >Click empty space to reset focus</span
+                        class="text-lg md:text-xl font-light tracking-wide whitespace-nowrap inline md:hidden"
+                        >Tap empty space to reset focus</span
                     >
                 </div>
             </div>
@@ -189,7 +249,7 @@ import { ClientRouter } from "astro:transitions";
         <button
             id="focus-close-btn"
             style="opacity: 0; pointer-events: none;"
-            class="fixed top-8 right-8 z-50 flex items-center gap-2 px-5 py-2.5 bg-zinc-950/40 backdrop-blur-md border border-white/10 rounded-full text-white/70 hover:text-white hover:bg-zinc-900/60 hover:border-white/30 transition-all duration-300 shadow-xl shadow-black/20 group cursor-pointer"
+            class="fixed top-8 right-8 z-50 hidden md:flex items-center gap-2 px-5 py-2.5 bg-zinc-950/40 backdrop-blur-md border border-white/10 rounded-full text-white/70 hover:text-white hover:bg-zinc-900/60 hover:border-white/30 transition-all duration-300 shadow-xl shadow-black/20 group cursor-pointer"
             title="Reset Focus"
         >
             <span
