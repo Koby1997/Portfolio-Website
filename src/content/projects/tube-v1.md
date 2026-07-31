@@ -55,7 +55,7 @@ The morning of, I stopped by Home Depot to pick up a few things for an idea I ha
 <div class="md:col-span-6 order-2 md:order-1 flex justify-center">
 <video src="/assets/projects/tube/v1/On%20the%20Water.mp4" autoplay loop muted playsinline class="max-w-[360px] w-full h-auto rounded-2xl shadow-2xl overflow-hidden "></video>
 </div>
-<div class="md:col-span-6 flex flex-col gap-6 order-1 md:order-2 text-left md:text-right md:items-end">
+<div class="md:col-span-6 flex flex-col gap-6 order-1 md:order-2 text-left">
 <div class="w-16 h-1 bg-blue-500"></div>
 <h3 class="text-4xl font-bold text-white">Chillin on the water</h3>
 <p class="text-zinc-400 text-lg leading-relaxed">

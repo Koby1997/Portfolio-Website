@@ -56,7 +56,7 @@ One Home Depot trip later, I had all the pvc and connectors I needed
 <div class="md:col-span-6 order-2 md:order-1 flex justify-center">
 <img src="/assets/projects/tube/v2/LivingRoom.jpg" class="max-w-[480px] w-full h-auto rounded-2xl shadow-2xl overflow-hidden " />
 </div>
-<div class="md:col-span-6 flex flex-col gap-6 order-1 md:order-2 text-left md:text-right md:items-end">
+<div class="md:col-span-6 flex flex-col gap-6 order-1 md:order-2 text-left">
 <div class="w-16 h-1 bg-cyan-500"></div>
 <h3 class="text-4xl font-bold text-white">Living Room Build</h3>
 <p class="text-zinc-400 text-lg leading-relaxed">

@@ -67,9 +67,9 @@ const videos = galleryFiles.filter(f => /\.(mp4|webm|mov)$/i.test(f));
     <div class="hidden md:col-span-3 md:col-span-4 md:col-span-5 md:col-span-6 md:col-span-7 md:col-span-8 md:col-span-9 md:col-span-12 gap-16 gap-12 grid-cols-1 md:grid-cols-12 max-h-[600px] max-h-[500px] max-h-[400px] max-w-[400px] items-start items-center"></div>
     
     <!-- Floating Back Button -->
-    <a href="/" class="group fixed top-8 left-8 flex items-center justify-center w-auto px-5 h-12 bg-black/50 backdrop-blur-md border border-white/10 rounded-full hover:bg-black/80 hover:-translate-x-1 transition-all shadow-xl z-50 cursor-pointer gap-2.5">
+    <a href="/" id="dynamic-back-button" class="group fixed top-8 left-8 flex items-center justify-center w-auto px-5 h-12 bg-black/50 backdrop-blur-md border border-white/10 rounded-full hover:bg-black/80 hover:-translate-x-1 transition-all shadow-xl z-50 cursor-pointer gap-2.5">
         <svg class="w-4 h-4 transition-transform duration-300 group-hover:-translate-x-1.5 text-purple-400 group-hover:text-purple-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
-        <span class="text-zinc-300 group-hover:text-white font-sans text-xs font-medium tracking-widest uppercase mt-[1px]">Back to Timeline</span>
+        <span id="dynamic-back-text" class="text-zinc-300 group-hover:text-white font-sans text-xs font-medium tracking-widest uppercase mt-[1px]">Back to Timeline</span>
     </a>
 
     <!-- Massive Hero - Edge to Edge with Magic Zoom Tie -->
@@ -97,12 +97,12 @@ const videos = galleryFiles.filter(f => /\.(mp4|webm|mov)$/i.test(f));
                     <video 
                         src={displayImage} 
                         autoplay loop muted playsinline 
-                        class="w-full h-full object-cover z-0 opacity-100" 
+                        class="absolute inset-0 w-full h-full object-cover z-0" 
                     ></video>
                 ) : (
                     <img 
                         src={displayImage} 
-                        class="w-full h-full object-cover z-0 opacity-100" 
+                        class="absolute inset-0 w-full h-full object-cover z-0" 
                     />
                 )
             )
@@ -124,7 +124,7 @@ const videos = galleryFiles.filter(f => /\.(mp4|webm|mov)$/i.test(f));
                     })}
                 </div>
                 
-                <h1 class="text-6xl md:text-8xl xl:text-[10rem] font-black tracking-tighter mb-4 text-white leading-[0.9] drop-shadow-2xl inline-block whitespace-nowrap">
+                <h1 class="text-4xl md:text-8xl xl:text-[10rem] font-black tracking-tighter mb-4 text-white leading-tight md:leading-[0.9] drop-shadow-2xl inline-block whitespace-normal md:whitespace-nowrap">
                     {project.data.title}
                 </h1>
                 
@@ -275,6 +275,15 @@ const videos = galleryFiles.filter(f => /\.(mp4|webm|mov)$/i.test(f));
                 contentContainer.classList.add('scale-100');
             });
         });
+
+
+        // Context-Aware Back Routing
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('ref') === 'resume') {
+            const backText = document.getElementById('dynamic-back-text');
+            if (backText) backText.innerText = 'Back to Resume';
+        }
+        
     });
     document.addEventListener('astro:after-swap', playAllVideos);
 </script>
