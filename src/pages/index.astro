@@ -29,6 +29,9 @@ const getColorConfig = (category) => {
        default: return { text: 'text-zinc-500', bg: 'bg-zinc-500', borderHover: 'hover:border-zinc-500', shadow: 'shadow-[0_0_15px_rgba(113,113,122,0.5)]' };
    }
 }
+
+const homeImagesList = Array.from({ length: 14 }, (_, i) => `${i + 1}.jpg`);
+const initialRandomImg = homeImagesList[Math.floor(Math.random() * homeImagesList.length)];
 ---
 
 <!doctype html>
@@ -275,7 +278,7 @@ const getColorConfig = (category) => {
                             <div id="home-media-elements" class="absolute left-1/2 top-0 w-0 h-0 hidden md:block">
                                 <!-- Floating Image Cycler -->
                                 <div class="absolute top-[-250px] left-[450px] w-80 h-[28rem] rounded-[2rem] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10 z-[70] bg-zinc-900/50 backdrop-blur-sm transition-transform duration-500">
-                                    <img id="home-cycler-img-1" src="/assets/projects/home-page/1.jpg" alt="Koby" class="absolute inset-0 w-full h-full object-cover transition-opacity duration-[1500ms] opacity-100 z-10" style="image-rendering: high-quality; transform: translateZ(0);" />
+                                    <img id="home-cycler-img-1" src={`/assets/projects/home-page/${initialRandomImg}`} alt="Koby" class="absolute inset-0 w-full h-full object-cover transition-opacity duration-[1500ms] opacity-100 z-10" style="image-rendering: high-quality; transform: translateZ(0);" />
                                     <img id="home-cycler-img-2" src="" alt="Koby Next" class="absolute inset-0 w-full h-full object-cover transition-opacity duration-[1500ms] opacity-0 z-0" style="image-rendering: high-quality; transform: translateZ(0);" />
                                 </div>
 
@@ -628,17 +631,25 @@ const getColorConfig = (category) => {
             let nextImg = document.getElementById('home-cycler-img-2');
             
             if (currentImg && nextImg) {
-                const homeImages = ['1.jpg', '2.jpg', '3.jpg', '4.jpg', '5.jpg', '6.jpg', '7.jpg', '8.jpg', '9.jpg', '10.jpg', '11.jpg', '12.jpg', '13.jpg', '14.jpg'];
-                // Fisher-Yates Shuffle
-                for (let i = homeImages.length - 1; i > 0; i--) {
+                // Extract the server-rendered random image to preserve LCP
+                const initialSrc = currentImg.getAttribute('src');
+                const initialFile = initialSrc ? initialSrc.split('/').pop() : '1.jpg';
+                
+                // Shuffle remaining 13 images so we don't repeat the initial one immediately
+                const allImages = ['1.jpg', '2.jpg', '3.jpg', '4.jpg', '5.jpg', '6.jpg', '7.jpg', '8.jpg', '9.jpg', '10.jpg', '11.jpg', '12.jpg', '13.jpg', '14.jpg'];
+                const remainingImages = allImages.filter(img => img !== initialFile);
+                
+                for (let i = remainingImages.length - 1; i > 0; i--) {
                     const j = Math.floor(Math.random() * (i + 1));
-                    [homeImages[i], homeImages[j]] = [homeImages[j], homeImages[i]];
+                    [remainingImages[i], remainingImages[j]] = [remainingImages[j], remainingImages[i]];
                 }
+                const cyclerSequence = [initialFile, ...remainingImages];
+                
                 let currentCyclerIndex = 0;
-                currentImg.src = '/assets/projects/home-page/' + homeImages[currentCyclerIndex];
+                // DO NOT overwrite currentImg.src immediately as it was already parsed by HTML!
                 
                 setInterval(() => {
-                    const nextIndex = (currentCyclerIndex + 1) % homeImages.length;
+                    const nextIndex = (currentCyclerIndex + 1) % cyclerSequence.length;
                     
                     nextImg.onload = () => {
                         nextImg.style.zIndex = '10';
@@ -655,7 +666,7 @@ const getColorConfig = (category) => {
                         }, 1500); // Wait for CSS transition
                     };
                     
-                    nextImg.src = '/assets/projects/home-page/' + homeImages[nextIndex];
+                    nextImg.src = '/assets/projects/home-page/' + cyclerSequence[nextIndex];
                     
                     // Fallback execution if the browser loaded it instantly from cache without firing onload
                     if (nextImg.complete) {
@@ -1452,6 +1463,39 @@ const getColorConfig = (category) => {
             });
 
             lazyMediaElements.forEach(el => mediaObserver.observe(el));
+        }
+
+        // --- BACKGROUND PRE-FETCH TIMELINE VIDEOS ---
+        // This ensures timeline videos are loaded into cache safely without harming the Home page LCP
+        if ('requestIdleCallback' in window) {
+            requestIdleCallback(() => {
+                /** @type {HTMLVideoElement[]} */
+                const timelineVideos = Array.from(document.querySelectorAll('video.lazy-media[data-src]'));
+                
+                /** @param {number} index */
+                const loadNextVideo = (index) => {
+                    if (index >= timelineVideos.length) return;
+                    const video = timelineVideos[index];
+                    
+                    // Only background pre-fetch if it hasn't been intercepted by the observer yet
+                    if (video.dataset.src) {
+                        video.src = video.dataset.src;
+                        video.removeAttribute('data-src');
+                        video.preload = "auto";
+                        
+                        video.addEventListener('loadeddata', () => {
+                            setTimeout(() => {
+                                requestIdleCallback(() => loadNextVideo(index + 1));
+                            }, 500); // 500ms breather between heavy downloads
+                        }, { once: true });
+                    } else {
+                        // Skip if already triggered by the scrolling observer
+                        loadNextVideo(index + 1);
+                    }
+                };
+                // Wait 2 seconds after Home is fully loaded just to be safe, then start processing
+                setTimeout(() => loadNextVideo(0), 2000);
+            });
         }
         });
     </script>
