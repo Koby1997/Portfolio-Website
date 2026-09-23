@@ -1,8 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { getCollection, render } from 'astro:content';
-import fs from 'node:fs';
-import path from 'node:path';
+import { getColorConfig } from '../../data/categories';
 
 export async function getStaticPaths() {
   const projects = await getCollection('projects');
@@ -15,57 +14,21 @@ export async function getStaticPaths() {
 const { project } = Astro.props;
 const { Content } = await render(project);
 
-const getColorConfig = (category) => {
-   switch(category.toLowerCase()) {
-       case 'software': return { text: 'text-emerald-500', bg: 'bg-emerald-500/10' };
-       case 'hardware': return { text: 'text-blue-500', bg: 'bg-blue-500/10' };
-       case 'event': return { text: 'text-orange-500', bg: 'bg-orange-500/10' };
-       case 'engineering': return { text: 'text-cyan-500', bg: 'bg-cyan-500/10' };
-       case 'milestone': return { text: 'text-purple-500', bg: 'bg-purple-500/10' };
-       default: return { text: 'text-zinc-400', bg: 'bg-zinc-800/10' };
-   }
-}
 const primaryCategory = project.data.categories[0] || 'Unknown';
-const colors = getColorConfig(primaryCategory);
 
-let galleryFiles = [];
-if (project.data.mediaFolder) {
-    const publicPath = path.join(process.cwd(), 'public', project.data.mediaFolder);
-    try {
-        if (fs.existsSync(publicPath)) {
-            const files = fs.readdirSync(publicPath);
-            galleryFiles = files.filter(f => /\.(jpg|jpeg|png|gif|mp4|webm|mov)$/i.test(f)).map(f => {
-                return `${project.data.mediaFolder}/${f}`;
-            });
-        }
-    } catch (e) {
-        console.error("Error reading media folder", e);
-    }
-}
-
-let displayImage = project.data.heroImage || project.data.coverImage;
-
-if (project.data.coverImage) {
-    galleryFiles = galleryFiles.filter(f => f !== project.data.coverImage);
-}
-if (project.data.heroImage) {
-    galleryFiles = galleryFiles.filter(f => f !== project.data.heroImage);
-}
-
-if (project.body) {
-    // Exclude any files that the user has explicitly placed in the markdown content
-    galleryFiles = galleryFiles.filter(f => !project.body.includes(path.basename(f)));
-}
-
-const images = galleryFiles.filter(f => /\.(jpg|jpeg|png|gif)$/i.test(f));
-const videos = galleryFiles.filter(f => /\.(mp4|webm|mov)$/i.test(f));
+const displayImage = project.data.heroImage || project.data.coverImage;
 ---
-<Layout title={`${project.data.title} | Koby L.`} hideNavAndFooter={true}>
+<Layout
+  title={`${project.data.title} | Koby L.`}
+  description={project.data.description}
+  image={displayImage}
+  hideNavAndFooter={true}
+>
   <div class="w-full bg-zinc-950 text-white min-h-[100dvh]">
-    
+
     <!-- Tailwind JIT Safelist explicitly for injected markdown grids -->
     <div class="hidden md:col-span-3 md:col-span-4 md:col-span-5 md:col-span-6 md:col-span-7 md:col-span-8 md:col-span-9 md:col-span-12 gap-16 gap-12 grid-cols-1 md:grid-cols-12 max-h-[600px] max-h-[500px] max-h-[400px] max-w-[400px] items-start items-center"></div>
-    
+
     <!-- Floating Back Button -->
     <a href="/" id="dynamic-back-button" class="group fixed top-8 left-8 flex items-center justify-center w-auto px-5 h-12 bg-black/50 backdrop-blur-md border border-white/10 rounded-full hover:bg-black/80 hover:-translate-x-1 transition-all shadow-xl z-50 cursor-pointer gap-2.5">
         <svg class="w-4 h-4 transition-transform duration-300 group-hover:-translate-x-1.5 text-purple-400 group-hover:text-purple-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
@@ -73,8 +36,9 @@ const videos = galleryFiles.filter(f => /\.(mp4|webm|mov)$/i.test(f));
     </a>
 
     <!-- Massive Hero - Edge to Edge with Magic Zoom Tie -->
-    <div 
+    <div
         transition:name={`project-box-${project.id}`}
+        data-hero
         class="w-full h-[60vh] md:h-[80vh] relative overflow-hidden bg-zinc-900"
     >
         {displayImage ? (
@@ -87,22 +51,23 @@ const videos = galleryFiles.filter(f => /\.(mp4|webm|mov)$/i.test(f));
                         </>
                     ) : (
                         <>
-                            <img src={displayImage} class="absolute inset-0 w-full h-full object-cover z-0 opacity-40 blur-3xl scale-110" />
-                            <img src={displayImage} class="w-full h-full object-contain z-10 relative drop-shadow-2xl" />
+                            <img src={displayImage} alt="" class="absolute inset-0 w-full h-full object-cover z-0 opacity-40 blur-3xl scale-110" />
+                            <img src={displayImage} alt={project.data.title} class="w-full h-full object-contain z-10 relative drop-shadow-2xl" />
                         </>
                     )}
                 </>
             ) : (
                 /\.(mp4|webm|mov)$/i.test(displayImage) ? (
-                    <video 
-                        src={displayImage} 
-                        autoplay loop muted playsinline 
-                        class="absolute inset-0 w-full h-full object-cover z-0" 
+                    <video
+                        src={displayImage}
+                        autoplay loop muted playsinline
+                        class="absolute inset-0 w-full h-full object-cover z-0"
                     ></video>
                 ) : (
-                    <img 
-                        src={displayImage} 
-                        class="absolute inset-0 w-full h-full object-cover z-0" 
+                    <img
+                        src={displayImage}
+                        alt={project.data.title}
+                        class="absolute inset-0 w-full h-full object-cover z-0"
                     />
                 )
             )
@@ -111,7 +76,7 @@ const videos = galleryFiles.filter(f => /\.(mp4|webm|mov)$/i.test(f));
                 [ {primaryCategory.toUpperCase()} HERO ]
             </div>
         )}
-        
+
         <div class="absolute inset-0 flex flex-col justify-end p-8 md:p-16">
             <div class="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/40 to-transparent z-10 h-full pointer-events-none"></div>
             <div class="absolute inset-0 bg-gradient-to-r from-zinc-950 via-zinc-950/20 to-transparent z-10 w-[80vw] pointer-events-none"></div>
@@ -120,14 +85,14 @@ const videos = galleryFiles.filter(f => /\.(mp4|webm|mov)$/i.test(f));
                 <div class="flex flex-wrap gap-2 mb-6">
                     {project.data.categories.map((cat) => {
                         const subColors = getColorConfig(cat);
-                        return <span class={`px-4 py-1.5 ${subColors.bg} border border-current/20 ${subColors.text} text-[10px] font-bold tracking-widest uppercase rounded backdrop-blur-sm`}>{cat}</span>
+                        return <span class={`px-4 py-1.5 ${subColors.badgeBg} border border-current/20 ${subColors.badgeText} text-[10px] font-bold tracking-widest uppercase rounded backdrop-blur-sm`}>{cat}</span>
                     })}
                 </div>
-                
+
                 <h1 class="text-4xl md:text-8xl xl:text-[10rem] font-black tracking-tighter mb-4 text-white leading-tight md:leading-[0.9] drop-shadow-2xl inline-block whitespace-normal md:whitespace-nowrap">
                     {project.data.title}
                 </h1>
-                
+
                 <p class="text-xl md:text-2xl text-zinc-300 drop-shadow-xl font-light mt-4 max-w-2xl leading-relaxed">
                     {project.data.description}
                 </p>
@@ -136,60 +101,9 @@ const videos = galleryFiles.filter(f => /\.(mp4|webm|mov)$/i.test(f));
     </div>
 
     <!-- CONTENT PAYLOAD -->
-    {project.data.demoMode ? (
-        <div class="w-full">
-            <Content />
-        </div>
-    ) : (
-        <>
-            <!-- Section 1: Dynamic Markdown Payload (Sticky Left, Content Right) -->
-            <div class="w-full px-4 md:px-16 py-16 flex flex-col xl:flex-row gap-16 border-b border-zinc-800">
-                
-                <div class="xl:w-1/3 xl:sticky xl:top-32 h-fit mb-8 xl:mb-0">
-                    <h2 class="text-3xl font-bold mb-6">Project Context</h2>
-                    
-                    <div class="flex flex-col gap-4 border-l-2 border-zinc-800 pl-6">
-                        <div>
-                            <span class="text-zinc-500 font-mono text-xs uppercase tracking-widest block mb-1">Timeframe</span>
-                            <span class="text-white text-lg font-medium">{project.data.pubDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</span>
-                        </div>
-                        <div>
-                            <span class="text-zinc-500 font-mono text-xs uppercase tracking-widest block mb-1">Primary Discipline</span>
-                            <span class="text-white text-lg font-medium">{primaryCategory}</span>
-                        </div>
-                    </div>
-                </div>
-        
-        <div class="xl:w-2/3 prose prose-invert prose-lg max-w-none prose-headings:font-bold prose-a:text-blue-400 hover:prose-a:text-blue-300 prose-img:rounded-3xl prose-img:w-full prose-img:h-auto prose-img:shadow-2xl">
-            <Content />
-        </div>
-
+    <div class="w-full">
+        <Content />
     </div>
-
-    {galleryFiles.length > 0 && (
-        <div class="w-full px-4 md:px-16 py-24 flex flex-col xl:flex-row gap-16 border-t border-zinc-800">
-            <div class="xl:w-1/3 xl:sticky xl:top-32 h-fit mb-12 xl:mb-0">
-                <h2 class="text-3xl font-bold mb-6">Project Media</h2>
-                <p class="text-xl text-zinc-400 leading-relaxed mb-6">Visual documentation and process capture for this build.</p>
-            </div>
-            
-            <div class="xl:w-2/3 flex flex-col gap-12">
-                {videos.length > 0 && videos.map(vid => (
-                    <video src={vid} autoplay loop muted playsinline class="w-full h-auto rounded-3xl border border-zinc-800 shadow-2xl"></video>
-                ))}
-                
-                {images.length > 0 && (
-                    <div class="columns-1 md:columns-2 gap-8 space-y-8">
-                        {images.map(img => (
-                            <img src={img} loading="lazy" class="w-full h-auto object-cover rounded-3xl border border-zinc-800 shadow-xl break-inside-avoid hover:scale-[1.02] transition-transform duration-300" />
-                        ))}
-                    </div>
-                )}
-            </div>
-        </div>
-    )}
-    </>
-    )}
 
   </div>
 
@@ -203,8 +117,11 @@ const videos = galleryFiles.filter(f => /\.(mp4|webm|mov)$/i.test(f));
     </div>
 
 <script>
-    const playAllVideos = () => {
-        document.querySelectorAll('video').forEach(video => {
+    import { observeLazyMedia } from '../../scripts/lazyMedia';
+
+    // Hero videos load eagerly; make sure they're playing after a view transition swap.
+    const playHeroVideos = () => {
+        document.querySelectorAll<HTMLVideoElement>('[data-hero] video').forEach(video => {
             video.play().catch(() => {
                 video.load();
                 video.play().catch(() => {});
@@ -212,17 +129,29 @@ const videos = galleryFiles.filter(f => /\.(mp4|webm|mov)$/i.test(f));
         });
     };
 
+    let pageController: AbortController | null = null;
+    let mediaObserver: IntersectionObserver | null = null;
+
     document.addEventListener('astro:page-load', () => {
-        playAllVideos();
+        // Tear down listeners from the previous visit to this page
+        pageController?.abort();
+        mediaObserver?.disconnect();
 
         const overlay = document.getElementById('lightbox-overlay');
         const contentContainer = document.getElementById('lightbox-content');
         const closeBtn = document.getElementById('lightbox-close');
-        
+
         if (!overlay || !contentContainer || !closeBtn) return;
 
-        const mediaElements = document.querySelectorAll('img, video');
-        
+        pageController = new AbortController();
+        const { signal } = pageController;
+
+        playHeroVideos();
+        // Content media loads/plays only when within ~1 screen of the viewport
+        mediaObserver = observeLazyMedia(null, '100% 0px 100% 0px');
+
+        const mediaElements = document.querySelectorAll<HTMLImageElement | HTMLVideoElement>('img, video');
+
         const closeLightbox = () => {
             overlay.classList.remove('opacity-100', 'pointer-events-auto');
             overlay.classList.add('opacity-0', 'pointer-events-none');
@@ -241,20 +170,20 @@ const videos = galleryFiles.filter(f => /\.(mp4|webm|mov)$/i.test(f));
         closeBtn.addEventListener('click', closeLightbox);
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') closeLightbox();
-        });
+        }, { signal });
 
         mediaElements.forEach(el => {
             if (el.closest('a')) return;
-            if (el.closest('.h-\\[60vh\\]') || el.closest('.h-\\[80vh\\]')) return;
+            if (el.closest('[data-hero]')) return;
 
             el.classList.add('cursor-zoom-in');
-            
+
             el.addEventListener('click', () => {
                 const isVideo = el.tagName.toLowerCase() === 'video';
-                const src = el.getAttribute('src');
-                
+                const src = el.currentSrc || el.getAttribute('src') || el.dataset.src || '';
+
                 contentContainer.innerHTML = '';
-                
+
                 if (isVideo) {
                     const vid = document.createElement('video');
                     vid.src = src;
@@ -283,8 +212,8 @@ const videos = galleryFiles.filter(f => /\.(mp4|webm|mov)$/i.test(f));
             const backText = document.getElementById('dynamic-back-text');
             if (backText) backText.innerText = 'Back to Resume';
         }
-        
+
     });
-    document.addEventListener('astro:after-swap', playAllVideos);
+    document.addEventListener('astro:after-swap', playHeroVideos);
 </script>
 </Layout>
