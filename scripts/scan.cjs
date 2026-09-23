@@ -10,8 +10,8 @@ function walkDir(dir, callback) {
 }
 
 let files = [];
-walkDir(path.join(__dirname, 'public', 'assets', 'projects'), function(filePath) {
-  files.push(filePath.replace(__dirname, '').replace(/\\/g, '/'));
+walkDir(path.join(process.cwd(), 'public', 'assets', 'projects'), function(filePath) {
+  files.push(filePath.replace(process.cwd(), '').replace(/\\/g, '/'));
 });
 
 console.log(JSON.stringify(files, null, 2));

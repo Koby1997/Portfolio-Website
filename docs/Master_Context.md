@@ -1,44 +1,72 @@
 # Personal Website - Core Architecture & Project Context
 
 ## 1. Project Philosophy & System Flow
-This repository houses a highly-interactive, application-grade Personal Portfolio Website designed to present a dynamic, cinematic experience beyond standard static webpages. 
+This repository houses a highly-interactive Personal Portfolio Website designed to present a dynamic, cinematic experience beyond standard static webpages. It is built with Astro, and all pages are statically generated.
 
 ### The Core Journey
-The user journey is architected to seamlessly bridge between deeply stylized modules rather than utilizing standard disjointed page loads.
-- **The Unified Home/Timeline (`index.astro`)**: The navigational root. It functions as a single-page horizontally scrolling application that merges the initial "Home" gateway with the chronological "Timeline" layout. It aggregates `deltaY` and `deltaX` scroll inputs to provide native trackpad swipe support. Navigating between project details and the timeline leverages an absolute "Escape Hatch" state reset to prevent View Transition clipping.
-- **The Brain Module (`brain.astro`)**: An experiential 3D WebGL Neural Network visually mapping the user's hobbies, mindsets, and interests. Accessed via a cinematic zoom transition from the Home page. *Must use strict `data-astro-reload` to bypass View Transitions to avoid WebGL GC drops.*
-- **The Resume Module (`resume.astro`)**: A dedicated professional readout integrated at the far right of the unified timeline, operating as a single unified vertical scroll container.
-- **The Engineering Portfolio (`src/content/projects/`)**: Massive, highly-visual project case studies decoupled into Markdown collections (`.md`) utilizing strict Glassmorphism CSS layouts and intrinsic `max-h-[600px]` media bounds. 
+- **The Unified Home/Timeline/Resume (`src/pages/index.astro`)**: The navigational root. A single horizontally scrolling page laid out left to right as **Resume ← Home → Void runway (0–1997) → Timeline**.
+  - Wheel input aggregates `deltaY` and `deltaX` for trackpad swipe support.
+  - "My Journey" plays the cinematic intro (void counter → Baby Koby → timeline). A Skip button lets visitors jump straight to the timeline.
+  - "My Career" pans left to the resume screen.
+  - Timeline scroll position is saved to `sessionStorage` before a view transition and restored after, so returning from a project page lands in the same spot.
+- **The Brain Module (`src/pages/brain.astro`)**: A 3D WebGL neural network (Three.js from a CDN import map) mapping hobbies, mindsets, and interests. It is reached via the zoom-into-the-"o" transition from the home page.
+  - *Always navigate to it with a full reload (`data-astro-reload`).* View transitions into it drop WebGL state.
+- **Project Case Studies (`src/content/projects/*.md`)**: A content collection of hand-authored HTML-in-Markdown pages, rendered by `src/pages/projects/[id].astro` (hero + content + lightbox). Every entry uses `demoMode: true`.
+- **About (`src/pages/about.astro`)**: A simple page using `Layout.astro` with the nav/footer. It isn't linked from the main flow.
 
 ---
 
 ## 2. Technology Stack & Design Baseline
-- **Framework:** Astro 6.x (Combining `.astro` files and `Content Collections` for static speed).
-- **Styling Architecture:** Tailwind CSS v4. 
-  - *Mantra:* Aggressive usage of intense glassmorphism (`backdrop-blur`), translucent dark backgrounds (`bg-zinc-950/60`), vibrant thematic gradients (`violet-400`, `blue-500`), and structurally rigorous grid/flexbox padding to create premium, "Iron Man UI" style dashboards.
-- **Interactive Islands:** React v19 for heavy client-side state.
-- **3D Graphics Engine:** Three.js with custom geometry optimizations.
+- **Framework:** Astro 6.x (static output, content collections, `ClientRouter` view transitions).
+- **Styling:** Tailwind CSS v4 via `@tailwindcss/vite`.
+  - `global.css` adds `@source "../content/projects/**/*.md"` so classes used inside Markdown are compiled.
+  - *Look:* dark zinc backgrounds, glassmorphism (`backdrop-blur`), glowing accent colors per section (rose = career, blue = mind, purple = journey).
+- **3D:** Three.js 0.160 loaded from unpkg through an import map (in both `index.astro` and `brain.astro`).
+- No UI framework islands. Everything is Astro components plus plain `<script>` blocks.
 
 ---
 
-## 3. High-Level Modular Context
+## 3. Where Things Live
 
-### A. The Structural Markdown Collections
-All timeline entries and case studies follow a deeply standardized Astro layout injected via `Layout.astro`.
-- **Media Philosophy**: Media constraints exclusively utilize `w-auto max-w-full max-h-[600px]` to enforce mathematical intrinsic scaling without allowing CSS grid columns to warp or stretch videos vertically. 
-- **Tailwind Compilation Scope**: Custom config added to `global.css` explicitly targeting the `src/content/projects/**/*.md` payload, guaranteeing Tailwind v4 parses and statically builds CSS classes injected directly into Markdown tables.
-- **Image Architecture**: Cover Images and Hero Images are fully decoupled in the `content.config.ts`, allowing timeline preview tiles to differ completely from the massive hero banners rendered across article headers.
+| What | File |
+| --- | --- |
+| Resume content (jobs, skills, certs, contact) | `src/data/resume.ts` |
+| Home screen photo list, site description | `src/data/site.ts` |
+| Category → color classes (timeline + project pages) | `src/data/categories.ts` |
+| Brain network data | `src/data/neuralNetwork.js` |
+| SEO / link-preview meta tags | `src/components/SeoHead.astro` |
+| Lazy media observer (shared) | `src/scripts/lazyMedia.ts` |
+| Markdown media rewriting (build time) | `src/plugins/rehype-lazy-media.mjs` |
+| New project template | `docs/_template.md` |
 
-### B. View Transition Stabilization 
-Astro's View Transition routing is utilized across the markdown portfolio.
-- **Container Isolation**: To prevent layout morph collisions, standard project pages are isolated from the timeline using standard `<divs>` instead of semantic `<main>` tags (avoiding Astro morphing the `index.astro` layout bounds into the markdown details).
-- **History Memory Cache**: Deep timeline zooming navigation tracks native anchor states efficiently using `sessionStorage` integer caches instead of complex DOM width-stitching algorithms. 
+### Media loading
+- `rehype-lazy-media` rewrites every `<video>` in project Markdown at build time: `src` → `data-src`, no `autoplay`, `preload="none"`, class `lazy-media`. `<img>` tags get `loading="lazy"`.
+  - Write normal `<video src=... autoplay ...>` in Markdown; the plugin handles it.
+- `observeLazyMedia()` attaches the real `src` and plays videos when they come near the viewport, and pauses them offscreen.
+  - Project pages observe the window.
+  - The home timeline observes its horizontal scroll container.
+- Hero media (`coverImage` / `heroImage`) loads eagerly.
+- Timeline cover images and videos on the home page use `data-src` + `lazy-media` directly. After the home page is idle, videos are prefetched one at a time.
+
+### Frontmatter
+- `coverImage` is the timeline card media.
+- `heroImage` (optional) overrides the project page hero.
+- `heroFit: "contain"` shows the hero uncropped over a blurred copy.
 
 ---
 
-## 4. Current State & Immediate Milestones (V1.0.0 Completed)
+## 4. Maintenance
 
-**V1.0 is finalized:** The desktop-first cinematic layouts, timeline tracking overrides, and markdown project pages (`Tube`, `CuttlefishLights`, `StockViz`, etc.) are 100% complete and feature pixel-perfect scaling. 
+- **Update the resume:** edit `src/data/resume.ts` and replace `public/assets/KobyMillerResume.pdf`.
+- **Add a timeline entry:**
+  1. Copy `docs/_template.md` into `src/content/projects/<id>.md`.
+  2. Put its media in `public/assets/projects/<folder>/`.
+  3. Run `npm run check:media`.
+- **Checks:**
+  - `npm run check:media`: every media path in the Markdown exists. The check is case-sensitive, because Linux hosts are.
+  - `npm run check:timeline`: lists entries with date and cover status.
+  - `npm run list:assets`: dumps all asset paths.
 
-**V2.0 Directive (Mobile Responsiveness):** 
-The primary and exclusive operational directive remaining is to **port the V1.0 Desktop Architecture perfectly across Mobile Viewports**, while strictly forbidding any visual regression or breakage across the finalized Desktop Layouts. Current mobile layouts suffer from clipped sidebars, broken text flows, and unreachable interactive elements natively designed for horizontal ultra-widescreen real-estate.
+### Known trade-offs
+- Media lives in git (`public/assets`, about 900 MB). Large videos are best re-encoded (720p–1080p H.264) before adding them.
+- `index.astro` and `brain.astro` are large single-file pages by design. The cinematic sequences depend on precise timing, so change the durations and easings carefully.

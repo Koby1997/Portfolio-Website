@@ -52,7 +52,7 @@ The hardest part of this project was figuring out how to take the power from ped
 </p>
 </div>
 <div class="md:col-span-6 flex justify-center">
-<video src="/assets/projects/tube/v3/BevelTesting.mp4" autoplay loop muted playsinline class="max-w-[320px] w-full h-auto rounded-2xl shadow-2xl overflow-hidden "></video>
+<video src="/assets/projects/tube/v3/Beveltesting.mp4" autoplay loop muted playsinline class="max-w-[320px] w-full h-auto rounded-2xl shadow-2xl overflow-hidden "></video>
 </div>
 </div>
 

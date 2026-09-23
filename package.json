@@ -9,7 +9,10 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "check:timeline": "node scripts/check_timeline.cjs",
+    "list:assets": "node scripts/scan.cjs",
+    "check:media": "node scripts/check_media.cjs"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.2.2",
