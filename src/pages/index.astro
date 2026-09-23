@@ -2,11 +2,13 @@
 import '../styles/global.css';
 import { ClientRouter } from 'astro:transitions';
 import { getCollection } from 'astro:content';
+import SeoHead from '../components/SeoHead.astro';
+import { getColorConfig } from '../data/categories';
+import { resume } from '../data/resume';
+import { SITE_DESCRIPTION, HOME_IMAGES, HOME_IMAGE_DIR } from '../data/site';
 
 const allProjects = await getCollection('projects');
 allProjects.sort((a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf());
-
-const skills = ['React', 'Node.js', 'TypeScript', 'JavaScript', 'HTML/CSS', 'Java', 'Python', 'C++', 'FastAPI', 'Pandas', 'MongoDB', 'SQL', 'Astro', 'Tailwind CSS', 'Three.js', 'Linux', 'Git', 'Atlassian'];
 
 const projectsByYear = {};
 allProjects.forEach(project => {
@@ -18,20 +20,7 @@ allProjects.forEach(project => {
 const years = Object.keys(projectsByYear).sort();
 const postYears = Array.from({ length: 24 }, (_, i) => 1993 + i);
 
-
-const getColorConfig = (category) => {
-   switch(category.toLowerCase()) {
-       case 'software': return { text: 'text-emerald-500', bg: 'bg-emerald-500', borderHover: 'hover:border-emerald-500', shadow: 'shadow-[0_0_15px_rgba(16,185,129,0.5)]' };
-       case 'hardware': return { text: 'text-blue-500', bg: 'bg-blue-500', borderHover: 'hover:border-blue-500', shadow: 'shadow-[0_0_15px_rgba(59,130,246,0.5)]' };
-       case 'event': return { text: 'text-orange-500', bg: 'bg-orange-500', borderHover: 'hover:border-orange-500', shadow: 'shadow-[0_0_15px_rgba(249,115,22,0.5)]' };
-       case 'engineering': return { text: 'text-cyan-500', bg: 'bg-cyan-500', borderHover: 'hover:border-cyan-500', shadow: 'shadow-[0_0_15px_rgba(6,182,212,0.5)]' };
-       case 'milestone': return { text: 'text-purple-500', bg: 'bg-purple-500', borderHover: 'hover:border-purple-500', shadow: 'shadow-[0_0_15px_rgba(168,85,247,0.5)]' };
-       default: return { text: 'text-zinc-500', bg: 'bg-zinc-500', borderHover: 'hover:border-zinc-500', shadow: 'shadow-[0_0_15px_rgba(113,113,122,0.5)]' };
-   }
-}
-
-const homeImagesList = Array.from({ length: 14 }, (_, i) => `${i + 1}.jpg`);
-const initialRandomImg = homeImagesList[Math.floor(Math.random() * homeImagesList.length)];
+const initialRandomImg = HOME_IMAGES[Math.floor(Math.random() * HOME_IMAGES.length)];
 ---
 
 <!doctype html>
@@ -41,6 +30,8 @@ const initialRandomImg = homeImagesList[Math.floor(Math.random() * homeImagesLis
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=2.0" />
     <title>Koby Miller</title>
+    <SeoHead title="Koby Miller" description={SITE_DESCRIPTION} />
+    <!-- Three.js is only used by /brain, but the import map must already exist if a navigation ever soft-swaps into it -->
     <script type="importmap">
         {
             "imports": {
@@ -134,39 +125,37 @@ const initialRandomImg = homeImagesList[Math.floor(Math.random() * homeImagesLis
                             <!-- Left Sidebar (Sticky) -->
                             <aside id="resume-left-col" class="w-full md:w-1/3 flex flex-col gap-8 h-max">
                                 <div class="bg-zinc-900/50 backdrop-blur-xl border border-zinc-800 rounded-3xl p-8 shadow-2xl">
-                                    <h1 class="text-4xl font-black tracking-tight text-white mb-2">Koby Miller</h1>
-                                    <p class="text-rose-400 font-medium mb-6 leading-tight">Software Engineer</p>
+                                    <h1 class="text-4xl font-black tracking-tight text-white mb-2">{resume.name}</h1>
+                                    <p class="text-rose-400 font-medium mb-6 leading-tight">{resume.role}</p>
                                     <div class="space-y-3 text-sm text-zinc-300">
-                                        <p class="flex items-center gap-3"><span class="text-rose-500">📍</span> Viera, FL</p>
-                                        <p class="flex items-center gap-3"><span class="text-rose-500">📧</span> KobyLMiller@outlook.com</p>
-                                        <p class="flex items-center gap-3"><span class="text-rose-500">📱</span> 321-313-4355</p>
+                                        <p class="flex items-center gap-3"><span class="text-rose-500">📍</span> {resume.location}</p>
+                                        <p class="flex items-center gap-3"><span class="text-rose-500">📧</span> {resume.email}</p>
+                                        <p class="flex items-center gap-3"><span class="text-rose-500">📱</span> {resume.phone}</p>
                                     </div>
                                     <div class="mt-8 inline-flex items-center gap-2 px-5 py-2.5 bg-rose-500/10 border border-rose-500/30 rounded-xl shadow-[0_0_20px_rgba(244,63,94,0.15)] text-rose-300 font-bold tracking-widest text-sm uppercase">
-                                        <span class="text-rose-500 text-lg">🛡️</span> TS/SCI Cleared
+                                        <span class="text-rose-500 text-lg">🛡️</span> {resume.clearance}
                                     </div>
                                 </div>
 
                                 <div class="bg-zinc-900/50 backdrop-blur-xl border border-zinc-800 rounded-3xl p-8 shadow-2xl">
                                     <h2 class="text-xs font-bold text-zinc-500 uppercase tracking-widest mb-4 border-b border-zinc-800 pb-2">Education</h2>
-                                    <p class="text-white font-bold mb-1">University of Florida</p>
-                                    <p class="text-zinc-400 text-sm mb-1">B.S. Computer Engineering</p>
-                                    <p class="text-zinc-500 text-xs">Graduated 12/2020</p>
-                                    
+                                    <p class="text-white font-bold mb-1">{resume.education.school}</p>
+                                    <p class="text-zinc-400 text-sm mb-1">{resume.education.degree}</p>
+                                    <p class="text-zinc-500 text-xs">{resume.education.graduated}</p>
+
                                     <h2 class="text-xs font-bold text-zinc-400 uppercase tracking-widest mt-10 mb-4 border-b border-zinc-800 pb-2">Certifications</h2>
-                                    <div class="mb-4">
-                                        <p class="text-white font-bold mb-1">CompTIA Security+</p>
-                                        <p class="text-zinc-500 text-xs">Exp. 05/2029</p>
-                                    </div>
-                                    <div>
-                                        <p class="text-white font-bold mb-1">SAFe Practitioner</p>
-                                        <p class="text-zinc-500 text-xs">Active Certification</p>
-                                    </div>
+                                    {resume.certifications.map((cert, i) => (
+                                        <div class={i < resume.certifications.length - 1 ? 'mb-4' : undefined}>
+                                            <p class="text-white font-bold mb-1">{cert.name}</p>
+                                            <p class="text-zinc-500 text-xs">{cert.detail}</p>
+                                        </div>
+                                    ))}
                                 </div>
 
                                 <div class="bg-zinc-900/50 backdrop-blur-xl border border-zinc-800 rounded-3xl p-8 shadow-2xl">
                                     <h2 class="text-xs font-bold text-zinc-500 uppercase tracking-widest mb-4">Skills</h2>
                                     <div class="flex flex-wrap gap-2">
-                                        {skills.map(skill => (
+                                        {resume.skills.map(skill => (
                                             <span class="px-3 py-1 bg-zinc-800/80 border border-zinc-700/50 rounded-lg text-xs text-zinc-300 hover:text-white hover:border-rose-500/50 transition-colors">
                                                 {skill}
                                             </span>
@@ -174,7 +163,7 @@ const initialRandomImg = homeImagesList[Math.floor(Math.random() * homeImagesLis
                                     </div>
                                 </div>
 
-                                <a href="/assets/KobyMillerResume.pdf" download="KobyMillerResume.pdf" class="hidden md:flex w-full py-4 bg-rose-600/10 border border-rose-500/50 hover:bg-rose-600 text-rose-100 hover:text-white hover:shadow-[0_0_25px_rgba(225,29,72,0.4)] text-center rounded-2xl transition-all duration-300 font-bold tracking-wide shadow-xl items-center justify-center gap-3 group">
+                                <a href={resume.pdf} download="KobyMillerResume.pdf" class="hidden md:flex w-full py-4 bg-rose-600/10 border border-rose-500/50 hover:bg-rose-600 text-rose-100 hover:text-white hover:shadow-[0_0_25px_rgba(225,29,72,0.4)] text-center rounded-2xl transition-all duration-300 font-bold tracking-wide shadow-xl items-center justify-center gap-3 group">
                                     <svg class="w-5 h-5 transition-transform duration-300 group-hover:-translate-y-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
                                     Download Resume
                                 </a>
@@ -184,82 +173,46 @@ const initialRandomImg = homeImagesList[Math.floor(Math.random() * homeImagesLis
                             <div id="resume-right-col" class="w-full md:w-2/3 flex flex-col gap-8 h-max">
                                 <div class="bg-zinc-900/30 backdrop-blur-sm border border-zinc-800/50 rounded-3xl p-8 shadow-xl">
                                     <h2 class="text-sm font-bold text-rose-400 uppercase tracking-widest mb-8">Professional Experience</h2>
-                                    
-                                    <div class="mb-10 relative">
-                                        <div class="flex flex-col md:flex-row justify-between md:items-center mb-2">
-                                            <h3 class="text-2xl font-bold text-white">Dark Wolf</h3>
-                                            <span class="text-rose-400/80 text-sm font-mono tracking-widest uppercase">07/2023 — Present</span>
-                                        </div>
-                                        <h4 class="text-blue-400 font-medium text-base mb-4">Senior Associate Software Engineer</h4>
-                                        <ul class="space-y-3 text-zinc-300 text-sm list-disc list-inside marker:text-zinc-600 leading-relaxed">
-                                            <li><strong class="text-zinc-200 font-medium">Manticore:</strong> Developed full-stack features for mission-critical tools within the Manticore system, including enhancements to Master Station Log and Cyber Mission Mapping.</li>
-                                            <li><strong class="text-zinc-200 font-medium">MSL SME:</strong> Acted as the primary technical representative for the team, interfacing directly with customers, end users, and cross-functional teams; led demos and communicated system capabilities to operators.</li>
-                                            <li><strong class="text-zinc-200 font-medium">Ownership & Delivery:</strong> Designed and delivered multiple large-scale features from concept through deployment, leading development efforts and coordinating a small team to implement operator-driven requirements.</li>
-                                        </ul>
-                                    </div>
 
-                                    <div class="mb-10 relative">
-                                        <div class="flex flex-col md:flex-row justify-between md:items-center mb-2">
-                                            <h3 class="text-2xl font-bold text-white">L3Harris</h3>
-                                            <span class="text-rose-400/80 text-sm font-mono tracking-widest uppercase">05/2021 — 07/2023</span>
+                                    {resume.experience.map((job, i) => (
+                                        <div class={i < resume.experience.length - 1 ? 'mb-10 relative' : 'relative'}>
+                                            <div class="flex flex-col md:flex-row justify-between md:items-center mb-2">
+                                                <h3 class="text-2xl font-bold text-white">{job.company}</h3>
+                                                <span class="text-rose-400/80 text-sm font-mono tracking-widest uppercase">{job.dates}</span>
+                                            </div>
+                                            <h4 class="text-blue-400 font-medium text-base mb-4">{job.title}</h4>
+                                            <ul class="space-y-3 text-zinc-300 text-sm list-disc list-inside marker:text-zinc-600 leading-relaxed">
+                                                {job.bullets.map(bullet => (
+                                                    <li>{bullet.label && <><strong class="text-zinc-200 font-medium">{bullet.label}</strong> </>}{bullet.text}</li>
+                                                ))}
+                                            </ul>
                                         </div>
-                                        <h4 class="text-blue-400 font-medium text-base mb-4">Software Engineer I</h4>
-                                        <ul class="space-y-3 text-zinc-300 text-sm list-disc list-inside marker:text-zinc-600 leading-relaxed">
-                                            <li><strong class="text-zinc-200 font-medium">ISW / ATSS:</strong> Diagnosed and resolved issues in a complex counter-communication system, working directly with hardware (spectrum analyzers, decoders, attenuators) and improving system reliability. Modified installation scripts and altered code to pass Coverity scans.</li>
-                                            <li><strong class="text-zinc-200 font-medium">Training Records:</strong> Created an internal tool made from scratch to aid Technical Trainers in keeping track of all employees' training process.</li>
-                                            <li><strong class="text-zinc-200 font-medium">GBOSS & TRAX:</strong> Supported integration of Syntrack (JPL software) into deep space telescope systems, and collaborated on a company-wide survey platform.</li>
-                                            <li><strong class="text-zinc-200 font-medium">PEER Coordinator:</strong> Led program that helps new hires, minimizing transition downtime.</li>
-                                        </ul>
-                                    </div>
-
-                                    <div class="relative">
-                                        <div class="flex flex-col md:flex-row justify-between md:items-center mb-2">
-                                            <h3 class="text-2xl font-bold text-white">SS&C Advent</h3>
-                                            <span class="text-rose-400/80 text-sm font-mono tracking-widest uppercase">05/2019 — 08/2019</span>
-                                        </div>
-                                        <h4 class="text-blue-400 font-medium text-base mb-4">Product Development Intern</h4>
-                                        <ul class="space-y-3 text-zinc-300 text-sm list-disc list-inside marker:text-zinc-600 leading-relaxed">
-                                            <li>Created internal tools to monitor client data ingestion processes, increasing visibility into system performance.</li>
-                                            <li>Automated anomaly detection by connecting SQL queries to Slack notifications, enabling real-time issue awareness.</li>
-                                        </ul>
-                                    </div>
+                                    ))}
                                 </div>
 
                                 <div class="bg-zinc-900/30 backdrop-blur-sm border border-zinc-800/50 rounded-3xl p-8 shadow-xl">
                                     <h2 class="text-sm font-bold text-rose-400 uppercase tracking-widest mb-8">Software Projects</h2>
-                                    <div class="mb-10">
-                                        <div class="flex flex-col md:flex-row justify-between md:items-center mb-4">
-                                            <h3 class="text-2xl font-bold text-white">StockViz</h3>
-                                            <div class="flex items-center gap-4 mt-2 md:mt-0">
-                                                <a href="/projects/stock-project-v2?ref=resume" class="text-cyan-400 hover:text-cyan-300 text-sm font-bold flex items-center gap-1.5"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg> View Timeline</a>
+                                    {resume.projects.map((proj, i) => (
+                                        <div class={i < resume.projects.length - 1 ? 'mb-10' : undefined}>
+                                            <div class="flex flex-col md:flex-row justify-between md:items-center mb-4">
+                                                <h3 class="text-2xl font-bold text-white">{proj.name}</h3>
+                                                <div class="flex items-center gap-4 mt-2 md:mt-0">
+                                                    <a href={proj.timelineHref} class="text-cyan-400 hover:text-cyan-300 text-sm font-bold flex items-center gap-1.5"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg> View Timeline</a>
+                                                    {proj.githubHref && (
+                                                        <a href={proj.githubHref} target="_blank" class="text-zinc-400 hover:text-white text-sm font-bold flex items-center gap-1.5"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg> GitHub</a>
+                                                    )}
+                                                </div>
                                             </div>
+                                            <ul class="space-y-3 text-zinc-300 text-sm list-disc list-inside marker:text-zinc-600 leading-relaxed">
+                                                {proj.bullets.map(text => <li>{text}</li>)}
+                                            </ul>
                                         </div>
-                                        <ul class="space-y-3 text-zinc-300 text-sm list-disc list-inside marker:text-zinc-600 leading-relaxed">
-                                            <li>Architected a full-stack algorithmic analysis platform to back a self-theorized trading strategy.</li>
-                                            <li>Engineered a Python/FastAPI backend leveraging Pandas and custom knapsack optimization algorithms to generate efficient, non-overlapping trade schedules.</li>
-                                            <li>Built an interactive React dashboard with dynamic visualizations for projected equity curves, portfolio distributions, and predictive confidence metrics.</li>
-                                        </ul>
-                                    </div>
-
-                                    <div>
-                                        <div class="flex flex-col md:flex-row justify-between md:items-center mb-4">
-                                            <h3 class="text-2xl font-bold text-white">Cuttlefish Lights</h3>
-                                            <div class="flex items-center gap-4 mt-2 md:mt-0">
-                                                <a href="/projects/cuttlefish-v3?ref=resume" class="text-cyan-400 hover:text-cyan-300 text-sm font-bold flex items-center gap-1.5"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg> View Timeline</a>
-                                                <a href="https://github.com/Koby1997/CuttlefishLights" target="_blank" class="text-zinc-400 hover:text-white text-sm font-bold flex items-center gap-1.5"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg> GitHub</a>
-                                            </div>
-                                        </div>
-                                        <ul class="space-y-3 text-zinc-300 text-sm list-disc list-inside marker:text-zinc-600 leading-relaxed">
-                                            <li>Engineered an Arduino-based system that synchronizes LED lighting effects with live audio input.</li>
-                                            <li>Programmed dynamic visual effects using the FastLED library to respond to distinct musical cues.</li>
-                                            <li>Built a desktop application to provide an intuitive interface for controlling lighting behaviors.</li>
-                                        </ul>
-                                    </div>
+                                    ))}
                                 </div>
                             </div>
-                            
+
                             <!-- Mobile Download Resume Button -->
-                            <a href="/assets/KobyMillerResume.pdf" download="KobyMillerResume.pdf" class="flex md:hidden w-full py-4 bg-rose-600/10 border border-rose-500/50 hover:bg-rose-600 text-rose-100 hover:text-white hover:shadow-[0_0_25px_rgba(225,29,72,0.4)] text-center rounded-2xl transition-all duration-300 font-bold tracking-wide shadow-xl items-center justify-center gap-3 group mt-4 mb-16">
+                            <a href={resume.pdf} download="KobyMillerResume.pdf" class="flex md:hidden w-full py-4 bg-rose-600/10 border border-rose-500/50 hover:bg-rose-600 text-rose-100 hover:text-white hover:shadow-[0_0_25px_rgba(225,29,72,0.4)] text-center rounded-2xl transition-all duration-300 font-bold tracking-wide shadow-xl items-center justify-center gap-3 group mt-4 mb-16">
                                 <svg class="w-5 h-5 transition-transform duration-300 group-hover:-translate-y-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
                                 Download Resume
                             </a>
@@ -277,8 +230,8 @@ const initialRandomImg = homeImagesList[Math.floor(Math.random() * homeImagesLis
                             <!-- This perfectly locks the components to the exact pixel offsets of a 1920x1080 monitor relative to the 'Koby' text -->
                             <div id="home-media-elements" class="absolute left-1/2 top-0 w-0 h-0 hidden md:block">
                                 <!-- Floating Image Cycler -->
-                                <div class="absolute top-[-250px] left-[450px] w-80 h-[28rem] rounded-[2rem] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10 z-[70] bg-zinc-900/50 backdrop-blur-sm transition-transform duration-500">
-                                    <img id="home-cycler-img-1" src={`/assets/projects/home-page/${initialRandomImg}`} alt="Koby" class="absolute inset-0 w-full h-full object-cover transition-opacity duration-[1500ms] opacity-100 z-10" style="image-rendering: high-quality; transform: translateZ(0);" />
+                                <div id="home-cycler" data-dir={HOME_IMAGE_DIR} data-images={JSON.stringify(HOME_IMAGES)} class="absolute top-[-250px] left-[450px] w-80 h-[28rem] rounded-[2rem] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10 z-[70] bg-zinc-900/50 backdrop-blur-sm transition-transform duration-500">
+                                    <img id="home-cycler-img-1" src={`${HOME_IMAGE_DIR}${initialRandomImg}`} alt="Koby" class="absolute inset-0 w-full h-full object-cover transition-opacity duration-[1500ms] opacity-100 z-10" style="image-rendering: high-quality; transform: translateZ(0);" />
                                     <img id="home-cycler-img-2" src="" alt="Koby Next" class="absolute inset-0 w-full h-full object-cover transition-opacity duration-[1500ms] opacity-0 z-0" style="image-rendering: high-quality; transform: translateZ(0);" />
                                 </div>
 
@@ -299,7 +252,7 @@ const initialRandomImg = homeImagesList[Math.floor(Math.random() * homeImagesLis
 
                         <!-- The 3 Evenly Spaced Gateways (Sleek Outline Pills) -->
                         <div class="flex flex-col md:flex-row justify-center items-center gap-5 mt-4 md:gap-6 md:mt-4">
-                            <a href="/resume" id="unified-resume-trigger" class="group relative px-8 py-3 md:py-4 border border-zinc-700/50 hover:border-rose-500/50 bg-zinc-900/20 hover:bg-zinc-900/80 backdrop-blur-md rounded-xl transition-all duration-300 shadow-xl overflow-hidden text-center z-20">
+                            <a href="#" id="unified-resume-trigger" class="group relative px-8 py-3 md:py-4 border border-zinc-700/50 hover:border-rose-500/50 bg-zinc-900/20 hover:bg-zinc-900/80 backdrop-blur-md rounded-xl transition-all duration-300 shadow-xl overflow-hidden text-center z-20">
                                 <div class="absolute inset-0 bg-gradient-to-br from-rose-500/0 via-rose-500/0 to-rose-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                                 <h3 class="relative z-10 text-sm md:text-base font-bold text-zinc-300 group-hover:text-white uppercase tracking-[0.2em] transition-colors">My Career</h3>
                             </a>
@@ -453,6 +406,37 @@ const initialRandomImg = homeImagesList[Math.floor(Math.random() * homeImagesLis
     </style>
 
     <script>
+        import { observeLazyMedia } from '../scripts/lazyMedia';
+
+        // --- Easing curves shared by the cinematic scroll animations ---
+        const easeInOutCubic = (t) => t < .5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
+        const easeInOutQuint = (t) => t < .5 ? 16 * t * t * t * t * t : 1 - Math.pow(-2 * t + 2, 5) / 2;
+        const easeOutQuint = (t) => 1 - Math.pow(1 - t, 5);
+
+        // Drives one requestAnimationFrame loop: `frame` gets linear progress t (0 -> 1).
+        // `abort` is checked before every frame; returning true stops the loop.
+        const animate = ({ duration, frame, done = () => {}, abort = () => false }) => {
+            const startTime = performance.now();
+            const step = (time) => {
+                if (abort()) return;
+                let t = (time - startTime) / duration;
+                if (t > 1) t = 1;
+                frame(t);
+                if (t < 1) requestAnimationFrame(step);
+                else done();
+            };
+            requestAnimationFrame(step);
+        };
+
+        // Listeners/timers that must not pile up each time the home page is revisited
+        let pageController = null;
+        let cyclerTimer = null;
+        document.addEventListener('astro:before-swap', () => {
+            pageController?.abort();
+            pageController = null;
+            clearInterval(cyclerTimer);
+        });
+
         // Store scroll position seamlessly before jumping back/forward
         document.addEventListener('astro:before-preparation', () => {
             const timeline = document.getElementById('timeline-container');
@@ -473,34 +457,45 @@ const initialRandomImg = homeImagesList[Math.floor(Math.random() * homeImagesLis
         });
 
         document.addEventListener('astro:page-load', () => {
+        // This script is bundled once and stays registered across view transitions; only run on the home page.
+        if (!document.getElementById('timeline-container')) return;
+
+        pageController?.abort();
+        pageController = new AbortController();
+        const { signal } = pageController;
+
         const scrollContainer = document.querySelector('.CustomScrollContainer');
         const parallaxBg = document.getElementById('timeline-parallax-bg');
         const realCanvas = document.getElementById('timeline-parallax-canvas');
 
+        const setParallax = (x) => {
+            if (parallaxBg) parallaxBg.style.transform = `translateX(${-x * 0.3}px)`;
+        };
+
         // --- One-Time Pre-Rendered Canvas Background ---
         if (realCanvas && parallaxBg) {
             const ctx = realCanvas.getContext('2d');
-            
+
             const initCanvas = () => {
-                const scale = 0.05; 
+                const scale = 0.05;
                 const vw = window.innerWidth / 100;
                 const vh = window.innerHeight / 100;
-                
+
                 realCanvas.width = Math.floor(4000 * vw * scale);
                 realCanvas.height = Math.floor(100 * vh * scale);
-                
+
                 ctx.clearRect(0, 0, realCanvas.width, realCanvas.height);
                 ctx.globalCompositeOperation = 'lighter';
-                
+
                 const clamp = (val, min, max) => Math.max(min, Math.min(max, val));
                 const rem = 16;
-                
+
                 const drawOrb = (x, y, r, c0, c1) => {
                     const sx = x * scale;
                     const sy = y * scale;
                     const sr = r * scale;
                     if (sr <= 0) return;
-                    
+
                     const grad = ctx.createRadialGradient(sx, sy, 0, sx, sy, sr);
                     grad.addColorStop(0, c0);
                     grad.addColorStop(1, c1);
@@ -509,15 +504,15 @@ const initialRandomImg = homeImagesList[Math.floor(Math.random() * homeImagesLis
                     ctx.arc(sx, sy, sr, 0, Math.PI * 2);
                     ctx.fill();
                 };
-                
+
                 // 1. RESUME ZONE (Canvas 0vw - 100vw) [Red/Rose Auras]
                 // 300vw runway gives us plenty of space to paint deep reds!
                 const rW1 = clamp(40 * vw, 30 * rem, 50 * rem);
                 drawOrb(10 * vw, 50 * vh, rW1/2, 'rgba(225, 29, 72, 0.25)', 'rgba(225, 29, 72, 0)');
-                
+
                 const rW2 = clamp(60 * vw, 40 * rem, 80 * rem);
                 drawOrb(40 * vw, 40 * vh, rW2/2, 'rgba(244, 63, 94, 0.25)', 'rgba(244, 63, 94, 0)');
-                
+
                 const rW3 = clamp(45 * vw, 30 * rem, 60 * rem);
                 drawOrb(80 * vw, 60 * vh, rW3/2, 'rgba(220, 38, 38, 0.2)', 'rgba(220, 38, 38, 0)');
 
@@ -527,7 +522,7 @@ const initialRandomImg = homeImagesList[Math.floor(Math.random() * homeImagesLis
                 drawOrb(130 * vw, 0 * vh + w/3, w/2, 'rgba(59, 130, 246, 0.35)', 'rgba(59, 130, 246, 0)'); // Right Blue
                 drawOrb(140 * vw, 25 * vh + w/2, w/2, 'rgba(59, 130, 246, 0.4)', 'rgba(59, 130, 246, 0)'); // Left Blue
                 drawOrb(175 * vw, 50 * vh, w/2, 'rgba(168, 85, 247, 0.4)', 'rgba(168, 85, 247, 0)'); // Purple
-                
+
                 // 3. THE UNIFORM PURPLE NEBULA (Canvas 175vw - 2000vw)
                 // We use a seeded pseudo-random generator so it doesn't flicker/change layout every window resize
                 let seed = 1997;
@@ -535,20 +530,20 @@ const initialRandomImg = homeImagesList[Math.floor(Math.random() * homeImagesLis
                     const x = Math.sin(seed++) * 10000;
                     return x - Math.floor(x);
                 };
-                
+
                 // Spawn 60 massive purple orbs spaced widely through the void and timeline
                 for (let i = 0; i < 60; i++) {
                     const hw = clamp((25 + random() * 35) * vw, 40 * rem, 100 * rem); // Large massive orbs like Resume
                     const hx = 175 * vw + (i * 40 * vw) + ((random() * 20 - 10) * vw); // Spaced roughly 40vw apart
                     const hy = (10 + random() * 80) * vh; // Kept vertically between 10% and 90%
-                    
+
                     const opacity = 0.15 + (random() * 0.15); // Random opacity between 0.15 and 0.30
                     drawOrb(hx, hy, hw/2, `rgba(168, 85, 247, ${opacity.toFixed(2)})`, 'rgba(168, 85, 247, 0)');
                 }
             };
-            
+
             initCanvas();
-            
+
             let resizeTimer;
             window.addEventListener('resize', () => {
                 clearTimeout(resizeTimer);
@@ -565,99 +560,129 @@ const initialRandomImg = homeImagesList[Math.floor(Math.random() * homeImagesLis
                         } else {
                             scrollLimitMin = homeScreenEl.offsetLeft;
                         }
-                        
+
                         if (resumeActive) {
                             // Snap to the Resume page
-                            scrollContainer.scrollLeft = 0;
-                            currentScroll = 0;
-                            targetScroll = 0;
+                            jumpTo(0);
                         } else if (!timelineActive) {
                             // Snap to the Home page
-                            scrollContainer.scrollLeft = homeScreenEl.offsetLeft;
-                            currentScroll = homeScreenEl.offsetLeft;
-                            targetScroll = homeScreenEl.offsetLeft;
+                            jumpTo(homeScreenEl.offsetLeft);
                         } else {
                             // Scale timeline position
                             const maxScroll = scrollContainer.scrollWidth - scrollContainer.clientWidth;
                             const timelineRange = maxScroll - scrollLimitMin;
-                            const newScrollLeft = scrollLimitMin + (timelineScrollRatio * timelineRange);
-                            
-                            scrollContainer.scrollLeft = newScrollLeft;
-                            currentScroll = newScrollLeft;
-                            targetScroll = newScrollLeft;
-                        }
-                        
-                        if (parallaxBg) {
-                            parallaxBg.style.transform = `translateX(${-scrollContainer.scrollLeft * 0.3}px)`;
+                            jumpTo(scrollLimitMin + (timelineScrollRatio * timelineRange));
                         }
                     }
                 }, 150);
-            });
+            }, { signal });
         }
         // ----------------------------------------------------
         let isAnimating = false;
         let isRewindingHome = false;
         let timelineActive = false;
         let timelineSkipRequested = false;
-        
+
         // ASSIGNMENT CLAMP BYPASS
         // Always try to pull our mathematical target coordinate from the session backup FIRST before trusting the raw DOM.
         // During view transitions, scrollWidth constraints frequently clamp raw DOM properties to 0 before paint.
         const cachedSafeScrollStr = sessionStorage.getItem('timeline_scroll');
         const defaultRawScroll = scrollContainer ? scrollContainer.scrollLeft : 0;
         const initialGuaranteedScroll = cachedSafeScrollStr ? parseFloat(cachedSafeScrollStr) : defaultRawScroll;
-        
+
         // Force the raw DOM just in case it clamped earlier
         if (scrollContainer && cachedSafeScrollStr) scrollContainer.scrollLeft = initialGuaranteedScroll;
-        
+
         let currentScroll = initialGuaranteedScroll;
         let targetScroll = initialGuaranteedScroll;
         let scrollLimitMin = 0;
         let timelineScrollRatio = 0;
         let resumeActive = false;
 
+        // Move the timeline during an animation frame (smooth-scroll state untouched)
+        const panTo = (x) => {
+            scrollContainer.scrollLeft = x;
+            setParallax(x);
+        };
+
+        // Instantly place the timeline and sync the smooth-scroll state to it
+        const jumpTo = (x) => {
+            scrollContainer.scrollLeft = x;
+            currentScroll = x;
+            targetScroll = x;
+            setParallax(scrollContainer.scrollLeft);
+        };
+
         if (scrollContainer) {
 
             const timelineTrigger = document.getElementById('unified-timeline-trigger');
             const homeScreen = document.getElementById('unified-home-screen');
-            const runway = document.getElementById('cinematic-runway');
             const realStart = document.getElementById('real-timeline-start');
             const cinematicStickyCounter = document.getElementById('cinematic-sticky-counter');
+            const stickyCounterContainer = document.getElementById('cinematic-sticky-counter-container');
             const floatingHeader = document.getElementById('timeline-floating-header');
             const exitContainer = document.getElementById('timeline-exit-container');
+            const skipBtn = document.getElementById('timeline-skip-btn');
+            const babyMessage = document.getElementById('baby-hidden-message');
+
+            // Fade the "The Timeline" header and Home button in/out
+            const setTimelineChrome = (visible) => {
+                if (floatingHeader) {
+                    floatingHeader.classList.toggle('opacity-0', !visible);
+                    floatingHeader.classList.toggle('opacity-100', visible);
+                }
+                if (exitContainer) {
+                    exitContainer.classList.toggle('opacity-0', !visible);
+                    exitContainer.classList.toggle('pointer-events-none', !visible);
+                    exitContainer.classList.toggle('opacity-100', visible);
+                    exitContainer.classList.toggle('pointer-events-auto', visible);
+                }
+            };
+
+            const setSkipButton = (visible) => {
+                if (!skipBtn) return;
+                skipBtn.classList.toggle('opacity-0', !visible);
+                skipBtn.classList.toggle('pointer-events-none', !visible);
+                skipBtn.classList.toggle('opacity-100', visible);
+                skipBtn.classList.toggle('pointer-events-auto', visible);
+            };
 
             // --- Home Screen Image Cycler Logic ---
             let currentImg = document.getElementById('home-cycler-img-1');
             let nextImg = document.getElementById('home-cycler-img-2');
-            
-            if (currentImg && nextImg) {
+            const cycler = document.getElementById('home-cycler');
+
+            if (currentImg && nextImg && cycler) {
+                const imageDir = cycler.dataset.dir;
+                const allImages = JSON.parse(cycler.dataset.images || '[]');
+
                 // Extract the server-rendered random image to preserve LCP
                 const initialSrc = currentImg.getAttribute('src');
-                const initialFile = initialSrc ? initialSrc.split('/').pop() : '1.jpg';
-                
-                // Shuffle remaining 13 images so we don't repeat the initial one immediately
-                const allImages = ['1.jpg', '2.jpg', '3.jpg', '4.jpg', '5.jpg', '6.jpg', '7.jpg', '8.jpg', '9.jpg', '10.jpg', '11.jpg', '12.jpg', '13.jpg', '14.jpg'];
+                const initialFile = initialSrc ? initialSrc.split('/').pop() : allImages[0];
+
+                // Shuffle remaining images so we don't repeat the initial one immediately
                 const remainingImages = allImages.filter(img => img !== initialFile);
-                
+
                 for (let i = remainingImages.length - 1; i > 0; i--) {
                     const j = Math.floor(Math.random() * (i + 1));
                     [remainingImages[i], remainingImages[j]] = [remainingImages[j], remainingImages[i]];
                 }
                 const cyclerSequence = [initialFile, ...remainingImages];
-                
+
                 let currentCyclerIndex = 0;
                 // DO NOT overwrite currentImg.src immediately as it was already parsed by HTML!
-                
-                setInterval(() => {
+
+                clearInterval(cyclerTimer);
+                cyclerTimer = setInterval(() => {
                     const nextIndex = (currentCyclerIndex + 1) % cyclerSequence.length;
-                    
+
                     nextImg.onload = () => {
                         nextImg.style.zIndex = '10';
                         currentImg.style.zIndex = '0';
-                        
+
                         nextImg.style.opacity = '1';
                         currentImg.style.opacity = '0';
-                        
+
                         setTimeout(() => {
                             currentCyclerIndex = nextIndex;
                             let temp = currentImg;
@@ -665,14 +690,14 @@ const initialRandomImg = homeImagesList[Math.floor(Math.random() * homeImagesLis
                             nextImg = temp;
                         }, 1500); // Wait for CSS transition
                     };
-                    
-                    nextImg.src = '/assets/projects/home-page/' + cyclerSequence[nextIndex];
-                    
+
+                    nextImg.src = imageDir + cyclerSequence[nextIndex];
+
                     // Fallback execution if the browser loaded it instantly from cache without firing onload
                     if (nextImg.complete) {
                         nextImg.onload();
                     }
-                    
+
                 }, 8000); // 8 seconds per image (5s display + 3s crossfade cycle)
             }
             // --------------------------------------
@@ -682,30 +707,24 @@ const initialRandomImg = homeImagesList[Math.floor(Math.random() * homeImagesLis
             const timelineInstructions = document.getElementById('timeline-instructions');
             const timelineInstructionsTop = document.getElementById('timeline-instructions-top');
             let timelineScrollStarted = false;
-            
+
+            const setInstructions = (visible) => {
+                [timelineInstructions, timelineInstructionsTop].forEach(el => {
+                    if (!el) return;
+                    el.style.opacity = visible ? '1' : '0';
+                    el.style.transform = visible ? 'translateY(0)' : 'translateY(4px)';
+                });
+            };
+
             const checkTimelineInstructions = () => {
                 timelineScrollStarted = false;
-                if (timelineInstructions) {
-                    timelineInstructions.style.opacity = '1';
-                    timelineInstructions.style.transform = 'translateY(0)';
-                }
-                if (timelineInstructionsTop) {
-                    timelineInstructionsTop.style.opacity = '1';
-                    timelineInstructionsTop.style.transform = 'translateY(0)';
-                }
+                setInstructions(true);
             };
 
             const dismissTimelineInstructions = () => {
                 if (!timelineScrollStarted) {
                     timelineScrollStarted = true;
-                    if (timelineInstructions) {
-                        timelineInstructions.style.opacity = '0';
-                        timelineInstructions.style.transform = 'translateY(4px)';
-                    }
-                    if (timelineInstructionsTop) {
-                        timelineInstructionsTop.style.opacity = '0';
-                        timelineInstructionsTop.style.transform = 'translateY(4px)';
-                    }
+                    setInstructions(false);
                 }
             };
 
@@ -721,31 +740,35 @@ const initialRandomImg = homeImagesList[Math.floor(Math.random() * homeImagesLis
                 currentScroll = homeScreen.offsetLeft;
                 targetScroll = homeScreen.offsetLeft;
                 scrollLimitMin = homeScreen.offsetLeft;
-                if (parallaxBg) parallaxBg.style.transform = `translateX(${-currentScroll * 0.3}px)`;
+                setParallax(currentScroll);
             } else if (savedScroll) {
                 // If we restored scroll state and are already past the home screen, activate timeline mode immediately
                 if (currentScroll > homeScreen.offsetLeft && realStart && currentScroll >= realStart.offsetLeft - 100) {
                     scrollLimitMin = realStart.offsetLeft;
                     timelineActive = true;
-                    if (floatingHeader) {
-                        floatingHeader.classList.remove('opacity-0');
-                        floatingHeader.classList.add('opacity-100');
-                    }
-                    if (exitContainer) {
-                        exitContainer.classList.remove('opacity-0', 'pointer-events-none');
-                        exitContainer.classList.add('opacity-100', 'pointer-events-auto');
-                    }
+                    setTimelineChrome(true);
                 }
-                if (parallaxBg) parallaxBg.style.transform = `translateX(${-currentScroll * 0.3}px)`;
+                setParallax(currentScroll);
                 sessionStorage.removeItem('timeline_scroll'); // clear it so fresh loads start at home
             }
+
+            // Arrive on the timeline: lock the left edge there and fade the timeline UI in
+            const arriveAtTimeline = (pos) => {
+                scrollLimitMin = pos;
+                jumpTo(pos);
+                timelineActive = true;
+                scrollContainer.style.pointerEvents = 'auto';
+                isAnimating = false;
+                setTimelineChrome(true);
+                checkTimelineInstructions();
+            };
 
             if (timelineTrigger) {
                 timelineTrigger.addEventListener('click', (e) => {
                     e.preventDefault();
                     if (isAnimating) return;
                     isAnimating = true;
-                    
+
                     const babyMarker = document.getElementById('baby-1997-marker');
                     const getOffsetLeft = (el) => {
                         let offset = 0;
@@ -755,189 +778,100 @@ const initialRandomImg = homeImagesList[Math.floor(Math.random() * homeImagesLis
                         }
                         return offset;
                     };
-                    const pos1997 = babyMarker ? getOffsetLeft(babyMarker) - (window.innerWidth / 2) + (babyMarker.offsetWidth / 2) : 0; 
-                    
-                    // scrollContainer.style.pointerEvents = 'none'; // Removed to prevent Layout Thrashing
-                    if(cinematicStickyCounter) {
-                        document.getElementById('cinematic-sticky-counter-container').style.opacity = '1';
-                    }
-                    const easeInOutCubic = (t) => t < .5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
+                    const pos1997 = babyMarker ? getOffsetLeft(babyMarker) - (window.innerWidth / 2) + (babyMarker.offsetWidth / 2) : 0;
+
+                    if (stickyCounterContainer) stickyCounterContainer.style.opacity = '1';
 
                     timelineSkipRequested = false;
-                    const skipBtn = document.getElementById('timeline-skip-btn');
-                    
-                    const skipToTimeline = () => {
-                        const targetPos = realStart.offsetLeft;
-                        scrollLimitMin = targetPos;
-                        scrollContainer.scrollLeft = targetPos; 
-                        currentScroll = targetPos;
-                        targetScroll = targetPos;
-                        timelineActive = true;
-                        scrollContainer.style.pointerEvents = 'auto'; 
-                        isAnimating = false;
-                        if(parallaxBg) parallaxBg.style.transform = `translateX(${-targetPos * 0.3}px)`;
-                        
-                        if (floatingHeader) {
-                            floatingHeader.classList.remove('opacity-0');
-                            floatingHeader.classList.add('opacity-100');
-                        }
-                        if (exitContainer) {
-                            exitContainer.classList.remove('opacity-0', 'pointer-events-none');
-                            exitContainer.classList.add('opacity-100', 'pointer-events-auto');
-                        }
-                        
-                        checkTimelineInstructions();
+
+                    // Every phase checks this before each frame; a skip jumps straight to the real timeline
+                    const skipIfRequested = () => {
+                        if (!timelineSkipRequested) return false;
+                        arriveAtTimeline(realStart.offsetLeft);
+                        return true;
                     };
 
+                    setSkipButton(true);
                     if (skipBtn) {
-                        skipBtn.classList.remove('opacity-0', 'pointer-events-none');
-                        skipBtn.classList.add('opacity-100', 'pointer-events-auto');
-                        
                         skipBtn.onclick = (e) => {
                             e.preventDefault();
                             timelineSkipRequested = true;
-                            skipBtn.classList.add('opacity-0', 'pointer-events-none');
-                            skipBtn.classList.remove('opacity-100', 'pointer-events-auto');
-                            
-                            if(cinematicStickyCounter) {
-                                document.getElementById('cinematic-sticky-counter-container').style.opacity = '0';
-                                setTimeout(() => document.getElementById('cinematic-sticky-counter-container').style.display = 'none', 300);
+                            setSkipButton(false);
+
+                            if (stickyCounterContainer) {
+                                stickyCounterContainer.style.opacity = '0';
+                                setTimeout(() => stickyCounterContainer.style.display = 'none', 300);
                             }
-                            const msg = document.getElementById('baby-hidden-message');
-                            if (msg) msg.style.opacity = '0';
+                            if (babyMessage) babyMessage.style.opacity = '0';
                         };
                     }
 
-                    const duration1 = 3000; 
-                    let startTime = performance.now();
+                    // Phase 1: Race through the void (0 -> 1997) while the counter ticks up
                     const startScroll = scrollContainer.scrollLeft;
                     const scrollDistance = pos1997 - startScroll;
-                    
-                    const animatePhase1 = (time) => {
-                        if (timelineSkipRequested) {
-                            skipToTimeline();
-                            return;
-                        }
 
-                        let t = (time - startTime) / duration1;
-                        if (t > 1) t = 1;
-                        
-                        const flatT = t * 0.95;
-                        const easedT = easeInOutCubic(flatT) / easeInOutCubic(0.95);
-                        scrollContainer.scrollLeft = startScroll + (easedT * scrollDistance);
-                        
-                        if(cinematicStickyCounter) {
-                            const runwayWidth = window.innerWidth * 8;
-                            let counterVal = Math.floor((scrollContainer.scrollLeft / runwayWidth) * 1993);
-                            if (counterVal > 1992) counterVal = 1992;
-                            cinematicStickyCounter.innerText = counterVal;
-                        }
-                        
-                        if(parallaxBg) parallaxBg.style.transform = `translateX(${-scrollContainer.scrollLeft * 0.3}px)`;
+                    animate({
+                        duration: 3000,
+                        abort: skipIfRequested,
+                        frame: (t) => {
+                            const flatT = t * 0.95;
+                            const easedT = easeInOutCubic(flatT) / easeInOutCubic(0.95);
+                            panTo(startScroll + (easedT * scrollDistance));
 
-                        if (t < 1) {
-                            requestAnimationFrame(animatePhase1);
-                        } else {
-                            if(cinematicStickyCounter) {
-                                document.getElementById('cinematic-sticky-counter-container').style.opacity = '0';
+                            if (cinematicStickyCounter) {
+                                const runwayWidth = window.innerWidth * 8;
+                                let counterVal = Math.floor((scrollContainer.scrollLeft / runwayWidth) * 1993);
+                                if (counterVal > 1992) counterVal = 1992;
+                                cinematicStickyCounter.innerText = counterVal;
                             }
-                            startPhase1_5(); 
-                        }
-                    };
-                    
+                        },
+                        done: () => {
+                            if (stickyCounterContainer) stickyCounterContainer.style.opacity = '0';
+                            startPhase1_5();
+                        },
+                    });
+
+                    // Phase 1.5: Slow crawl past Baby Koby while "... Not far enough" fades in
                     const startPhase1_5 = () => {
-                        startTime = performance.now();
-                        const duration1_5 = 3500;
                         const startPos = scrollContainer.scrollLeft;
                         const crawlDistance = window.innerWidth * 0.15;
-                        
-                        const msg = document.getElementById('baby-hidden-message');
-                        if (msg) {
-                            msg.style.opacity = '1';
-                            msg.style.transform = 'translateY(0) translateX(-50%)';
-                        }
-                        
-                        const animatePhase1_5 = (time) => {
-                            if (timelineSkipRequested) {
-                                skipToTimeline();
-                                return;
-                            }
 
-                            let t = (time - startTime) / duration1_5;
-                            if (t > 1) t = 1;
-                            
-                            const currentS = startPos + (t * crawlDistance);
-                            scrollContainer.scrollLeft = currentS;
-                            if(parallaxBg) parallaxBg.style.transform = `translateX(${-currentS * 0.3}px)`;
-                            
-                            if (t < 1) {
-                                requestAnimationFrame(animatePhase1_5);
-                            } else {
-                                startPhase2();
-                            }
-                        };
-                        requestAnimationFrame(animatePhase1_5);
+                        if (babyMessage) {
+                            babyMessage.style.opacity = '1';
+                            babyMessage.style.transform = 'translateY(0) translateX(-50%)';
+                        }
+
+                        animate({
+                            duration: 3500,
+                            abort: skipIfRequested,
+                            frame: (t) => panTo(startPos + (t * crawlDistance)),
+                            done: startPhase2,
+                        });
                     };
-                    
+
+                    // Phase 2: Accelerate onward to the first real timeline entry
                     const startPhase2 = () => {
-                        startTime = performance.now();
-                        const duration2 = 2800; // Reverted back to 2800
                         const startPos = scrollContainer.scrollLeft;
                         const endPos = realStart.offsetLeft;
                         const distance = endPos - startPos;
-                        
-                        const easeInOutQuint = (t) => t < .5 ? 16 * t * t * t * t * t : 1 - Math.pow(-2 * t + 2, 5) / 2;
-                        
-                        const animatePhase2 = (time) => {
-                            if (timelineSkipRequested) {
-                                skipToTimeline();
-                                return;
-                            }
+                        const startVal = easeInOutQuint(0.15);
+                        let currentS = startPos;
 
-                            let t = (time - startTime) / duration2;
-                            if (t > 1) t = 1;
-                            
-                            const startVal = easeInOutQuint(0.15);
-                            const flatT = 0.15 + (t * 0.85);
-                            const easedT = (easeInOutQuint(flatT) - startVal) / (1 - startVal);
-                            
-                            const currentS = startPos + (easedT * distance);
-                            scrollContainer.scrollLeft = currentS;
-                            
-                            if(parallaxBg) parallaxBg.style.transform = `translateX(${-currentS * 0.3}px)`;
-
-                            if (t < 1) {
-                                requestAnimationFrame(animatePhase2);
-                            } else {
-                                scrollLimitMin = currentS;
-                                scrollContainer.scrollLeft = currentS; 
-                                currentScroll = currentS;
-                                targetScroll = currentS;
-                                timelineActive = true;
-                                scrollContainer.style.pointerEvents = 'auto'; 
-                                isAnimating = false;
-                                
-                                if (skipBtn) {
-                                    skipBtn.classList.add('opacity-0', 'pointer-events-none');
-                                    skipBtn.classList.remove('opacity-100', 'pointer-events-auto');
-                                }
-
-                                // Fade in the UI now that we've arrived
-                                if (floatingHeader) {
-                                    floatingHeader.classList.remove('opacity-0');
-                                    floatingHeader.classList.add('opacity-100');
-                                }
-                                if (exitContainer) {
-                                    exitContainer.classList.remove('opacity-0', 'pointer-events-none');
-                                    exitContainer.classList.add('opacity-100', 'pointer-events-auto');
-                                }
-                                checkTimelineInstructions();
-                            }
-                        };
-                        requestAnimationFrame(animatePhase2);
+                        animate({
+                            duration: 2800,
+                            abort: skipIfRequested,
+                            frame: (t) => {
+                                const flatT = 0.15 + (t * 0.85);
+                                const easedT = (easeInOutQuint(flatT) - startVal) / (1 - startVal);
+                                currentS = startPos + (easedT * distance);
+                                panTo(currentS);
+                            },
+                            done: () => {
+                                setSkipButton(false);
+                                arriveAtTimeline(currentS);
+                            },
+                        });
                     };
-
-                    requestAnimationFrame(animatePhase1);
                 });
             }
 
@@ -947,8 +881,7 @@ const initialRandomImg = homeImagesList[Math.floor(Math.random() * homeImagesLis
                     currentScroll = scrollLimitMin;
                     targetScroll = scrollLimitMin;
                 }
-                scrollContainer.scrollLeft = currentScroll;
-                if(parallaxBg) parallaxBg.style.transform = `translateX(${-currentScroll * 0.3}px)`;
+                panTo(currentScroll);
                 if (Math.abs(targetScroll - currentScroll) > 1) {
                     requestAnimationFrame(updateScroll);
                 } else {
@@ -959,18 +892,18 @@ const initialRandomImg = homeImagesList[Math.floor(Math.random() * homeImagesLis
             scrollContainer.addEventListener('wheel', (evt) => {
                 if (!timelineActive) return;
                 dismissTimelineInstructions();
-                
+
                 if (window.innerWidth >= 768 && !evt.shiftKey) {
                     evt.preventDefault();
                     const maxScroll = scrollContainer.scrollWidth - scrollContainer.clientWidth;
-                    
+
                     // Aggregate both vertical and horizontal scroll vectors
                     // This allows native laptop trackpad horizontal swiping along with standard mouse-wheels!
                     const combinedDelta = evt.deltaY + evt.deltaX;
                     targetScroll += combinedDelta * 1.5;
-                    
+
                     targetScroll = Math.max(0, Math.min(targetScroll, maxScroll));
-                    
+
                     if (!isAnimating) {
                         isAnimating = true;
                         requestAnimationFrame(updateScroll);
@@ -991,7 +924,7 @@ const initialRandomImg = homeImagesList[Math.floor(Math.random() * homeImagesLis
                      currentScroll = scrollContainer.scrollLeft;
                      targetScroll = currentScroll;
                 }
-                
+
                 // Track relative scroll progress ratio inside the timeline to prevent shift on resize
                 const maxScroll = scrollContainer.scrollWidth - scrollContainer.clientWidth;
                 const timelineRange = maxScroll - scrollLimitMin;
@@ -1001,9 +934,7 @@ const initialRandomImg = homeImagesList[Math.floor(Math.random() * homeImagesLis
                      timelineScrollRatio = 0;
                 }
 
-                if (parallaxBg) {
-                     parallaxBg.style.transform = `translateX(${-scrollContainer.scrollLeft * 0.3}px)`;
-                }
+                setParallax(scrollContainer.scrollLeft);
             }, { passive: true });
 
             // Intercept Home Links for the Reverse Fly-out Transition to Unified Home
@@ -1011,46 +942,20 @@ const initialRandomImg = homeImagesList[Math.floor(Math.random() * homeImagesLis
                 link.addEventListener('click', (e) => {
                     e.preventDefault();
                     if (isAnimating) return;
-                    
+
                     const startScroll = scrollContainer.scrollLeft;
                     const endScroll = homeScreen ? homeScreen.offsetLeft : 0;
-                    
-                    // scrollContainer.style.pointerEvents = 'none'; // Prevent Layout Thrashing
+
                     isAnimating = true; // freeze normal wheel actions
                     isRewindingHome = true;
-                    
-                    if (floatingHeader) {
-                        floatingHeader.classList.add('opacity-0');
-                        floatingHeader.classList.remove('opacity-100');
-                    }
-                    if (exitContainer) {
-                        exitContainer.classList.add('opacity-0', 'pointer-events-none');
-                        exitContainer.classList.remove('opacity-100', 'pointer-events-auto');
-                    }
-                    if (timelineInstructions) {
-                        timelineInstructions.style.opacity = '0';
-                        timelineInstructions.style.transform = 'translateY(4px)';
-                    }
-                    if (timelineInstructionsTop) {
-                        timelineInstructionsTop.style.opacity = '0';
-                        timelineInstructionsTop.style.transform = 'translateY(4px)';
-                    }
 
-                    const duration = 2400;  // Increased from 1200 to smoothen the rewind deceleration
-                    const startTime = performance.now();
-                    const easeOutQuint = (t) => 1 - Math.pow(1 - t, 5);
+                    setTimelineChrome(false);
+                    setInstructions(false);
 
-                    const swipeBack = (time) => {
-                        let t = (time - startTime) / duration;
-                        if (t > 1) t = 1;
-                        
-                        const easedS = startScroll - ((startScroll - endScroll) * easeOutQuint(t));
-                        scrollContainer.scrollLeft = easedS;
-                        if(parallaxBg) parallaxBg.style.transform = `translateX(${-easedS * 0.3}px)`;
-
-                        if (t < 1) {
-                            requestAnimationFrame(swipeBack);
-                        } else {
+                    animate({
+                        duration: 2400, // Increased from 1200 to smoothen the rewind deceleration
+                        frame: (t) => panTo(startScroll - ((startScroll - endScroll) * easeOutQuint(t))),
+                        done: () => {
                             targetScroll = endScroll;
                             currentScroll = endScroll;
                             scrollLimitMin = endScroll;
@@ -1058,55 +963,63 @@ const initialRandomImg = homeImagesList[Math.floor(Math.random() * homeImagesLis
                             scrollContainer.style.pointerEvents = 'auto';
                             isAnimating = false;
                             isRewindingHome = false;
-                            
-                            const msg = document.getElementById('baby-hidden-message');
-                            if (msg) {
-                                msg.style.opacity = '0';
-                                msg.style.transform = 'translateY(1.5rem) translateX(-50%)';
+
+                            if (babyMessage) {
+                                babyMessage.style.opacity = '0';
+                                babyMessage.style.transform = 'translateY(1.5rem) translateX(-50%)';
                             }
-                        }
-                    };
-                    requestAnimationFrame(swipeBack);
+                        },
+                    });
                 });
             });
         }
 
         // Cinematic Brain Zoom Logic
         const brainTrigger = document.getElementById('brain-link-trigger');
+
+        // Full page load (not a view transition) so WebGL starts clean
+        const goToBrain = () => {
+            const link = document.createElement('a');
+            link.href = '/brain';
+            link.setAttribute('data-astro-reload', '');
+            document.body.appendChild(link);
+            link.click();
+        };
+
         if (brainTrigger) {
             brainTrigger.addEventListener('click', (e) => {
                 e.preventDefault();
                 if (isAnimating) return;
                 isAnimating = true;
-                
+
                 const targetO = document.getElementById('zoom-target-o');
                 const textContainer = document.getElementById('cinematic-koby-text');
                 const kobyOnly = document.getElementById('cinematic-koby-only');
                 const blackout = document.getElementById('blackout-overlay');
-                
+
                 if (targetO && textContainer && blackout && kobyOnly) {
                     sessionStorage.setItem('from_brain', 'true');
 
                     const oRect = targetO.getBoundingClientRect();
                     const kobyRect = kobyOnly.getBoundingClientRect();
                     // The bounding box of an inline-block includes font ascenders/descenders.
-                    const visualCenterY = oRect.height * 0.65; 
+                    const visualCenterY = oRect.height * 0.65;
                     const visualCenterX = (oRect.width / 2) + 4; // Shift 4px right
 
                     const originX = oRect.left - kobyRect.left + visualCenterX;
                     const originY = oRect.top - kobyRect.top + visualCenterY;
-                    
+
                     const windowCenterX = window.innerWidth / 2;
                     const windowCenterY = window.innerHeight / 2;
                     const oScreenX = oRect.left + (oRect.width / 2);
                     const oScreenY = oRect.top + visualCenterY;
-                    
+
                     const moveX = windowCenterX - oScreenX;
                     const moveY = windowCenterY - oScreenY;
-                    
+
                     const heroSection = document.getElementById('unified-home-screen');
                     if (heroSection) heroSection.style.zIndex = '10000';
-                    
+
                     kobyOnly.style.transformOrigin = `${originX}px ${originY}px`;
                     kobyOnly.style.willChange = 'transform';
                     kobyOnly.style.backfaceVisibility = 'hidden';
@@ -1122,15 +1035,15 @@ const initialRandomImg = homeImagesList[Math.floor(Math.random() * homeImagesLis
                                 el.style.opacity = '0';
                             }
                         });
-                        
+
                         // Fade blackout in immediately behind the text
                         blackout.style.transition = 'opacity 0.8s ease';
                         blackout.style.opacity = '1';
-                        
+
                         // 1.5. Slide "Koby" to the center over 0.8s!
                         kobyOnly.style.transition = 'transform 0.8s ease-in-out';
                         kobyOnly.style.transform = `translate3d(${moveX}px, ${moveY}px, 0)`;
-                        
+
                         // 2. Wait for fade & slide, PAUSE for 300ms, then start the zoom
                         setTimeout(() => {
                             // Extra slow start, aggressive acceleration at the end
@@ -1140,20 +1053,12 @@ const initialRandomImg = homeImagesList[Math.floor(Math.random() * homeImagesLis
 
                             setTimeout(() => {
                                 if (heroSection) heroSection.style.zIndex = '';
-                                const link = document.createElement('a');
-                                link.href = '/brain';
-                                link.setAttribute('data-astro-reload', '');
-                                document.body.appendChild(link);
-                                link.click();
+                                goToBrain();
                             }, 1900);
                         }, 1100);
                     });
                 } else {
-                    const link = document.createElement('a');
-                    link.href = '/brain';
-                    link.setAttribute('data-astro-reload', '');
-                    document.body.appendChild(link);
-                    link.click();
+                    goToBrain();
                 }
             });
         }
@@ -1165,67 +1070,65 @@ const initialRandomImg = homeImagesList[Math.floor(Math.random() * homeImagesLis
         const kobyOnly = document.getElementById('cinematic-koby-only');
         const blackout = document.getElementById('blackout-overlay');
         const otherElements = document.querySelectorAll('a, p, nav, .cinematic-extra-text, #home-media-elements');
-        
+
         if (fromBrain) {
             sessionStorage.removeItem('from_brain');
-            
+
             // AGGRESSIVE BLACKOUT OVERRIDE: Prevent Astro fade glitch!
             if (blackout) {
                 blackout.style.transition = 'none';
                 blackout.style.opacity = '1';
                 void blackout.offsetHeight;
             }
-            
+
             if (targetO && textContainer && blackout && kobyOnly) {
                 // FORCIBLY CLEAR Astro's cached inline styles BEFORE measuring!
                 // If Astro restored the page from cache, textContainer might still be scaled from an old run!
                 textContainer.style.transform = 'none';
                 textContainer.style.transformOrigin = 'unset';
-                
+
                 kobyOnly.style.transition = 'none';
                 kobyOnly.style.transform = 'none';
                 kobyOnly.style.transformOrigin = 'unset';
-                
+
                 // Force synchronous layout recalculation
                 void textContainer.offsetHeight;
                 void kobyOnly.offsetHeight;
-                
+
                 const oRect = targetO.getBoundingClientRect();
                 const kobyRect = kobyOnly.getBoundingClientRect();
                 const heroSection = document.getElementById('unified-home-screen');
-                
+
                 if (heroSection) {
                     heroSection.style.zIndex = '10000'; // Escape stacking context!
                 }
-                
+
                 const visualCenterY = oRect.height * 0.65;
                 const visualCenterX = (oRect.width / 2) + 4; // Shift 4px right
                 const originX = oRect.left - kobyRect.left + visualCenterX;
                 const originY = oRect.top - kobyRect.top + visualCenterY;
-                
+
                 const windowCenterX = window.innerWidth / 2;
                 const windowCenterY = window.innerHeight / 2;
                 const oScreenX = oRect.left + visualCenterX;
                 const oScreenY = oRect.top + visualCenterY;
                 const moveX = windowCenterX - oScreenX;
                 const moveY = windowCenterY - oScreenY;
-                
 
-                
                 // --- TRICK CHROME: THE INVISIBLE PRE-SCALE ---
                 kobyOnly.style.transformOrigin = `${originX}px ${originY}px`;
-                kobyOnly.style.position = 'relative'; 
+                kobyOnly.style.position = 'relative';
                 kobyOnly.style.zIndex = '9999';
-                
+
                 // Start at 1x size, perfectly centered, virtually invisible
                 kobyOnly.style.willChange = 'transform, opacity';
                 kobyOnly.style.transform = `translate3d(${moveX}px, ${moveY}px, 0) scale(1)`;
                 kobyOnly.style.opacity = '0';
-                
+
                 textContainer.style.zIndex = '9999';
-                blackout.style.zIndex = '9990'; 
+                blackout.style.zIndex = '9990';
                 blackout.style.opacity = '1';
-                
+
                 otherElements.forEach(el => {
                     if (el.style) {
                         el.style.opacity = '0';
@@ -1239,19 +1142,19 @@ const initialRandomImg = homeImagesList[Math.floor(Math.random() * homeImagesLis
                     // Rapidly stretch to 60x over 0.1s to force GPU texture caching
                     kobyOnly.style.transition = 'transform 0.1s linear';
                     kobyOnly.style.transform = `translate3d(${moveX}px, ${moveY}px, 0) scale(60)`;
-                    
+
                     setTimeout(() => {
                         // The massive texture is now safely in GPU memory! Fade it in while shrinking it!
                         kobyOnly.style.transition = 'transform 2s cubic-bezier(0.1, 0.7, 0.4, 0.95), opacity 2.0s ease-out 0.3s';
                         kobyOnly.style.opacity = '1';
                         kobyOnly.style.transform = `translate3d(${moveX}px, ${moveY}px, 0) scale(1)`;
-                        
+
                         // Wait for the 2.5s zoom to finish...
                         setTimeout(() => {
                             // Now slide it back to its original spot over 0.8s!
                             kobyOnly.style.transition = 'transform 0.8s ease-in-out';
                             kobyOnly.style.transform = 'translate3d(0px, 0px, 0) scale(1)';
-                            
+
                             // DELAY the black overlay fade out and UI fade in until after the slide
                             setTimeout(() => {
                                 if (blackout) {
@@ -1266,7 +1169,7 @@ const initialRandomImg = homeImagesList[Math.floor(Math.random() * homeImagesLis
                                 });
                             }, 800); // 800ms for slide to finish
                         }, 2500); // 2.5s for zoom to finish
-                        
+
                         // Cleanup all inline styles so Tailwind hover states work again!
                         // Extended to 4500ms (2.5s zoom + 0.8s slide + 1.0s fade = 4.3s)
                         setTimeout(() => {
@@ -1306,7 +1209,7 @@ const initialRandomImg = homeImagesList[Math.floor(Math.random() * homeImagesLis
                 textContainer.style.transform = 'none';
                 textContainer.style.transformOrigin = 'unset';
                 textContainer.style.zIndex = '';
-                
+
                 // ULTIMATE REPAINT HACK for cached DOM
                 textContainer.style.filter = 'blur(0.1px)';
                 textContainer.style.textShadow = '0 0 1px rgba(0,0,0,0.01)';
@@ -1316,7 +1219,7 @@ const initialRandomImg = homeImagesList[Math.floor(Math.random() * homeImagesLis
                         textContainer.style.textShadow = '';
                     }
                 }, 50);
-                
+
                 // Let browser tick once before fully clearing transition so the snap is silent
                 requestAnimationFrame(() => textContainer.style.transition = '');
             }
@@ -1336,153 +1239,81 @@ const initialRandomImg = homeImagesList[Math.floor(Math.random() * homeImagesLis
 
         // Cinematic Resume Swipe Logic (Forward)
         const resumeTrigger = document.getElementById('unified-resume-trigger');
-        if (resumeTrigger) {
+        if (resumeTrigger && scrollContainer) {
             resumeTrigger.addEventListener('click', (e) => {
                 e.preventDefault();
                 if (isAnimating) return;
-                
-                const scrollContainer = document.querySelector('.CustomScrollContainer');
-                const parallaxBg = document.getElementById('timeline-parallax-bg');
-                
-                if (scrollContainer) {
-                    const startScroll = scrollContainer.scrollLeft;
-                    const endScroll = 0; // Pan to the far left edge (the runway)
-                    
-                    // scrollContainer.style.pointerEvents = 'none'; // Prevent Layout Thrashing
-                    isAnimating = true;
-                    scrollLimitMin = 0; // Unlock scrolling to the left
-                    resumeActive = true;
-                    
-                    // Removed legacy opacity fade so the unified canvas stays visible!
-                    const duration = 2400; 
-                    const startTime = performance.now();
-                    
-                    const easeInOutQuint = (t) => t < .5 ? 16 * t * t * t * t * t : 1 - Math.pow(-2 * t + 2, 5) / 2;
 
-                    const swipeForward = (time) => {
-                        let t = (time - startTime) / duration;
-                        if (t > 1) t = 1;
-                        
-                        const easedS = startScroll - ((startScroll - endScroll) * easeInOutQuint(t));
-                        scrollContainer.scrollLeft = easedS;
-                        if(parallaxBg) parallaxBg.style.transform = `translateX(${-easedS * 0.3}px)`;
+                const startScroll = scrollContainer.scrollLeft;
+                const endScroll = 0; // Pan to the far left edge (the runway)
 
-                        if (t < 1) {
-                            requestAnimationFrame(swipeForward);
-                        } else {
-                            scrollContainer.style.pointerEvents = 'auto';
-                            isAnimating = false;
-                            if (parallaxBg) parallaxBg.style.transition = '';
-                        }
-                    };
-                    requestAnimationFrame(swipeForward);
-                }
+                isAnimating = true;
+                scrollLimitMin = 0; // Unlock scrolling to the left
+                resumeActive = true;
+
+                animate({
+                    duration: 2400,
+                    frame: (t) => panTo(startScroll - ((startScroll - endScroll) * easeInOutQuint(t))),
+                    done: () => {
+                        scrollContainer.style.pointerEvents = 'auto';
+                        isAnimating = false;
+                        if (parallaxBg) parallaxBg.style.transition = '';
+                    },
+                });
             });
         }
 
         // Cinematic Resume Swipe Logic (Reverse / Home Exit)
         const homeExit = document.getElementById('resume-home-exit');
-        if (homeExit) {
+        const homeScreenForResume = document.getElementById('unified-home-screen');
+        if (homeExit && scrollContainer && homeScreenForResume) {
             homeExit.addEventListener('click', (e) => {
                 e.preventDefault();
                 e.stopPropagation(); // prevent global link hijacker from interfering
                 if (isAnimating) return;
-                
-                const scrollContainer = document.querySelector('.CustomScrollContainer');
-                const parallaxBg = document.getElementById('timeline-parallax-bg');
-                const homeScreen = document.getElementById('unified-home-screen');
-                
-                if (scrollContainer && homeScreen) {
-                    const startScroll = scrollContainer.scrollLeft;
-                    const endScroll = homeScreen.offsetLeft;
-                    
-                    // scrollContainer.style.pointerEvents = 'none'; // Prevent Layout Thrashing
-                    isAnimating = true;
-                    
-                    // Removed legacy opacity fade!
-                    const duration = 2400; 
-                    const startTime = performance.now();
-                    const easeInOutQuint = (t) => t < .5 ? 16 * t * t * t * t * t : 1 - Math.pow(-2 * t + 2, 5) / 2;
 
-                    const swipeBackHome = (time) => {
-                        let t = (time - startTime) / duration;
-                        if (t > 1) t = 1;
-                        
-                        const easedS = startScroll + ((endScroll - startScroll) * easeInOutQuint(t));
-                        scrollContainer.scrollLeft = easedS;
-                        if(parallaxBg) parallaxBg.style.transform = `translateX(${-easedS * 0.3}px)`;
+                const startScroll = scrollContainer.scrollLeft;
+                const endScroll = homeScreenForResume.offsetLeft;
 
-                        if (t < 1) {
-                            requestAnimationFrame(swipeBackHome);
-                        } else {
-                            scrollLimitMin = endScroll; // re-lock scrolling
-                            currentScroll = endScroll;
-                            targetScroll = endScroll;
-                            scrollContainer.style.pointerEvents = 'auto';
-                            isAnimating = false;
-                            resumeActive = false;
-                        }
-                    };
-                    requestAnimationFrame(swipeBackHome);
-                }
+                isAnimating = true;
+
+                animate({
+                    duration: 2400,
+                    frame: (t) => panTo(startScroll + ((endScroll - startScroll) * easeInOutQuint(t))),
+                    done: () => {
+                        scrollLimitMin = endScroll; // re-lock scrolling
+                        currentScroll = endScroll;
+                        targetScroll = endScroll;
+                        scrollContainer.style.pointerEvents = 'auto';
+                        isAnimating = false;
+                        resumeActive = false;
+                    },
+                });
             });
         }
-
-        // Legacy Smooth Column Scrolling Removed -> Native Unified Scroll Instead
 
         // --- MEDIA LAZY LOADING & PAUSING (Performance Fix) ---
-        const lazyMediaElements = document.querySelectorAll('.lazy-media');
-        if (lazyMediaElements.length > 0 && scrollContainer) {
-            const mediaObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    const media = entry.target;
-                    if (entry.isIntersecting) {
-                        // Hydrate src if not loaded yet
-                        if (media.dataset.src) {
-                            media.src = media.dataset.src;
-                            media.removeAttribute('data-src');
-                        }
-                        // Play if it's a video
-                        if (media.tagName === 'VIDEO') {
-                            const playPromise = media.play();
-                            if (playPromise !== undefined) {
-                                playPromise.catch(error => console.log('Video autoplay prevented', error));
-                            }
-                        }
-                    } else {
-                        // Pause immediately when leaving screen to free up the CPU/GPU
-                        if (media.tagName === 'VIDEO') {
-                            media.pause();
-                        }
-                    }
-                });
-            }, {
-                root: scrollContainer,
-                rootMargin: '0px 100% 0px 100%', // Pre-load 1 screen to the left and right
-                threshold: 0
-            });
-
-            lazyMediaElements.forEach(el => mediaObserver.observe(el));
-        }
+        // Pre-load 1 screen to the left and right of the horizontal timeline
+        if (scrollContainer) observeLazyMedia(scrollContainer, '0px 100% 0px 100%');
 
         // --- BACKGROUND PRE-FETCH TIMELINE VIDEOS ---
         // This ensures timeline videos are loaded into cache safely without harming the Home page LCP
         if ('requestIdleCallback' in window) {
             requestIdleCallback(() => {
                 /** @type {HTMLVideoElement[]} */
-                const timelineVideos = Array.from(document.querySelectorAll('video.lazy-media[data-src]'));
-                
+                const timelineVideos = Array.from(document.querySelectorAll('#timeline-container video.lazy-media[data-src]'));
+
                 /** @param {number} index */
                 const loadNextVideo = (index) => {
-                    if (index >= timelineVideos.length) return;
+                    if (signal.aborted || index >= timelineVideos.length) return;
                     const video = timelineVideos[index];
-                    
+
                     // Only background pre-fetch if it hasn't been intercepted by the observer yet
                     if (video.dataset.src) {
                         video.src = video.dataset.src;
                         video.removeAttribute('data-src');
                         video.preload = "auto";
-                        
+
                         video.addEventListener('loadeddata', () => {
                             setTimeout(() => {
                                 requestIdleCallback(() => loadNextVideo(index + 1));
