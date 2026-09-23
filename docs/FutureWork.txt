@@ -26,3 +26,7 @@ Resume page:
 
 Check everything on the phone.
 Right now the home page doesn't scroll. I set no scroll to fix another problem.
+
+
+Videos:
+    Re-encode the big ones (many are 11-25 MB) to 720p-1080p H.264 to cut download size. Lazy loading already handles when they load.

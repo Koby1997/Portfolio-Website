@@ -1,7 +1,5 @@
 ---
 import '../styles/global.css';
-import Navigation from '../components/Navigation.astro';
-import Footer from '../components/Footer.astro';
 import SeoHead from '../components/SeoHead.astro';
 import { ClientRouter } from 'astro:transitions';
 import { SITE_DESCRIPTION } from '../data/site';
@@ -10,10 +8,9 @@ interface Props {
 	title: string;
 	description?: string;
 	image?: string;
-	hideNavAndFooter?: boolean;
 }
 
-const { title, description = SITE_DESCRIPTION, image, hideNavAndFooter = false } = Astro.props;
+const { title, description = SITE_DESCRIPTION, image } = Astro.props;
 ---
 
 <!doctype html>
@@ -29,10 +26,8 @@ const { title, description = SITE_DESCRIPTION, image, hideNavAndFooter = false }
 		<ClientRouter fallback="swap" />
 	</head>
 	<body class="bg-zinc-950 text-zinc-50 min-h-screen flex flex-col font-sans antialiased overflow-x-hidden">
-		{!hideNavAndFooter && <Navigation />}
-		<main class={hideNavAndFooter ? "flex-grow w-full" : "flex-grow w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10"}>
+		<main class="flex-grow w-full">
 			<slot />
 		</main>
-		{!hideNavAndFooter && <Footer />}
 	</body>
 </html>

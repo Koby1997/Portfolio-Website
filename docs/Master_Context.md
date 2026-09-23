@@ -12,7 +12,6 @@ This repository houses a highly-interactive Personal Portfolio Website designed 
 - **The Brain Module (`src/pages/brain.astro`)**: A 3D WebGL neural network (Three.js from a CDN import map) mapping hobbies, mindsets, and interests. It is reached via the zoom-into-the-"o" transition from the home page.
   - *Always navigate to it with a full reload (`data-astro-reload`).* View transitions into it drop WebGL state.
 - **Project Case Studies (`src/content/projects/*.md`)**: A content collection of hand-authored HTML-in-Markdown pages, rendered by `src/pages/projects/[id].astro` (hero + content + lightbox). Every entry uses `demoMode: true`.
-- **About (`src/pages/about.astro`)**: A simple page using `Layout.astro` with the nav/footer. It isn't linked from the main flow.
 
 ---
 
