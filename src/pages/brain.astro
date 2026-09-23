@@ -6,6 +6,7 @@ import "../styles/global.css";
 import { hubs } from "../data/neuralNetwork.js";
 import { ClientRouter } from "astro:transitions";
 import SeoHead from "../components/SeoHead.astro";
+import Favicon from "../components/Favicon.astro";
 import { SITE_DESCRIPTION } from "../data/site";
 ---
 
@@ -14,6 +15,7 @@ import { SITE_DESCRIPTION } from "../data/site";
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Neural Interface | Koby L.</title>
+        <Favicon />
         <SeoHead title="Neural Interface | Koby L." description={SITE_DESCRIPTION} />
         <script type="importmap">
             {

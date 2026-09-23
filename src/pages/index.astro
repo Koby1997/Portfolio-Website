@@ -3,6 +3,7 @@ import '../styles/global.css';
 import { ClientRouter } from 'astro:transitions';
 import { getCollection } from 'astro:content';
 import SeoHead from '../components/SeoHead.astro';
+import Favicon from '../components/Favicon.astro';
 import { getColorConfig } from '../data/categories';
 import { resume } from '../data/resume';
 import { SITE_DESCRIPTION, HOME_IMAGES, HOME_IMAGE_DIR } from '../data/site';
@@ -28,7 +29,7 @@ const initialRandomImg = HOME_IMAGES[Math.floor(Math.random() * HOME_IMAGES.leng
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=2.0" />
+    <Favicon />
     <title>Koby Miller</title>
     <SeoHead title="Koby Miller" description={SITE_DESCRIPTION} />
     <!-- Three.js is only used by /brain, but the import map must already exist if a navigation ever soft-swaps into it -->
